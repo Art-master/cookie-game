@@ -1,0 +1,76 @@
+
+cookie.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+jump_down
+  rotate: false
+  xy: 157, 5
+  size: 153, 153
+  orig: 153, 153
+  offset: 0, 0
+  index: -1
+jump_up
+  rotate: false
+  xy: 312, 321
+  size: 153, 153
+  orig: 153, 153
+  offset: 0, 0
+  index: -1
+run
+  rotate: false
+  xy: 2, 318
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 4
+run
+  rotate: false
+  xy: 2, 318
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 6
+run
+  rotate: false
+  xy: 2, 160
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 5
+run
+  rotate: false
+  xy: 157, 318
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 7
+run
+  rotate: false
+  xy: 157, 318
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 2, 2
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 8
+run
+  rotate: false
+  xy: 2, 2
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 2
+run
+  rotate: false
+  xy: 157, 160
+  size: 153, 156
+  orig: 153, 156
+  offset: 0, 0
+  index: 1
