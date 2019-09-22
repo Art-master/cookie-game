@@ -1,14 +1,15 @@
 package com.mygdx.game.actors
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.impl.Scrollable
-import com.mygdx.game.data.AssetLoader
+import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Scrolled
 
-class Background : Actor(), Scrollable{
+class Background(manager : AssetManager) : Actor(), Scrollable{
 
-    private val texture = AssetLoader.backgroundTexture
+    private val texture = manager.get(Descriptors.background)
 
     private var scrollerBack = Scrolled(0f, 0f,
             texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1.value)

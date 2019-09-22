@@ -1,18 +1,30 @@
 package com.mygdx.game.actors
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Array
 import com.mygdx.game.ScreenConfig
-import com.mygdx.game.data.AssetLoader
+import com.mygdx.game.data.Assets
+import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Scrollable
 import com.mygdx.game.impl.Scrolled
 import java.util.*
 
-class Cupboard(private val window : Window) : Actor(), Scrollable {
+class Cupboard(manager : AssetManager, private val window : Window) : Actor(), Scrollable {
+    private val texture = manager.get(Descriptors.environment)
+    private val cupBoardRegion = texture.findRegion(Assets.EnvironmentAtlas.CUPBOARD)
+    private val openDoorRegion = texture.findRegion(Assets.EnvironmentAtlas.OPEN_DOOR)
+    private val closeDoorRegion = texture.findRegion(Assets.EnvironmentAtlas.CLOSE_DOOR)
+    private val jar1Region = texture.findRegion(Assets.EnvironmentAtlas.JAR1)
+    private val jar2Region = texture.findRegion(Assets.EnvironmentAtlas.JAR2)
+    private val jar3Region = texture.findRegion(Assets.EnvironmentAtlas.JAR3)
+    private val saltRegion = texture.findRegion(Assets.EnvironmentAtlas.SALT)
+    private val paperRegion = texture.findRegion(Assets.EnvironmentAtlas.PAPER)
+    private val cupRegion = texture.findRegion(Assets.EnvironmentAtlas.CUP)
+
     private val rand = Random()
-    private val cupBoardRegion = AssetLoader.cupboard
     private var leftDoorRegion = getDoorRegion()
     private var rightDoorRegion = getDoorRegion()
 
@@ -83,7 +95,7 @@ class Cupboard(private val window : Window) : Actor(), Scrollable {
     private fun drawLeftDoor(batch: Batch?){
         var x = scroll.getX()
         var y = scroll.getY()
-        if(leftDoorRegion == AssetLoader.openDoor){
+        if(leftDoorRegion == openDoorRegion){
             x -= leftDoorRegion.originalWidth - 20
             y -= 42
         }
@@ -97,7 +109,7 @@ class Cupboard(private val window : Window) : Actor(), Scrollable {
         var y = scroll.getY()
         val width = -rightDoorRegion.originalWidth.toFloat()
         val height = rightDoorRegion.originalHeight.toFloat()
-        if(rightDoorRegion == AssetLoader.closeDoor){
+        if(rightDoorRegion == closeDoorRegion){
             x -= 21
         }else {
             y -= 40
@@ -109,9 +121,9 @@ class Cupboard(private val window : Window) : Actor(), Scrollable {
 
     private fun getDoorRegion(): TextureAtlas.AtlasRegion{
         return when(rand.nextInt(3)){
-            1 -> AssetLoader.openDoor
-            2 -> AssetLoader.closeDoor
-            else -> AssetLoader.openDoor
+            1 -> openDoorRegion
+            2 -> closeDoorRegion
+            else -> openDoorRegion
         }
     }
 
@@ -126,13 +138,13 @@ class Cupboard(private val window : Window) : Actor(), Scrollable {
 
     private fun getUtensilRegion(num : Int): TextureAtlas.AtlasRegion {
         return when(num){
-            0 -> AssetLoader.jar1
-            1 -> AssetLoader.jar2
-            2 -> AssetLoader.jar3
-            3 -> AssetLoader.salt
-            4 -> AssetLoader.paper
-            5 -> AssetLoader.cup
-            else -> AssetLoader.jar1
+            0 -> jar1Region
+            1 -> jar2Region
+            2 -> jar3Region
+            3 -> saltRegion
+            4 -> paperRegion
+            5 -> cupRegion
+            else -> jar1Region
         }
     }
 

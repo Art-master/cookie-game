@@ -1,14 +1,18 @@
 package com.mygdx.game.actors
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.mygdx.game.data.AssetLoader
+import com.mygdx.game.data.Assets
+import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Listener
 import java.util.*
 
-class FlowerInPot(private val window: Window) : Actor(){
-    private var flowerTexture = AssetLoader.flower
+class FlowerInPot(manager : AssetManager, private val window: Window) : Actor(){
+    private val texture = manager.get(Descriptors.environment)
+    private var flowerTexture = texture.findRegion(Assets.EnvironmentAtlas.FLOWER_IN_POT)
+
     private var isShowFlower = true
     private var tab = 40
     private val randShowing = Random(tab.toLong())
@@ -27,9 +31,9 @@ class FlowerInPot(private val window: Window) : Actor(){
 
     private fun getFlowerType(num: Int): TextureAtlas.AtlasRegion{
         return when(num){
-            1 -> AssetLoader.cactus
-            2 -> AssetLoader.flower2
-            else -> AssetLoader.flower
+            1 -> texture.findRegion(Assets.EnvironmentAtlas.CACTUS)
+            2 -> texture.findRegion(Assets.EnvironmentAtlas.FLOWER_IN_POT_2)
+            else -> texture.findRegion(Assets.EnvironmentAtlas.FLOWER_IN_POT)
         }
     }
     override fun act(delta: Float) {

@@ -1,15 +1,17 @@
 package com.mygdx.game.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.impl.Hideable
 import com.mygdx.game.beans.Position
-import com.mygdx.game.data.AssetLoader
+import com.mygdx.game.data.Assets
+import com.mygdx.game.data.Descriptors
 
-class Moon(private val window : Window) : Actor() {
-
-    private val moonRegion = AssetLoader.moon
+class Moon(manager : AssetManager, private val window : Window) : Actor() {
+    private val texture = manager.get(Descriptors.environment)
+    private val moonRegion = texture.findRegion(Assets.EnvironmentAtlas.MOON)
 
     private val posMoon = Position(
             (Gdx.graphics.width/2).toFloat(),

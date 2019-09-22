@@ -1,15 +1,17 @@
 package com.mygdx.game.actors
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.impl.Hideable
 import com.mygdx.game.beans.Position
-import com.mygdx.game.data.AssetLoader
+import com.mygdx.game.data.Assets
+import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Scrollable
 
-class City(private val window : Window) : Actor(), Scrollable {
-
-    private val cityRegion = AssetLoader.city
+class City(manager : AssetManager, private val window : Window) : Actor(), Scrollable {
+    private val texture = manager.get(Descriptors.environment)
+    private val cityRegion = texture.findRegion(Assets.EnvironmentAtlas.CITY)
 
     private val posCity = Position(
             0f,

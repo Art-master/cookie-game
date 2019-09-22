@@ -1,29 +1,32 @@
 package com.mygdx.game.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.impl.Scrollable
-import com.mygdx.game.data.AssetLoader
+import com.mygdx.game.data.Assets
+import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Listener
 import com.mygdx.game.impl.Scrolled
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Window : Actor(), Scrollable {
+class Window(manager : AssetManager) : Actor(), Scrollable {
+    private val texture = manager.get(Descriptors.environment)
+    private val region = texture.findRegion(Assets.EnvironmentAtlas.WINDOW)
 
     private val rand = Random()
-    private val region = AssetLoader.window
 
-    private val curtainLeft = AssetLoader.curtainLeft
-    private val curtainRight = AssetLoader.curtainRight
+    private val curtainLeft = texture.findRegion(Assets.EnvironmentAtlas.CURTAIN_LEFT)
+    private val curtainRight = texture.findRegion(Assets.EnvironmentAtlas.CURTAIN_RIGHT)
     private var curtainColor = getRandomColor()
 
     var scroll = Scrolled(
             Gdx.graphics.width.toFloat(), 80f,
-            AssetLoader.window.originalWidth,
-            AssetLoader.window.originalHeight,
+            region.originalWidth,
+            region.originalHeight,
             Scrolled.ScrollSpeed.LEVEL_1.value)
 
     private val listeners = ArrayList<Listener>()

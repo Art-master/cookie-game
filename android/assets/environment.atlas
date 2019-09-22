@@ -146,13 +146,13 @@ window
   index: -1
 
 environment2.png
-size: 1024,1024
+size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 cactus
   rotate: false
-  xy: 891, 789
+  xy: 921, 365
   size: 103, 173
   orig: 103, 173
   offset: 0, 0
@@ -166,7 +166,7 @@ carrot
   index: -1
 closeDoor
   rotate: false
-  xy: 575, 95
+  xy: 714, 540
   size: 352, 422
   orig: 352, 422
   offset: 0, 0
@@ -178,16 +178,37 @@ cupboard
   orig: 710, 440
   offset: 0, 0
   index: -1
+hand
+  rotate: false
+  xy: 1068, 784
+  size: 302, 178
+  orig: 302, 178
+  offset: 0, 0
+  index: 1
+hand
+  rotate: false
+  xy: 1372, 791
+  size: 303, 171
+  orig: 303, 171
+  offset: 0, 0
+  index: 3
+hand
+  rotate: false
+  xy: 1068, 611
+  size: 302, 171
+  orig: 302, 171
+  offset: 0, 0
+  index: 2
 jar2
   rotate: false
-  xy: 883, 557
+  xy: 1372, 611
   size: 135, 178
   orig: 135, 178
   offset: 0, 0
   index: -1
 milk_box
   rotate: false
-  xy: 714, 519
+  xy: 752, 322
   size: 167, 216
   orig: 167, 216
   offset: 0, 0
@@ -201,7 +222,7 @@ pie
   index: -1
 yogurt_box
   rotate: false
-  xy: 714, 737
+  xy: 575, 295
   size: 175, 225
   orig: 175, 225
   offset: 0, 0

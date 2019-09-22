@@ -1,31 +1,36 @@
 package com.mygdx.game.actors
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.ScreenConfig
-import com.mygdx.game.data.AssetLoader
-import com.mygdx.game.impl.Phisical
+import com.mygdx.game.data.Assets
+import com.mygdx.game.data.Descriptors
+import com.mygdx.game.impl.Physical
 import com.mygdx.game.impl.Scrollable
 
-class Cookie(
+class Cookie(manager : AssetManager,
         startX: Float = ScreenConfig.widthGame/2,
-        private val startY: Float = 50f,
-        private val widthCookie: Float  = AssetLoader.run1.originalWidth.toFloat(),
-        private val heightCookie: Float =  AssetLoader.run1.originalHeight.toFloat()) : Actor(), Scrollable{
+        private val startY: Float = 50f): Actor(), Scrollable{
 
     private val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
     private val acceleration = Vector2(0f, -1f)
 
-    private val maxJumpHeight = position.y + heightCookie * 2
     private var jumpFlag = false
 
-    private val jumpUpAnimation = AssetLoader.jumpUp
-    private val jumpDownAnimation = AssetLoader.jumpDown
-    private val runAnimation = AssetLoader.runAnimation
+    private val texture = manager.get(Descriptors.cookie)
+    private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
+    private val jumpDownAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_DOWN)
+    private val runRegions = texture.findRegions(Assets.CookieAtlas.RUN)
+    private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP)
+
+    private val maxJumpHeight = position.y + 200 * 2
 
     private var currentFrame = runAnimation.getKeyFrame(0f)
 
@@ -37,8 +42,8 @@ class Cookie(
     init {
         x = position.x
         y = position.y
-        width = widthCookie
-        height = heightCookie
+        width = texture.findRegion(Assets.CookieAtlas.RUN).originalWidth.toFloat()
+        height = texture.findRegion(Assets.CookieAtlas.RUN).originalHeight.toFloat()
     }
 
     override fun act(delta: Float) {
@@ -57,7 +62,7 @@ class Cookie(
         }
 
         position.add(velocity.cpy().scl(delta))
-        rectangle.set(position.x, position.y, widthCookie, heightCookie)
+        rectangle.set(position.x, position.y, width, height)
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -67,8 +72,8 @@ class Cookie(
             isFalling() -> jumpDownAnimation
             else -> runAnimation.getKeyFrame(runTime)
         }
-        if(isStopAnimation) currentFrame = AssetLoader.run1
-        batch.draw(currentFrame, position.x, position.y, widthCookie, heightCookie)
+        if(isStopAnimation) currentFrame = runRegions[0]
+        batch.draw(currentFrame, position.x, position.y, width, height)
     }
 
     fun isFalling() = jumpFlag
@@ -87,7 +92,7 @@ class Cookie(
         isStopAnimation = false
     }
 
-    fun collides(actor : Phisical): Boolean {
+    fun collides(actor : Physical): Boolean {
 
         return false
     }

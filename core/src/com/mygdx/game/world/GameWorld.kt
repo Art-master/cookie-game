@@ -1,19 +1,57 @@
 package com.mygdx.game.world
 
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.actors.*
 import com.mygdx.game.impl.Scrollable
 
 
-class GameWorld(cookie: Cookie, background: Background, city: City, cupboard: Cupboard,
-                flowerInPot: FlowerInPot, moon: Moon, score: Score,
-                shadow: Shadow, sky: Sky, table: Table, window: Window) {
+class GameWorld(private val manager : AssetManager) {
+    private val randomItemNum = 4
+    val stage = Stage(ScreenViewport())
 
-    val actors : Array<Actor> = Array.with(cookie, background, city, cupboard,
-            flowerInPot, moon, score, shadow, sky, table, window)
+    private val background = Background(manager)
+    private val table = Table(manager)
+    private val window = Window(manager)
+    private val moon = Moon(manager, window)
+    private val city = City(manager, window)
+    private val sky = Sky(manager, window)
+    private val flower = FlowerInPot(manager, window)
+    private val cookie = Cookie(manager)
+    private val shadow = Shadow(manager)
+    private val cupboard = Cupboard(manager, window)
+    private val score = Score(manager)
+    private val hand = Hand(manager)
+    private val actionItems = Array<RandomTableItem>(randomItemNum)
 
-    public fun stopMove(){
+    val actors : Array<Actor> = Array.with(background, cupboard, shadow, sky, moon, city, window, flower, table, hand, cookie, score)
+
+    init {
+        initTableItems()
+        actors.addAll(actionItems)
+        addActorsToStage()
+    }
+
+    private fun initTableItems(){
+        for(i in 0 until randomItemNum){
+            var prevItem: RandomTableItem? = null
+            if(i > 0) prevItem = actionItems[i - 1]
+            actionItems.add(RandomTableItem(manager, table, prevItem))
+        }
+        actionItems[0].prevItem = actionItems[actionItems.size-1]
+    }
+
+    private fun addActorsToStage(){
+        for(actor in actors){
+            stage.addActor(actor)
+        }
+    }
+
+
+    private fun stopMove(){
         for (actor in actors){
             if(actor is Scrollable){
                 actor.stopMove()
@@ -21,11 +59,19 @@ class GameWorld(cookie: Cookie, background: Background, city: City, cupboard: Cu
         }
     }
 
-    public fun startMove(){
-        for (actor in actors){
-            if(actor is Scrollable){
-                actor.runMove()
-            }
+    private fun startMove(){
+        foreEachActor{
+            if(it is Scrollable) it.runMove()
         }
     }
+
+    private fun foreEachActor(callbackData: (Actor) -> Unit){
+        for (actor in actors){
+                callbackData.invoke(actor)
+        }
+    }
+    fun update(delta: Float){
+        stage.act(delta)
+    }
+
 }

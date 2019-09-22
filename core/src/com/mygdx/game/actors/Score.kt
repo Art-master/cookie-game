@@ -1,18 +1,17 @@
 package com.mygdx.game.actors
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.mygdx.game.data.AssetLoader
+import com.mygdx.game.data.Assets
 
-class Score : Actor() {
-    private val generator = AssetLoader.font
+class Score(manager : AssetManager) : Actor() {
+    private val generator = FreeTypeFontGenerator(Gdx.files.internal(Assets.Fonts.NAME))
     private var score: BitmapFont
-    //private var shadow: BitmapFont
-    //private val label = Label("", Label.LabelStyle(font, Color.GRAY))
 
     init {
         val offSetShadow = 5
