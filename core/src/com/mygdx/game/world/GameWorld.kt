@@ -10,7 +10,6 @@ import com.mygdx.game.impl.Scrollable
 
 
 class GameWorld(private val manager : AssetManager) {
-    private val randomItemNum = 4
     val stage = Stage(ScreenViewport())
 
     private val background = Background(manager)
@@ -25,23 +24,12 @@ class GameWorld(private val manager : AssetManager) {
     private val cupboard = Cupboard(manager, window)
     private val score = Score(manager)
     private val hand = Hand(manager)
-    private val actionItems = Array<RandomTableItem>(randomItemNum)
-
+    private val items = TableItems(manager, table)
     val actors : Array<Actor> = Array.with(background, cupboard, shadow, sky, moon, city, window, flower, table, hand, cookie, score)
 
     init {
-        initTableItems()
-        actors.addAll(actionItems)
+        actors.addAll(items.getActors())
         addActorsToStage()
-    }
-
-    private fun initTableItems(){
-        for(i in 0 until randomItemNum){
-            var prevItem: RandomTableItem? = null
-            if(i > 0) prevItem = actionItems[i - 1]
-            actionItems.add(RandomTableItem(manager, table, prevItem))
-        }
-        actionItems[0].prevItem = actionItems[actionItems.size-1]
     }
 
     private fun addActorsToStage(){

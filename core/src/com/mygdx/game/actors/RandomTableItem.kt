@@ -7,38 +7,61 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.impl.Callback
 import com.mygdx.game.impl.Scrollable
 import com.mygdx.game.impl.Scrolled
 import java.util.*
 
-class RandomTableItem(manager : AssetManager, table : Table, var prevItem : RandomTableItem?) : Actor(), Scrollable{
+class RandomTableItem(manager : AssetManager, private val table : Table) : Actor(), Scrollable{
     private val rand = Random()
     private val texture = manager.get(Descriptors.environment)
     private var region = getRandomItemRegion()
     private val screenWidth = Gdx.graphics.width.toFloat()
-    private val screenHeight = Gdx.graphics.height.toFloat()
+
     private var scroller = Scrolled(screenWidth, table.worktopY,
             region.originalWidth, region.originalHeight,
             Scrolled.ScrollSpeed.LEVEL_2.value)
 
-    private val diff = 30f
-    private var isShowing = false
+    var startAct = false
+    var distanceUntil = 100
+    var prevActor: RandomTableItem? = null
+    var callback : Callback? = null
 
     init {
         updateCoordinates()
     }
 
     override fun act(delta: Float) {
+        checkDistance()
+
         super.act(delta)
         updateCoordinates()
-
-        val d = prevItem!!.x == screenWidth
-        if(d){
+        if(startAct){
             scroller.update(delta)
-            isShowing = true
-        }else isShowing = false
+            if(scroller.isScrolledLeft){
+                startAct = false
+                resetScroller()
+                callback!!.call()
+            }
+        }
+    }
 
-        if(scroller.isScrolledLeft) scroller.reset(screenWidth)
+    private fun checkDistance(){
+        if(prevActor != null){
+            if(prevActor!!.startAct.not() && screenWidth - scroller.getTailX() >= distanceUntil){
+                prevActor!!.startAct = true
+            }
+        }
+    }
+
+    fun changeRegion(){
+        region = getRandomItemRegion()
+    }
+
+    private fun resetScroller(){
+       scroller = Scrolled(screenWidth, table.worktopY,
+                region.originalWidth, region.originalHeight,
+                Scrolled.ScrollSpeed.LEVEL_2.value)
     }
 
     private fun getRandomItemRegion(): TextureAtlas.AtlasRegion{
@@ -61,9 +84,7 @@ class RandomTableItem(manager : AssetManager, table : Table, var prevItem : Rand
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-         if(isShowing){
-             batch!!.draw(region, x, y, region.originalWidth.toFloat(), region.originalHeight.toFloat())
-         }
+        batch!!.draw(region, x, y, region.originalWidth.toFloat(), region.originalHeight.toFloat())
     }
 
     override fun stopMove() {
