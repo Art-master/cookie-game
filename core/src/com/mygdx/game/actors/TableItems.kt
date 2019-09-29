@@ -5,7 +5,10 @@ import com.badlogic.gdx.utils.Array
 import com.mygdx.game.impl.Callback
 import kotlin.random.Random
 
-class TableItems(private val manager : AssetManager, private val table : Table) {
+class TableItems(private val manager : AssetManager,
+                 private val table : Table,
+                 private val cookie: Cookie) {
+
     private val minDistance = 500
     private val random = Random(minDistance)
     private val randomItemNum = 5
@@ -19,12 +22,11 @@ class TableItems(private val manager : AssetManager, private val table : Table) 
 
     private fun initTableItems(){
         for(i in 0 until randomItemNum){
-            val actor = RandomTableItem(manager, table)
+            val actor = RandomTableItem(manager, table, cookie)
             actor.distanceUntil = random.nextInt(minDistance, limitDistance)
             if(i > 0)actor.prevActor = actionItems.get(i -1)
             actor.callback = object : Callback{
                 override fun call() {
-                    actor.changeRegion()
                     actor.distanceUntil = random.nextInt(minDistance, limitDistance)
                 }
 

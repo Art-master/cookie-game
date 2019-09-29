@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -13,16 +12,17 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Physical
 import com.mygdx.game.impl.Scrollable
+import com.mygdx.game.world.GameWorld
 
 class Cookie(manager : AssetManager,
         startX: Float = ScreenConfig.widthGame/2,
-        private val startY: Float = 50f): Actor(), Scrollable{
+        private val startY: Float = 50f): Actor(), Scrollable, Physical{
 
-    private val position = Vector2(startX, startY)
+    val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
-    private val acceleration = Vector2(0f, -1f)
+    private val velocityJump = 800f
 
-    private var jumpFlag = false
+    private val acceleration = Vector2(0f, -1f)
 
     private val texture = manager.get(Descriptors.cookie)
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
@@ -39,31 +39,52 @@ class Cookie(manager : AssetManager,
 
     private val rectangle : Rectangle = Rectangle()
 
+    enum class State{ RUN, JUMP, FALL }
+
+    private var state = State.RUN
+
     init {
-        x = position.x
-        y = position.y
+        updateCoordinates()
         width = texture.findRegion(Assets.CookieAtlas.RUN).originalWidth.toFloat()
         height = texture.findRegion(Assets.CookieAtlas.RUN).originalHeight.toFloat()
     }
 
+    private fun updateCoordinates(){
+        x = position.x
+        y = position.y
+    }
+
     override fun act(delta: Float) {
+        //velocity.add(GameWorld.gravity.x * runTime, GameWorld.gravity.y * runTime)
         super.act(delta)
         runTime += delta
-        if (position.y >= maxJumpHeight) jumpFlag = true
-        if(position.y < startY){
-            jumpFlag = false
-            velocity.y = 0f
-            position.y = startY
-        }
 
-        if(jumpFlag){
-            velocity.y = -800f
-            velocity.add(acceleration.cpy().scl(delta))
+        when(state){
+            State.FALL -> {
+                //runTime = 0f
+                velocity.add(0f, -velocityJump * delta)
+                if(isUnderGround()){
+                    state = State.RUN
+                    runTime = 0f
+                    velocity.y = 0f
+                    position.y = startY
+                }
+            }
+            State.JUMP -> {
+                velocity.add(0f, velocityJump * delta)
+                if(isCeiling()) state = State.FALL
+            }
+            State.RUN -> {}
         }
 
         position.add(velocity.cpy().scl(delta))
+        updateCoordinates()
         rectangle.set(position.x, position.y, width, height)
     }
+
+    private fun isGround() = position.y == startY
+    private fun isUnderGround() = position.y < startY
+    private fun isCeiling() = position.y >= maxJumpHeight
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
@@ -73,15 +94,15 @@ class Cookie(manager : AssetManager,
             else -> runAnimation.getKeyFrame(runTime)
         }
         if(isStopAnimation) currentFrame = runRegions[0]
-        batch.draw(currentFrame, position.x, position.y, width, height)
+        batch.draw(currentFrame, x, y, width, height)
     }
 
-    fun isFalling() = jumpFlag
-    fun isRun() = velocity.y == startY
-    fun isJump() = velocity.y > 0
+    fun isFalling() = state == State.FALL
+    fun isRun() = state == State.RUN
+    fun isJump() = state == State.JUMP
 
     fun onClick() {
-        if(jumpFlag.not()) velocity.y = 800f
+        if(state != State.JUMP) state = State.JUMP
     }
 
     override fun stopMove() {
@@ -92,8 +113,9 @@ class Cookie(manager : AssetManager,
         isStopAnimation = false
     }
 
-    fun collides(actor : Physical): Boolean {
-
-        return false
+    fun resetY(){
+        if(isJump().not()) y = startY
     }
+
+    override fun getBoundsRect() = rectangle
 }
