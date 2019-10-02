@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -20,9 +21,9 @@ class Cookie(manager : AssetManager,
 
     val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
-    private val velocityJump = 800f
+    private val velocityJump = 20f
 
-    private val acceleration = Vector2(0f, -1f)
+    private val acceleration = Vector2(0f, -10f)
 
     private val texture = manager.get(Descriptors.cookie)
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
@@ -30,7 +31,7 @@ class Cookie(manager : AssetManager,
     private val runRegions = texture.findRegions(Assets.CookieAtlas.RUN)
     private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP)
 
-    private val maxJumpHeight = position.y + 200 * 2
+    private val maxJumpHeight = 200
 
     private var currentFrame = runAnimation.getKeyFrame(0f)
 
@@ -39,7 +40,9 @@ class Cookie(manager : AssetManager,
 
     private val rectangle : Rectangle = Rectangle()
 
-    enum class State{ RUN, JUMP, FALL }
+    enum class State{ RUN, JUMP, JUMPING,  FALL, FALLING }
+
+    private val gravity = -5f
 
     private var state = State.RUN
 
@@ -55,27 +58,33 @@ class Cookie(manager : AssetManager,
     }
 
     override fun act(delta: Float) {
-        //velocity.add(GameWorld.gravity.x * runTime, GameWorld.gravity.y * runTime)
         super.act(delta)
         runTime += delta
-
+        velocity.add(0f, gravity * runTime)
         when(state){
             State.FALL -> {
                 //runTime = 0f
-                velocity.add(0f, -velocityJump * delta)
+/*                velocity.add(0f, -velocityJump * delta)
                 if(isUnderGround()){
                     state = State.RUN
                     runTime = 0f
                     velocity.y = 0f
                     position.y = startY
-                }
+                }*/
+            }
+            State.FALLING -> {
+
             }
             State.JUMP -> {
-                velocity.add(0f, velocityJump * delta)
+                velocity.add(0f, velocityJump)
+                if(isCeiling()) state = State.JUMPING
+            }
+            State.JUMPING -> {
                 if(isCeiling()) state = State.FALL
             }
-            State.RUN -> {}
-        }
+            State.RUN -> {velocity.y = 0f}
+            }
+
 
         position.add(velocity.cpy().scl(delta))
         updateCoordinates()
@@ -114,7 +123,7 @@ class Cookie(manager : AssetManager,
     }
 
     fun resetY(){
-        if(isJump().not()) y = startY
+        //if(isJump().not()) y = startY
     }
 
     override fun getBoundsRect() = rectangle
