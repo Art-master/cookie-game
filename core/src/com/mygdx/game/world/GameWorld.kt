@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
@@ -43,8 +42,13 @@ class GameWorld(private val manager : AssetManager) {
         changeScore()
         stage.addListener(object : ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                cookie.onClick()
+                cookie.startJumpForce()
                 return super.touchDown(event, x, y, pointer, button)
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                cookie.endJumpForce()
+                super.touchUp(event, x, y, pointer, button)
             }
         }
         )

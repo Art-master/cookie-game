@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -13,7 +12,6 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Physical
 import com.mygdx.game.impl.Scrollable
-import com.mygdx.game.world.GameWorld
 
 class Cookie(manager : AssetManager,
         startX: Float = ScreenConfig.widthGame/2,
@@ -21,7 +19,7 @@ class Cookie(manager : AssetManager,
 
     val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
-    private val velocityJump = 20f
+    private val velocityJump = 50f
 
     private val acceleration = Vector2(0f, -10f)
 
@@ -29,7 +27,7 @@ class Cookie(manager : AssetManager,
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
     private val jumpDownAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_DOWN)
     private val runRegions = texture.findRegions(Assets.CookieAtlas.RUN)
-    private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP)
+    private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP_PINGPONG)
 
     private val maxJumpHeight = 200
 
@@ -40,11 +38,15 @@ class Cookie(manager : AssetManager,
 
     private val rectangle : Rectangle = Rectangle()
 
-    enum class State{ RUN, JUMP, JUMPING,  FALL, FALLING }
+    enum class State{ RUN, JUMP, FALL}
 
-    private val gravity = -5f
+    private val gravity = -50f
 
-    private var state = State.RUN
+    var state = State.RUN
+
+    private var jumpFlag = false
+    private var startJumpY = 0f
+    private var ground = startY
 
     init {
         updateCoordinates()
@@ -60,39 +62,40 @@ class Cookie(manager : AssetManager,
     override fun act(delta: Float) {
         super.act(delta)
         runTime += delta
-        velocity.add(0f, gravity * runTime)
-        when(state){
-            State.FALL -> {
-                //runTime = 0f
-/*                velocity.add(0f, -velocityJump * delta)
-                if(isUnderGround()){
-                    state = State.RUN
-                    runTime = 0f
-                    velocity.y = 0f
-                    position.y = startY
-                }*/
-            }
-            State.FALLING -> {
-
-            }
-            State.JUMP -> {
-                velocity.add(0f, velocityJump)
-                if(isCeiling()) state = State.JUMPING
-            }
-            State.JUMPING -> {
-                if(isCeiling()) state = State.FALL
-            }
-            State.RUN -> {velocity.y = 0f}
-            }
-
-
+        updateGravity()
+        updateActorState()
         position.add(velocity.cpy().scl(delta))
         updateCoordinates()
         rectangle.set(position.x, position.y, width, height)
     }
 
-    private fun isGround() = position.y == startY
-    private fun isUnderGround() = position.y < startY
+    private fun updateGravity(){
+        velocity.add(0f, gravity * runTime)
+    }
+
+    private fun updateActorState(){
+        when(state){
+            State.FALL -> {
+                if(isGround()) resetState()
+            }
+            State.JUMP -> {
+                if(jumpFlag && isMaxJump().not()){
+                    velocity.add(0f, velocityJump)
+                } else state = State.FALL
+            }
+            State.RUN -> velocity.y = 0f
+        }
+    }
+
+    private fun resetState(){
+        state = State.RUN
+        runTime = 0f
+        velocity.y = 0f
+        position.y = ground
+    }
+
+    private fun isGround() = position.y <= ground
+    private fun isMaxJump() = position.y >= startJumpY + maxJumpHeight
     private fun isCeiling() = position.y >= maxJumpHeight
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -110,8 +113,18 @@ class Cookie(manager : AssetManager,
     fun isRun() = state == State.RUN
     fun isJump() = state == State.JUMP
 
-    fun onClick() {
-        if(state != State.JUMP) state = State.JUMP
+    fun startJumpForce() {
+        if(state == State.RUN){
+            startJumpY = y
+            state = State.JUMP
+            runTime = 0f
+            jumpFlag = true
+        }
+    }
+
+    fun endJumpForce() {
+        jumpFlag = false
+        startJumpY = 0f
     }
 
     override fun stopMove() {
@@ -122,9 +135,31 @@ class Cookie(manager : AssetManager,
         isStopAnimation = false
     }
 
-    fun resetY(){
-        //if(isJump().not()) y = startY
+    fun checkCollides(obj : RandomTableItem){
+        if(collides(obj)){
+             if(isHigherThen(obj)){
+                 setOnTop(obj)
+            }else{
+                 againstThe(obj)
+            }
+        }
+        if(isAfter(obj) && state == State.RUN){
+            state = State.FALL
+        }
     }
+
+    private fun isAfter(obj : RandomTableItem) : Boolean{
+        val tailObj = obj.x + obj.width
+        return x >= tailObj && x < tailObj + 30f
+    }
+
+    private fun getTailX() = x + width
+    private fun isHigherThen(obj : RandomTableItem) = y > obj.y + obj.height - 30
+    private fun setOnTop(obj : RandomTableItem) {
+        resetState()
+        position.y = obj.y + obj.height
+    }
+    private fun againstThe(obj : RandomTableItem) {position.x = obj.x - width}
 
     override fun getBoundsRect() = rectangle
 }

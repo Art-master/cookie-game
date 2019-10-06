@@ -17,7 +17,7 @@ class Hand(manager : AssetManager) : Actor() {
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
     private val handRegions = texture.findRegions(Assets.EnvironmentAtlas.HAND)
-    private val handAnim = Animation(0.3f,handRegions, Animation.PlayMode.LOOP_RANDOM)
+    private val handAnim = Animation(0.1f,handRegions, Animation.PlayMode.LOOP_PINGPONG)
 
     private val random = Random()
     private var runTime = 0f

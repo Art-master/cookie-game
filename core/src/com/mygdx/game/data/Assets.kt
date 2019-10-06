@@ -40,7 +40,7 @@ class Assets {
             const val TABLE = "table"
             const val SHADOW = "shadow"
             const val GLASS = "glass"
-            const val ORANGE = "glass"
+            const val ORANGE = "orange"
             const val LIME = "lime"
             const val APPLE = "apple"
             const val CARROT = "carrot"

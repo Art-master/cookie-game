@@ -13,7 +13,7 @@ apple
   index: -1
 blueSky
   rotate: false
-  xy: 5, 2
+  xy: 2, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -125,7 +125,7 @@ salt
   index: -1
 shadow
   rotate: false
-  xy: 2, 2
+  xy: 5, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -187,21 +187,49 @@ hand
   index: 1
 hand
   rotate: false
+  xy: 1068, 606
+  size: 302, 176
+  orig: 302, 176
+  offset: 0, 0
+  index: 2
+hand
+  rotate: false
   xy: 1372, 791
-  size: 303, 171
-  orig: 303, 171
+  size: 304, 171
+  orig: 304, 171
+  offset: 0, 0
+  index: 6
+hand
+  rotate: false
+  xy: 1372, 617
+  size: 302, 172
+  orig: 302, 172
   offset: 0, 0
   index: 3
 hand
   rotate: false
-  xy: 1068, 611
+  xy: 1678, 791
+  size: 303, 171
+  orig: 303, 171
+  offset: 0, 0
+  index: 5
+hand
+  rotate: false
+  xy: 1676, 618
+  size: 303, 171
+  orig: 303, 171
+  offset: 0, 0
+  index: 7
+hand
+  rotate: false
+  xy: 1068, 433
   size: 302, 171
   orig: 302, 171
   offset: 0, 0
-  index: 2
+  index: 4
 jar2
   rotate: false
-  xy: 1372, 611
+  xy: 1372, 437
   size: 135, 178
   orig: 135, 178
   offset: 0, 0
