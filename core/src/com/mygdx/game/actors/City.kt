@@ -15,7 +15,7 @@ class City(manager : AssetManager, private val window : Window) : Actor(), Scrol
 
     private val posCity = Position(
             0f,
-            window.scroll.getY() + window.getWindowsillY(),
+            window.getWindowsillY(),
             cityRegion.originalWidth.toFloat(),
             cityRegion.originalHeight.toFloat())
 

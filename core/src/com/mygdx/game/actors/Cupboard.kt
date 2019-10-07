@@ -28,7 +28,7 @@ class Cupboard(manager : AssetManager, private val window : Window) : Actor(), S
     private var leftDoorRegion = getDoorRegion()
     private var rightDoorRegion = getDoorRegion()
 
-    private val startY = 400f
+    private val startY = window.getWindowsillY() + 150f
     private val startX =  200
     private val windowX2 = window.scroll.getX() + window.scroll.width
 

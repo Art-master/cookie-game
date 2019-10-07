@@ -9,11 +9,11 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Scrolled
 
-class Table(manager : AssetManager) : Actor(), Scrollable {
+class Table(manager : AssetManager, yWorktop: Float) : Actor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val region = texture.findRegion(Assets.EnvironmentAtlas.TABLE)
 
-    val worktopY = 50f
+    val worktopY = yWorktop
 
     private var scrollerBack = Scrolled(0f, 0f,
             region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2.value)

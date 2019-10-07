@@ -13,7 +13,7 @@ import com.mygdx.game.impl.Scrolled
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Window(manager : AssetManager) : Actor(), Scrollable {
+class Window(manager : AssetManager, startY : Float) : Actor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val region = texture.findRegion(Assets.EnvironmentAtlas.WINDOW)
 
@@ -24,7 +24,7 @@ class Window(manager : AssetManager) : Actor(), Scrollable {
     private var curtainColor = getRandomColor()
 
     var scroll = Scrolled(
-            Gdx.graphics.width.toFloat(), 80f,
+            Gdx.graphics.width.toFloat(), startY,
             region.originalWidth,
             region.originalHeight,
             Scrolled.ScrollSpeed.LEVEL_1.value)

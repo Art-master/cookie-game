@@ -13,9 +13,8 @@ import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Physical
 import com.mygdx.game.impl.Scrollable
 
-class Cookie(manager : AssetManager,
-        startX: Float = ScreenConfig.widthGame/2,
-        private val startY: Float = 50f): Actor(), Scrollable, Physical{
+class Cookie(manager : AssetManager, private val startY: Float,
+        startX: Float = ScreenConfig.widthGame/2): Actor(), Scrollable, Physical{
 
     val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
