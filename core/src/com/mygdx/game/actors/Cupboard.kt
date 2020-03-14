@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Array
-import com.mygdx.game.ScreenConfig
+import com.mygdx.game.Config
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Scrollable
@@ -61,7 +61,7 @@ class Cupboard(manager : AssetManager, private val window : Window) : Actor(), S
         var position: Float
         do{
             position = windowX2 + leftDoorRegion.originalWidth + randPositionX.nextInt(600)
-        } while (position < (ScreenConfig.widthGame + leftDoorRegion.originalWidth))
+        } while (position < (Config.widthGame + leftDoorRegion.originalWidth))
         return position
     }
 

@@ -3,7 +3,7 @@ package com.mygdx.game
 import com.badlogic.gdx.Gdx
 
 
-object ScreenConfig {
+object Config {
     const val widthGame = 1920f
     const val heightGame = 1080f
 

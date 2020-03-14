@@ -9,5 +9,6 @@ class Descriptors {
         val background = AssetDescriptor<Texture>(Assets.BackgroundTexture.NAME, Texture::class.java)
         val cookie = AssetDescriptor<TextureAtlas>(Assets.CookieAtlas.NAME, TextureAtlas::class.java)
         val environment = AssetDescriptor<TextureAtlas>(Assets.EnvironmentAtlas.NAME, TextureAtlas::class.java)
+        val menu = AssetDescriptor<TextureAtlas>(Assets.MainMenuAtlas.NAME, TextureAtlas::class.java)
     }
 }

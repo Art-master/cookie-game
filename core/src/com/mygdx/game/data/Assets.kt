@@ -51,6 +51,25 @@ class Assets {
         }
     }
 
+    class MainMenuAtlas{
+        companion object{
+            const val NAME = "mainMenu.atlas"
+            const val SOUND_ON = "soundOn"
+            const val SOUND_OFF = "soundOff"
+            const val VIBR_ON = "vibrOn"
+            const val VIBR_OFF = "vibrOff"
+            const val BLUR = "blur"
+            const val BUTTON_PLAY = "buttonPlay"
+            const val CIRCLE = "circle"
+            const val COOKIE_BUTTON = "cookieButton"
+            const val COOKIE_BUTTON_2 = "cookieButton2"
+            const val GAME_OVER_TEXT = "gameOverText"
+            const val MAIN_MENU_BUTTON = "mainMenuButton"
+            const val REPLAY_BUTTON = "replayButton"
+            const val TITLE = "title"
+        }
+    }
+
     class Fonts{
         companion object{
             const val NAME = "fonts/Arkipelago.ttf"

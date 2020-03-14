@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.mygdx.game.ScreenConfig
+import com.mygdx.game.Config
 import com.mygdx.game.data.Assets
 
 class Score(manager : AssetManager) : Actor() {
@@ -31,7 +31,7 @@ class Score(manager : AssetManager) : Actor() {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        val fontX = ScreenConfig.widthGame - (symbol * scoreNum.toString().length) - paddingX
+        val fontX = Config.widthGame - (symbol * scoreNum.toString().length) - paddingX
         score.draw(batch, scoreNum.toString(), fontX, fontY)
     }
 }

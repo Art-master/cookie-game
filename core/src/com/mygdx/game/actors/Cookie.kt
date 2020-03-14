@@ -7,14 +7,14 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.mygdx.game.ScreenConfig
+import com.mygdx.game.Config
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Physical
 import com.mygdx.game.impl.Scrollable
 
 class Cookie(manager : AssetManager, private val startY: Float,
-        startX: Float = ScreenConfig.widthGame/2): Actor(), Scrollable, Physical{
+        startX: Float = Config.widthGame/2): Actor(), Scrollable, Physical{
 
     val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
