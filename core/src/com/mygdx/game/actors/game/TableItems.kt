@@ -1,4 +1,4 @@
-package com.mygdx.game.actors
+package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.utils.Array

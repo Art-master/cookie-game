@@ -1,4 +1,4 @@
-package com.mygdx.game.actors
+package com.mygdx.game.actors.main_menu_screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
@@ -41,6 +41,7 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 vibrationSettings = vibrationSettings.not()
                 prefs.putBoolean(Prefs.VIBRATION, vibrationSettings)
+                prefs.flush()
                 changeVibrationIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }

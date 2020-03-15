@@ -1,4 +1,4 @@
-package com.mygdx.game.actors
+package com.mygdx.game.actors.main_menu_screen
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -41,6 +41,7 @@ class SoundIcon(manager : AssetManager) : Actor() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 soundSettings = soundSettings.not()
                 prefs.putBoolean(Prefs.SOUND, soundSettings)
+                prefs.flush()
                 changeSoundIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }

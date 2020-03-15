@@ -1,4 +1,4 @@
-package com.mygdx.game.actors
+package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
@@ -17,7 +17,7 @@ class Hand(manager : AssetManager) : Actor() {
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
     private val handRegions = texture.findRegions(Assets.EnvironmentAtlas.HAND)
-    private val handAnim = Animation(0.1f,handRegions, Animation.PlayMode.LOOP_PINGPONG)
+    private val handAnim = Animation(0.1f, handRegions, Animation.PlayMode.LOOP_PINGPONG)
 
     private val random = Random()
     private var runTime = 0f

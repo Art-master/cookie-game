@@ -5,19 +5,15 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
-import com.mygdx.game.actors.SoundIcon
-import com.mygdx.game.actors.VibrationIcon
+import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.data.Descriptors
 
 class StartScreen : Screen {
     private val manager = AssetManager()
     private val camera = OrthographicCamera(Config.widthGame, Config.heightGame)
     private val stage = Stage(ScreenViewport(camera))
-
-    private val table = Table()
 
     init {
         loadResources()
@@ -39,24 +35,24 @@ class StartScreen : Screen {
 
     override fun render(delta: Float) {
         if(manager.isFinished && stage.actors.isEmpty){
-            //drawTable()
-            val soundIcon = SoundIcon(manager)
-            val vibrationIcon = VibrationIcon(manager, soundIcon)
-
-            stage.addActor(soundIcon)
-            stage.addActor(vibrationIcon)
+            addActorsToStage()
         }
         stage.act(delta)
         stage.draw()
     }
 
-    private fun drawTable(){
-        table.apply {
-            //columnDefaults(2)
-            row().width(300f).height(300f)
-            add(SoundIcon(manager))
-            //add(VibrationIcon(manager))
-        }
+    private fun addActorsToStage(){
+        val background = Background(manager)
+        val title = MainTitle(manager)
+        val soundIcon = SoundIcon(manager)
+        val vibrationIcon = VibrationIcon(manager, soundIcon)
+        val playButton = PlayButton(manager)
+
+        stage.addActor(background)
+        stage.addActor(title)
+        stage.addActor(soundIcon)
+        stage.addActor(vibrationIcon)
+        stage.addActor(playButton)
     }
 
     override fun pause() {
@@ -69,5 +65,6 @@ class StartScreen : Screen {
     }
 
     override fun dispose() {
+        stage.dispose()
     }
 }

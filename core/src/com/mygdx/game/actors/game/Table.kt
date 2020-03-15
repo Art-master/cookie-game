@@ -1,22 +1,28 @@
-package com.mygdx.game.actors
+package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.impl.Scrollable
+import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.impl.Scrolled
 
-class Background(manager : AssetManager) : Actor(), Scrollable{
+class Table(manager : AssetManager, yWorktop: Float) : Actor(), Scrollable {
+    private val texture = manager.get(Descriptors.environment)
+    private val region = texture.findRegion(Assets.EnvironmentAtlas.TABLE)
 
-    private val texture = manager.get(Descriptors.background)
+    val worktopY = yWorktop
 
     private var scrollerBack = Scrolled(0f, 0f,
-            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1.value)
+            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2.value)
 
     private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
-            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1.value)
+            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2.value)
+    init {
 
+    }
 
     override fun act(delta: Float) {
         super.act(delta)
@@ -32,26 +38,27 @@ class Background(manager : AssetManager) : Actor(), Scrollable{
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch!!.color = color
-        batch.draw(texture,
+        batch!!.color = Color.WHITE
+        batch.draw(region,
                 scrollerBack.getX(),
                 scrollerBack.getY(),
                 scrollerBack.width.toFloat(),
                 scrollerBack.height.toFloat())
 
-        batch.draw(texture,
+        batch.draw(region,
                 scrollerFront.getX(),
                 scrollerFront.getY(),
                 scrollerFront.width.toFloat(),
                 scrollerFront.height.toFloat())
-
     }
+
     override fun stopMove() {
         scrollerBack.isStopMove = true
         scrollerFront.isStopMove = true
     }
 
     override fun runMove() {
+        scrollerBack.isStopMove = false
         scrollerFront.isStopMove = false
     }
 }
