@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.actors.main_menu_screen.*
@@ -53,6 +56,21 @@ class StartScreen : Screen {
         stage.addActor(soundIcon)
         stage.addActor(vibrationIcon)
         stage.addActor(playButton)
+        addClickListener(playButton) {
+            playButton.move()
+            title.move()
+            soundIcon.move()
+            vibrationIcon.move()
+        }
+    }
+
+    private fun addClickListener(actor: Actor, function: () -> Unit){
+        actor.addListener(object: ClickListener(){
+            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                function()
+                return super.touchDown(event, x, y, pointer, button)
+            }
+        })
     }
 
     override fun pause() {

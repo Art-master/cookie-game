@@ -9,10 +9,12 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Prefs
 
 
-class SoundIcon(manager : AssetManager) : Actor() {
+class SoundIcon(manager : AssetManager) : Actor(), Movable {
     private var prefs = Gdx.app.getPreferences(Prefs.NAME)
 
     private val texture = manager.get(Descriptors.menu)
@@ -66,5 +68,11 @@ class SoundIcon(manager : AssetManager) : Actor() {
         val iconWidth = soundIcon.originalWidth.toFloat()
         val iconHeight = soundIcon.originalHeight.toFloat()
         batch.draw(soundIcon, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
+    }
+
+    override fun move() {
+        val animDuration = 0.5f
+        val moveToOutside = Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+        addAction(moveToOutside)
     }
 }

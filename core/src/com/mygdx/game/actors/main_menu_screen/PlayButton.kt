@@ -1,5 +1,6 @@
 package com.mygdx.game.actors.main_menu_screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
@@ -14,7 +15,7 @@ import com.mygdx.game.Config
 import com.mygdx.game.ScreenEnum
 import com.mygdx.game.ScreenManager
 
-class PlayButton(manager : AssetManager) : Actor() {
+class PlayButton(manager : AssetManager) : Actor(), Movable {
 
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
@@ -29,17 +30,7 @@ class PlayButton(manager : AssetManager) : Actor() {
         height = region.originalHeight.toFloat()
         x = (Config.widthGame / 2) - width / 2
         y = (Config.heightGame / 6)
-        addClickListener()
         addPlayIconAnimationPulse()
-    }
-
-    private fun addClickListener(){
-        addListener(object: ClickListener(){
-            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                ScreenManager.setScreen(ScreenEnum.GAME)
-                return super.touchDown(event, x, y, pointer, button)
-            }
-        })
     }
 
     private fun addPlayIconAnimationPulse(){
@@ -72,5 +63,19 @@ class PlayButton(manager : AssetManager) : Actor() {
         val y = centerY - (iconHeight / 2)
 
         batch.draw(playIcon, x, y, x, y, iconWidth, iconHeight, scaleX, scaleY, 0f)
+    }
+
+    override fun move() {
+        addPlayIconAnimationMove()
+    }
+
+    private fun addPlayIconAnimationMove(){
+        val animDuration = 1f
+        val delayAfter = 0.5f
+        val moveToOutside = moveTo(Gdx.graphics.width.toFloat(), y, animDuration, Interpolation.exp10)
+        val action = run(Runnable {
+            ScreenManager.setScreen(ScreenEnum.GAME)
+        })
+        addAction(sequence(moveToOutside, delay(delayAfter), action))
     }
 }

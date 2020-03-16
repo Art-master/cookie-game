@@ -9,8 +9,7 @@ import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.mygdx.game.Config
 
-class Background(manager : AssetManager) : Actor() {
-
+class Background(manager : AssetManager) : Actor(), Movable {
     private val backgroundTexture = manager.get(Descriptors.background)
     private val textureOther = manager.get(Descriptors.environment)
     private val textureMenu = manager.get(Descriptors.menu)
@@ -48,4 +47,7 @@ class Background(manager : AssetManager) : Actor() {
         batch.draw(blurRegion, 0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
     }
 
+    override fun move() {
+
+    }
 }
