@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Prefs
+import com.mygdx.game.actors.Movable
 
 
 class SoundIcon(manager : AssetManager) : Actor(), Movable {

@@ -1,4 +1,4 @@
-package com.mygdx.game.actors.main_menu_screen
+package com.mygdx.game.actors.game_over_screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
@@ -14,15 +14,14 @@ import com.mygdx.game.actors.Movable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
-class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Movable {
+class RestartIcon(manager : AssetManager) : Actor(), Movable {
 
     private var prefs = Gdx.app.getPreferences(Prefs.NAME)
 
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
-    private val vibrationOnRegion = texture.findRegion(Assets.MainMenuAtlas.VIBR_ON)
-    private val vibrationOffRegion = texture.findRegion(Assets.MainMenuAtlas.VIBR_OFF)
-    private var vibrationIcon = vibrationOnRegion
+    private val replayButton = texture.findRegion(Assets.MainMenuAtlas.REPLAY_BUTTON)
+    private val buttonPlay = texture.findRegion(Assets.MainMenuAtlas.BUTTON_PLAY)
 
     private var vibrationSettings = prefs.getBoolean(Prefs.VIBRATION, true)
 
@@ -30,30 +29,24 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Movable {
     private var centerY = 0f
 
     init {
-        val soundPosX = sound.x + sound.width
-        x = soundPosX + 100f
-        y = sound.y
-        width = region.originalWidth/3f
-        height = region.originalHeight/3f
+        x = 100f
+        y = 100f
+        scaleX = 0.5f
+        scaleY = 0.5f
+        width = region.originalWidth.toFloat()
+        height = region.originalHeight.toFloat()
 
         addClickListener()
-        changeVibrationIcon()
     }
 
     private fun addClickListener(){
         addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 vibrationSettings = vibrationSettings.not()
-                prefs.putBoolean(Prefs.VIBRATION, vibrationSettings)
                 prefs.flush()
-                changeVibrationIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }
         })
-    }
-
-    private fun changeVibrationIcon() {
-        vibrationIcon = if(vibrationSettings) vibrationOnRegion else vibrationOffRegion
     }
 
     override fun act(delta: Float) {
@@ -67,9 +60,24 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Movable {
         batch!!.color = Color.WHITE
         batch.draw(region, x, y, width, height)
 
-        val iconWidth = vibrationIcon.originalWidth.toFloat()
-        val iconHeight = vibrationIcon.originalHeight.toFloat()
-        batch.draw(vibrationIcon, centerX - (iconWidth / 2), centerY - (iconHeight/2), iconWidth, iconHeight)
+        drawReplayIcon(batch)
+        drawPlayIcon(batch)
+
+    }
+
+    private fun drawReplayIcon(batch: Batch){
+        val iconWidth = replayButton.originalWidth.toFloat()
+        val iconHeight = replayButton.originalHeight.toFloat()
+        batch.draw(replayButton, centerX - (iconWidth / 2), centerY - (iconHeight/2), iconWidth, iconHeight)
+    }
+
+    private fun drawPlayIcon(batch: Batch){
+        val iconWidth = buttonPlay.originalWidth.toFloat()
+        val iconHeight = buttonPlay.originalHeight.toFloat()
+        val x = centerX - (iconWidth / 2)
+        val y = centerY - (iconHeight / 2)
+
+        batch.draw(buttonPlay, x, y, x, y, iconWidth, iconHeight, 0.3f, 0.3f, 0f)
     }
 
     override fun move() {

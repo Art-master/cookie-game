@@ -1,4 +1,4 @@
-package com.mygdx.game.actors.main_menu_screen
+package com.mygdx.game.actors.game_over_screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
@@ -12,9 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Config
 import com.mygdx.game.actors.Movable
 
-class MainTitle(manager : AssetManager) : Actor(), Movable {
+class GameOverTitle(manager : AssetManager) : Actor(), Movable {
     private val texture = manager.get(Descriptors.menu)
-    private val region = texture.findRegion(Assets.MainMenuAtlas.TITLE)
+    private val region = texture.findRegion(Assets.MainMenuAtlas.GAME_OVER_TEXT)
 
     private var centerX = 0f
     private var centerY = 0f

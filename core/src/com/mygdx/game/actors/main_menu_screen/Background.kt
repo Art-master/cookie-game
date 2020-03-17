@@ -8,10 +8,11 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.mygdx.game.Config
+import com.mygdx.game.actors.Movable
 
 class Background(manager : AssetManager) : Actor(), Movable {
     private val backgroundTexture = manager.get(Descriptors.background)
-    private val textureOther = manager.get(Descriptors.environment)
+    //private val textureOther = manager.get(Descriptors.environment)
     private val textureMenu = manager.get(Descriptors.menu)
     private val blurRegion = textureMenu.findRegion(Assets.MainMenuAtlas.BLUR)
 
@@ -40,11 +41,13 @@ class Background(manager : AssetManager) : Actor(), Movable {
     }
 
     private fun drawBackground(batch: Batch){
-        batch.draw(backgroundTexture, 0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        batch.draw(backgroundTexture, 0f, 0f, Gdx.graphics.width.toFloat(),
+                Gdx.graphics.height.toFloat())
     }
 
     private fun drawBlur(batch: Batch){
-        batch.draw(blurRegion, 0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        batch.draw(blurRegion, 0f, 0f, Gdx.graphics.width.toFloat(),
+                Gdx.graphics.height.toFloat())
     }
 
     override fun move() {
