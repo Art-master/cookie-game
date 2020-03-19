@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.Prefs
 import com.mygdx.game.actors.Movable
@@ -21,7 +22,7 @@ class RestartIcon(manager : AssetManager) : Actor(), Movable {
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
     private val replayButton = texture.findRegion(Assets.MainMenuAtlas.REPLAY_BUTTON)
-    private val buttonPlay = texture.findRegion(Assets.MainMenuAtlas.BUTTON_PLAY)
+    private val buttonPlay = texture.findRegion(Assets.MainMenuAtlas.BUTTON_PLAY_MINI)
 
     private var vibrationSettings = prefs.getBoolean(Prefs.VIBRATION, true)
 
@@ -35,8 +36,16 @@ class RestartIcon(manager : AssetManager) : Actor(), Movable {
         scaleY = 0.5f
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
-
+        setOrigin(replayButton.originalWidth/2f, (replayButton.originalHeight-18)/2f )
         addClickListener()
+        addRotateAnimation()
+    }
+
+    private  fun addRotateAnimation(){
+        addAction(Actions.parallel(Actions.repeat(RepeatAction.FOREVER,
+                Actions.sequence(
+                        Actions.rotateBy(-360f, 10f),
+                        Actions.rotateTo(0f)))))
     }
 
     private fun addClickListener(){
@@ -68,16 +77,19 @@ class RestartIcon(manager : AssetManager) : Actor(), Movable {
     private fun drawReplayIcon(batch: Batch){
         val iconWidth = replayButton.originalWidth.toFloat()
         val iconHeight = replayButton.originalHeight.toFloat()
-        batch.draw(replayButton, centerX - (iconWidth / 2), centerY - (iconHeight/2), iconWidth, iconHeight)
+        val x = centerX - (iconWidth / 2)
+        val y = centerY - (iconHeight / 2)
+
+        batch.draw(replayButton, x, y, originX, originY, iconWidth, iconHeight,1f,1f, rotation)
     }
 
     private fun drawPlayIcon(batch: Batch){
         val iconWidth = buttonPlay.originalWidth.toFloat()
         val iconHeight = buttonPlay.originalHeight.toFloat()
-        val x = centerX - (iconWidth / 2)
-        val y = centerY - (iconHeight / 2)
+        val x = centerX - ((iconWidth / 2) - 9)
+        val y = centerY - ((iconHeight / 2) + 9)
 
-        batch.draw(buttonPlay, x, y, x, y, iconWidth, iconHeight, 0.3f, 0.3f, 0f)
+        batch.draw(buttonPlay, x, y, iconWidth, iconHeight)
     }
 
     override fun move() {

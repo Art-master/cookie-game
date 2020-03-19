@@ -20,8 +20,8 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Movable {
 
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
-    private val vibrationOnRegion = texture.findRegion(Assets.MainMenuAtlas.VIBR_ON)
-    private val vibrationOffRegion = texture.findRegion(Assets.MainMenuAtlas.VIBR_OFF)
+    private val vibrationOnRegion = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_ON)
+    private val vibrationOffRegion = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_OFF)
     private var vibrationIcon = vibrationOnRegion
 
     private var vibrationSettings = prefs.getBoolean(Prefs.VIBRATION, true)
