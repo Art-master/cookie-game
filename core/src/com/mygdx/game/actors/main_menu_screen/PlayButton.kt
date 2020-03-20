@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.mygdx.game.Config
-import com.mygdx.game.ScreenEnum
 import com.mygdx.game.ScreenManager
 import com.mygdx.game.actors.Movable
+import com.mygdx.game.screens.GameScreen
 
 class PlayButton(manager : AssetManager) : Actor(), Movable {
 
@@ -73,7 +73,7 @@ class PlayButton(manager : AssetManager) : Actor(), Movable {
         val delayAfter = 0.5f
         val moveToOutside = moveTo(Gdx.graphics.width.toFloat(), y, animDuration, Interpolation.exp10)
         val action = run(Runnable {
-            ScreenManager.setScreen(ScreenEnum.GAME)
+            ScreenManager.setScreen(GameScreen())
         })
         addAction(sequence(moveToOutside, delay(delayAfter), action))
     }

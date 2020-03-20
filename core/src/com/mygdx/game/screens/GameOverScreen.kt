@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.actors.game_over_screen.GameOverTitle
+import com.mygdx.game.actors.game_over_screen.MainMenuIcon
 import com.mygdx.game.actors.game_over_screen.RestartIcon
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.data.Descriptors
@@ -49,10 +50,12 @@ class GameOverScreen : Screen {
         val background = Background(manager)
         val title = GameOverTitle(manager)
         val restartIcon = RestartIcon(manager)
+        val mainMenuIcon = MainMenuIcon(manager)
 
         stage.addActor(background)
         stage.addActor(title)
         stage.addActor(restartIcon)
+        stage.addActor(mainMenuIcon)
         addClickListener(restartIcon) {
             title.move()
         }

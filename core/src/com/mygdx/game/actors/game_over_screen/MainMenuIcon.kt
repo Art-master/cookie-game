@@ -15,14 +15,14 @@ import com.mygdx.game.actors.Movable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
-class RestartIcon(manager : AssetManager) : Actor(), Movable {
+class MainMenuIcon(manager : AssetManager) : Actor(), Movable {
 
     private var prefs = Gdx.app.getPreferences(Prefs.NAME)
 
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
-    private val replayButton = texture.findRegion(Assets.MainMenuAtlas.REPLAY_BUTTON)
-    private val buttonPlay = texture.findRegion(Assets.MainMenuAtlas.BUTTON_PLAY_MINI)
+    private val replayButton = texture.findRegion(Assets.MainMenuAtlas.CIRCLE)
+    private val buttonPlay = texture.findRegion(Assets.MainMenuAtlas.MAIN_MENU_BUTTON)
 
     private var vibrationSettings = prefs.getBoolean(Prefs.VIBRATION, true)
 
@@ -30,20 +30,23 @@ class RestartIcon(manager : AssetManager) : Actor(), Movable {
     private var centerY = 0f
 
     init {
-        x = 200f
+        x = 1200f
         y = 100f
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
         setOrigin(replayButton.originalWidth/2f, replayButton.originalHeight/2f )
         addClickListener()
-        addRotateAnimation()
+        addPlayIconAnimationPulse()
     }
 
-    private  fun addRotateAnimation(){
-        addAction(Actions.parallel(Actions.repeat(RepeatAction.FOREVER,
-                Actions.sequence(
-                        Actions.rotateBy(-360f, 10f),
-                        Actions.rotateTo(0f)))))
+    private fun addPlayIconAnimationPulse(){
+        val animDuration = 0.05f
+        val scaleAnim1 = Actions.scaleTo(1.03f, 1.03f, animDuration, Interpolation.smooth)
+        val scaleAnim2 = Actions.scaleTo(1f, 1f, animDuration, Interpolation.smooth)
+        val scaleAnim3 = Actions.scaleTo(1.03f, 1.03f, animDuration, Interpolation.smooth)
+        val scaleAnim4 = Actions.scaleTo(1f, 1f, animDuration, Interpolation.smooth)
+        addAction(Actions.repeat(100, Actions.sequence(scaleAnim1, scaleAnim2, Actions.delay(animDuration),
+                scaleAnim3, scaleAnim4, Actions.delay(3f))))
     }
 
     private fun addClickListener(){
@@ -87,7 +90,7 @@ class RestartIcon(manager : AssetManager) : Actor(), Movable {
         val x = centerX - (iconWidth / 2)
         val y = centerY - (iconHeight / 2)
 
-        batch.draw(buttonPlay, x, y, iconWidth, iconHeight)
+        batch.draw(buttonPlay, x, y, originX, originY, iconWidth, iconHeight, scaleX, scaleY, 0f)
     }
 
     override fun move() {
