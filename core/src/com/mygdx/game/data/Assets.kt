@@ -68,6 +68,7 @@ class Assets {
             const val MAIN_MENU_BUTTON = "mainMenuButton"
             const val REPLAY_BUTTON = "replayButton"
             const val TITLE = "title"
+            const val BLACK_SQUARE = "blackSquare"
         }
     }
 

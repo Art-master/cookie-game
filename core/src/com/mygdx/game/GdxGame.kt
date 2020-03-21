@@ -1,13 +1,13 @@
 package com.mygdx.game
 
 import com.badlogic.gdx.Game
-import com.mygdx.game.screens.GameOverScreen
+import com.mygdx.game.ScreenManager.Screens.*
 
 class GdxGame : Game() {
 
     override fun create() {
         ScreenManager.game = this
-        ScreenManager.setScreen(GameOverScreen())
+        ScreenManager.setScreen(GAME_OVER)
     }
 
     override fun render() {

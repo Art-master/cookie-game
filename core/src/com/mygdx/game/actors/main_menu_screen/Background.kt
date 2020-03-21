@@ -8,9 +8,9 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.mygdx.game.Config
-import com.mygdx.game.actors.Movable
+import com.mygdx.game.actors.Animated
 
-class Background(manager : AssetManager) : Actor(), Movable {
+class Background(manager : AssetManager) : Actor(), Animated {
     private val backgroundTexture = manager.get(Descriptors.background)
     //private val textureOther = manager.get(Descriptors.environment)
     private val textureMenu = manager.get(Descriptors.menu)
@@ -23,8 +23,8 @@ class Background(manager : AssetManager) : Actor(), Movable {
     init {
         width = blurRegion.originalWidth.toFloat()
         height = blurRegion.originalHeight.toFloat()
-        x = (Config.widthGame / 2) - width / 2
-        y = (Config.heightGame - height - 50)
+        x = (Config.WIDTH_GAME / 2) - width / 2
+        y = (Config.HEIGHT_GAME - height - 50)
     }
 
     override fun act(delta: Float) {
@@ -50,7 +50,7 @@ class Background(manager : AssetManager) : Actor(), Movable {
                 Gdx.graphics.height.toFloat())
     }
 
-    override fun move() {
+    override fun animate(isRevert: Boolean, runAfter: Runnable) {
 
     }
 }

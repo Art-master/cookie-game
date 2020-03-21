@@ -6,36 +6,29 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.mygdx.game.Prefs
-import com.mygdx.game.actors.Movable
+import com.mygdx.game.Config
+import com.mygdx.game.actors.Animated
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
-class RestartIcon(manager : AssetManager) : Actor(), Movable {
-
-    private var prefs = Gdx.app.getPreferences(Prefs.NAME)
+class RestartIcon(manager : AssetManager) : Actor(), Animated {
 
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
     private val replayButton = texture.findRegion(Assets.MainMenuAtlas.REPLAY_BUTTON)
     private val buttonPlay = texture.findRegion(Assets.MainMenuAtlas.BUTTON_PLAY_MINI)
 
-    private var vibrationSettings = prefs.getBoolean(Prefs.VIBRATION, true)
-
     private var centerX = 0f
     private var centerY = 0f
 
     init {
         x = 200f
-        y = 100f
+        y = -Gdx.graphics.height.toFloat()
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
         setOrigin(replayButton.originalWidth/2f, replayButton.originalHeight/2f )
-        addClickListener()
         addRotateAnimation()
     }
 
@@ -44,16 +37,6 @@ class RestartIcon(manager : AssetManager) : Actor(), Movable {
                 Actions.sequence(
                         Actions.rotateBy(-360f, 10f),
                         Actions.rotateTo(0f)))))
-    }
-
-    private fun addClickListener(){
-        addListener(object: ClickListener(){
-            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                vibrationSettings = vibrationSettings.not()
-                prefs.flush()
-                return super.touchDown(event, x, y, pointer, button)
-            }
-        })
     }
 
     override fun act(delta: Float) {
@@ -90,9 +73,16 @@ class RestartIcon(manager : AssetManager) : Actor(), Movable {
         batch.draw(buttonPlay, x, y, iconWidth, iconHeight)
     }
 
-    override fun move() {
-        val animDuration = 0.5f
-        val moveToOutside = Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
-        addAction(moveToOutside)
+    override fun animate(isRevert:Boolean, runAfter: Runnable) {
+        val animDuration = Config.SHADOW_ANIMATION_TIME
+        val move = if(isRevert){
+            Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+        }else{
+            val y = 100f
+            Actions.moveTo(x, y, animDuration)
+        }
+        val run = Actions.run(runAfter)
+        val sequence = Actions.sequence(move, run)
+        addAction(sequence)
     }
 }

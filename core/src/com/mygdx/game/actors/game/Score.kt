@@ -31,7 +31,7 @@ class Score(manager : AssetManager) : Actor() {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        val fontX = Config.widthGame - (symbol * scoreNum.toString().length) - paddingX
+        val fontX = Config.WIDTH_GAME - (symbol * scoreNum.toString().length) - paddingX
         score.draw(batch, scoreNum.toString(), fontX, fontY)
     }
 }

@@ -15,7 +15,7 @@ import com.mygdx.game.data.Descriptors
 
 class StartScreen : Screen {
     private val manager = AssetManager()
-    private val camera = OrthographicCamera(Config.widthGame, Config.heightGame)
+    private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
     init {
@@ -57,10 +57,10 @@ class StartScreen : Screen {
         stage.addActor(vibrationIcon)
         stage.addActor(playButton)
         addClickListener(playButton) {
-            playButton.move()
-            title.move()
-            soundIcon.move()
-            vibrationIcon.move()
+            playButton.animate()
+            title.animate()
+            soundIcon.animate()
+            vibrationIcon.animate()
         }
     }
 

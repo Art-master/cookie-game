@@ -61,7 +61,7 @@ class Cupboard(manager : AssetManager, private val window : Window) : Actor(), S
         var position: Float
         do{
             position = windowX2 + leftDoorRegion.originalWidth + randPositionX.nextInt(600)
-        } while (position < (Config.widthGame + leftDoorRegion.originalWidth))
+        } while (position < (Config.WIDTH_GAME + leftDoorRegion.originalWidth))
         return position
     }
 

@@ -11,10 +11,10 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.mygdx.game.Config
 import com.mygdx.game.ScreenManager
-import com.mygdx.game.actors.Movable
-import com.mygdx.game.screens.GameScreen
+import com.mygdx.game.ScreenManager.Screens.*
+import com.mygdx.game.actors.Animated
 
-class PlayButton(manager : AssetManager) : Actor(), Movable {
+class PlayButton(manager : AssetManager) : Actor(), Animated {
 
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
@@ -27,8 +27,8 @@ class PlayButton(manager : AssetManager) : Actor(), Movable {
     init {
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
-        x = (Config.widthGame / 2) - width / 2
-        y = (Config.heightGame / 6)
+        x = (Config.WIDTH_GAME / 2) - width / 2
+        y = (Config.HEIGHT_GAME / 6)
         addPlayIconAnimationPulse()
     }
 
@@ -64,7 +64,7 @@ class PlayButton(manager : AssetManager) : Actor(), Movable {
         batch.draw(playIcon, x, y, x, y, iconWidth, iconHeight, scaleX, scaleY, 0f)
     }
 
-    override fun move() {
+    override fun animate(isRevert: Boolean, runAfter: Runnable) {
         addPlayIconAnimationMove()
     }
 
@@ -73,7 +73,7 @@ class PlayButton(manager : AssetManager) : Actor(), Movable {
         val delayAfter = 0.5f
         val moveToOutside = moveTo(Gdx.graphics.width.toFloat(), y, animDuration, Interpolation.exp10)
         val action = run(Runnable {
-            ScreenManager.setScreen(GameScreen())
+            ScreenManager.setScreen(GAME_SCREEN)
         })
         addAction(sequence(moveToOutside, delay(delayAfter), action))
     }

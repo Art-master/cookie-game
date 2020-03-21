@@ -10,15 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
+import com.mygdx.game.ScreenManager
+import com.mygdx.game.ScreenManager.Screens.*
 import com.mygdx.game.actors.game_over_screen.GameOverTitle
 import com.mygdx.game.actors.game_over_screen.MainMenuIcon
 import com.mygdx.game.actors.game_over_screen.RestartIcon
+import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.data.Descriptors
 
 class GameOverScreen : Screen {
     private val manager = AssetManager()
-    private val camera = OrthographicCamera(Config.widthGame, Config.heightGame)
+    private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
     init {
@@ -51,13 +54,30 @@ class GameOverScreen : Screen {
         val title = GameOverTitle(manager)
         val restartIcon = RestartIcon(manager)
         val mainMenuIcon = MainMenuIcon(manager)
+        val shadow = Shadow(manager)
 
         stage.addActor(background)
         stage.addActor(title)
+        title.animate()
         stage.addActor(restartIcon)
+        restartIcon.animate()
         stage.addActor(mainMenuIcon)
+        mainMenuIcon.animate()
+        stage.addActor(shadow)
+        shadow.animate()
+
         addClickListener(restartIcon) {
-            title.move()
+            title.animate(true)
+            restartIcon.animate(true)
+            mainMenuIcon.animate(true, Runnable { ScreenManager.setScreen(GAME_SCREEN)})
+            shadow.animate(true)
+        }
+
+        addClickListener(mainMenuIcon) {
+            title.animate(true)
+            restartIcon.animate(true, Runnable { ScreenManager.setScreen(START_SCREEN)})
+            mainMenuIcon.animate(true)
+            shadow.animate(true)
         }
     }
 

@@ -8,14 +8,14 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.mygdx.game.Config
 import com.mygdx.game.Prefs
-import com.mygdx.game.actors.Movable
+import com.mygdx.game.actors.Animated
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
-class MainMenuIcon(manager : AssetManager) : Actor(), Movable {
+class MainMenuIcon(manager : AssetManager) : Actor(), Animated {
 
     private var prefs = Gdx.app.getPreferences(Prefs.NAME)
 
@@ -31,7 +31,7 @@ class MainMenuIcon(manager : AssetManager) : Actor(), Movable {
 
     init {
         x = 1200f
-        y = 100f
+        y = -Gdx.graphics.height.toFloat()
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
         setOrigin(replayButton.originalWidth/2f, replayButton.originalHeight/2f )
@@ -93,9 +93,14 @@ class MainMenuIcon(manager : AssetManager) : Actor(), Movable {
         batch.draw(buttonPlay, x, y, originX, originY, iconWidth, iconHeight, scaleX, scaleY, 0f)
     }
 
-    override fun move() {
-        val animDuration = 0.5f
-        val moveToOutside = Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+    override fun animate(isRevert: Boolean, runAfter: Runnable) {
+        val animDuration = Config.SHADOW_ANIMATION_TIME
+        val moveToOutside = if(isRevert){
+            Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+        }else{
+            val y = 100f
+            Actions.moveTo(x, y, animDuration)
+        }
         addAction(moveToOutside)
     }
 }
