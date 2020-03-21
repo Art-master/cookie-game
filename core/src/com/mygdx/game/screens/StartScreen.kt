@@ -10,8 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
+import com.mygdx.game.ScreenManager
+import com.mygdx.game.ScreenManager.Screens.*
+import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.data.Descriptors
+import kotlin.contracts.contract
 
 class StartScreen : Screen {
     private val manager = AssetManager()
@@ -50,17 +54,26 @@ class StartScreen : Screen {
         val soundIcon = SoundIcon(manager)
         val vibrationIcon = VibrationIcon(manager, soundIcon)
         val playButton = PlayButton(manager)
+        val shadow = Shadow(manager)
 
         stage.addActor(background)
         stage.addActor(title)
+        title.animate()
         stage.addActor(soundIcon)
+        soundIcon.animate()
         stage.addActor(vibrationIcon)
+        vibrationIcon.animate()
         stage.addActor(playButton)
+        playButton.animate()
+        stage.addActor(shadow)
+        shadow.animate()
+
         addClickListener(playButton) {
-            playButton.animate()
-            title.animate()
-            soundIcon.animate()
-            vibrationIcon.animate()
+            playButton.animate(true)
+            title.animate(true)
+            soundIcon.animate(true)
+            vibrationIcon.animate(true)
+            shadow.animate(true, Runnable {ScreenManager.setScreen(GAME_SCREEN) })
         }
     }
 

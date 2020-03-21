@@ -28,9 +28,9 @@ class GameOverTitle(manager : AssetManager) : Actor(), Animated {
         batch.draw(region, x, y, width, height)
     }
 
-    override fun animate(isRevert: Boolean, runAfter: Runnable) {
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
         val animDuration = 0.5f
-        val moveToOutside = if(isRevert){
+        val moveToOutside = if(isReverse){
              Actions.moveTo(x, Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
         }else{
             val posY = Config.HEIGHT_GAME - height - 50

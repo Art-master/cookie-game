@@ -93,9 +93,9 @@ class MainMenuIcon(manager : AssetManager) : Actor(), Animated {
         batch.draw(buttonPlay, x, y, originX, originY, iconWidth, iconHeight, scaleX, scaleY, 0f)
     }
 
-    override fun animate(isRevert: Boolean, runAfter: Runnable) {
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
         val animDuration = Config.SHADOW_ANIMATION_TIME
-        val moveToOutside = if(isRevert){
+        val moveToOutside = if(isReverse){
             Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
         }else{
             val y = 100f

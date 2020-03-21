@@ -34,9 +34,9 @@ class Shadow(manager : AssetManager) : Actor(), Animated {
         batch.setColor(color.r, color.g, color.b, 1f)
     }
 
-    override fun animate(isRevert: Boolean, runAfter: Runnable) {
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
         val animDuration = SHADOW_ANIMATION_TIME
-        val moveToOutside = if(isRevert){
+        val moveToOutside = if(isReverse){
             Actions.alpha(1f, animDuration)
         }else{
             val color = color

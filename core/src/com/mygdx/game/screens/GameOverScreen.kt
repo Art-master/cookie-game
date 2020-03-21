@@ -69,15 +69,15 @@ class GameOverScreen : Screen {
         addClickListener(restartIcon) {
             title.animate(true)
             restartIcon.animate(true)
-            mainMenuIcon.animate(true, Runnable { ScreenManager.setScreen(GAME_SCREEN)})
-            shadow.animate(true)
+            mainMenuIcon.animate(true)
+            shadow.animate(true, Runnable { ScreenManager.setScreen(GAME_SCREEN)})
         }
 
         addClickListener(mainMenuIcon) {
             title.animate(true)
-            restartIcon.animate(true, Runnable { ScreenManager.setScreen(START_SCREEN)})
+            restartIcon.animate(true)
             mainMenuIcon.animate(true)
-            shadow.animate(true)
+            shadow.animate(true, Runnable { ScreenManager.setScreen(START_SCREEN)})
         }
     }
 

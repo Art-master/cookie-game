@@ -6,14 +6,17 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.impl.Physical
 import java.util.*
 
-class Hand(manager : AssetManager) : Actor() {
+class Hand(manager : AssetManager) : Actor(), Physical {
+
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
     private val handRegions = texture.findRegions(Assets.EnvironmentAtlas.HAND)
@@ -30,6 +33,8 @@ class Hand(manager : AssetManager) : Actor() {
     init {
         this.x = initPosition.x
         this.y = initPosition.y
+        width = handRegion.originalWidth.toFloat()
+        height = handRegion.originalHeight.toFloat()
         setMoveAction()
     }
 
@@ -68,5 +73,9 @@ class Hand(manager : AssetManager) : Actor() {
 
         batch!!.draw(currentFrame, x, y,
                 currentFrame.regionWidth.toFloat(), currentFrame.regionHeight.toFloat())
+    }
+
+    override fun getBoundsRect(): Rectangle {
+        return Rectangle(x, y, width, height)
     }
 }

@@ -73,9 +73,9 @@ class RestartIcon(manager : AssetManager) : Actor(), Animated {
         batch.draw(buttonPlay, x, y, iconWidth, iconHeight)
     }
 
-    override fun animate(isRevert:Boolean, runAfter: Runnable) {
+    override fun animate(isReverse:Boolean, runAfter: Runnable) {
         val animDuration = Config.SHADOW_ANIMATION_TIME
-        val move = if(isRevert){
+        val move = if(isReverse){
             Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
         }else{
             val y = 100f

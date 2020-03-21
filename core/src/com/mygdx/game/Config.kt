@@ -7,6 +7,7 @@ object Config {
     const val WIDTH_GAME = 1920f
     const val HEIGHT_GAME = 1080f
     const val SHADOW_ANIMATION_TIME = 1f
+    const val BUTTONS_ANIMATION_TIME = 1f
 
     private val heightDevise = Gdx.graphics.height.toFloat()
     private val widthDevise = Gdx.graphics.width.toFloat()

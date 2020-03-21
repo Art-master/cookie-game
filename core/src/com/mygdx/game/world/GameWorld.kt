@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.mygdx.game.ScreenManager
+import com.mygdx.game.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
 import com.mygdx.game.impl.Callback
 import com.mygdx.game.impl.Scrollable
@@ -95,6 +97,13 @@ class GameWorld(private val manager : AssetManager) {
     }
     fun update(delta: Float){
         stage.act(delta)
+        checkContactCookieAndHand()
+    }
+
+    private fun checkContactCookieAndHand(){
+        if(cookie.collides(hand)){
+            ScreenManager.setScreen(GAME_OVER)
+        }
     }
 
 }

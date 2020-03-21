@@ -29,6 +29,8 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
         height = region.originalHeight.toFloat()
         x = (Config.WIDTH_GAME / 2) - width / 2
         y = (Config.HEIGHT_GAME / 6)
+        scaleX = 0.1f
+        scaleY = 0.1f
         addPlayIconAnimationPulse()
     }
 
@@ -51,7 +53,7 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
-        batch.draw(region, x, y, width, height)
+        batch.draw(region, x, y, x, y, width, height, scaleX, scaleY, 0f)
         drawPlayIcon(batch)
     }
 
@@ -64,17 +66,13 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
         batch.draw(playIcon, x, y, x, y, iconWidth, iconHeight, scaleX, scaleY, 0f)
     }
 
-    override fun animate(isRevert: Boolean, runAfter: Runnable) {
-        addPlayIconAnimationMove()
-    }
-
-    private fun addPlayIconAnimationMove(){
-        val animDuration = 1f
-        val delayAfter = 0.5f
-        val moveToOutside = moveTo(Gdx.graphics.width.toFloat(), y, animDuration, Interpolation.exp10)
-        val action = run(Runnable {
-            ScreenManager.setScreen(GAME_SCREEN)
-        })
-        addAction(sequence(moveToOutside, delay(delayAfter), action))
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+        val animDuration = Config.BUTTONS_ANIMATION_TIME
+        val moveToOutside = if(isReverse){
+            moveTo(Gdx.graphics.width.toFloat(), y, animDuration, Interpolation.exp10)
+        }else{
+            scaleTo(1f, 1f, animDuration / 2)
+        }
+        addAction(moveToOutside)
     }
 }

@@ -50,7 +50,7 @@ class Background(manager : AssetManager) : Actor(), Animated {
                 Gdx.graphics.height.toFloat())
     }
 
-    override fun animate(isRevert: Boolean, runAfter: Runnable) {
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
 
     }
 }

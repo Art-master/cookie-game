@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.mygdx.game.Config
 import com.mygdx.game.Prefs
 import com.mygdx.game.actors.Animated
 import com.mygdx.game.data.Assets
@@ -72,9 +73,14 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Animated {
         batch.draw(vibrationIcon, centerX - (iconWidth / 2), centerY - (iconHeight/2), iconWidth, iconHeight)
     }
 
-    override fun animate(isRevert: Boolean, runAfter: Runnable) {
-        val animDuration = 0.5f
-        val moveToOutside = Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+        val animDuration = Config.BUTTONS_ANIMATION_TIME / 2
+        val moveToOutside = if(isReverse){
+            Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+        }else{
+            val y = 50f
+            Actions.moveTo(x, y, animDuration)
+        }
         addAction(moveToOutside)
     }
 }

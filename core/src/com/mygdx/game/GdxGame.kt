@@ -7,7 +7,7 @@ class GdxGame : Game() {
 
     override fun create() {
         ScreenManager.game = this
-        ScreenManager.setScreen(GAME_OVER)
+        ScreenManager.setScreen(START_SCREEN)
     }
 
     override fun render() {
