@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.mygdx.game.Config.SHADOW_ANIMATION_TIME
+import com.mygdx.game.Config.SHADOW_ANIMATION_TIME_S
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
@@ -35,7 +35,7 @@ class Shadow(manager : AssetManager) : Actor(), Animated {
     }
 
     override fun animate(isReverse: Boolean, runAfter: Runnable) {
-        val animDuration = SHADOW_ANIMATION_TIME
+        val animDuration = SHADOW_ANIMATION_TIME_S
         val moveToOutside = if(isReverse){
             Actions.alpha(1f, animDuration)
         }else{

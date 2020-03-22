@@ -1,7 +1,8 @@
 package com.mygdx.game
 
 import com.badlogic.gdx.Game
-import com.mygdx.game.ScreenManager.Screens.*
+import com.mygdx.game.managers.ScreenManager
+import com.mygdx.game.managers.ScreenManager.Screens.*
 
 class GdxGame : Game() {
 

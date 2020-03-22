@@ -8,7 +8,6 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.mygdx.game.Config
 import com.mygdx.game.actors.Animated
@@ -41,7 +40,7 @@ class MainTitle(manager : AssetManager) : Actor(), Animated {
     }
 
     override fun animate(isReverse: Boolean, runAfter: Runnable) {
-        val animDuration = Config.BUTTONS_ANIMATION_TIME / 2
+        val animDuration = Config.BUTTONS_ANIMATION_TIME_S / 2
         val moveToOutside = if(isReverse){
             moveTo(x, Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
         }else{

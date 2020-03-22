@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.GL20
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.world.GameWorld
 
 class GameScreen : Screen {
@@ -33,6 +35,7 @@ class GameScreen : Screen {
 
         if(manager.isFinished && gameWorld == null){
             gameWorld = GameWorld(manager)
+            AudioManager.play(MusicApp.GAME_MUSIC)
         }
 
         gameWorld!!.update(delta)

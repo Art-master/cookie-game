@@ -3,6 +3,7 @@ package com.mygdx.game.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -10,12 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
-import com.mygdx.game.ScreenManager
-import com.mygdx.game.ScreenManager.Screens.*
+import com.mygdx.game.managers.ScreenManager
+import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.data.Descriptors
-import kotlin.contracts.contract
+import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.AudioManager.MusicApp
+import com.mygdx.game.managers.AudioManager.Sounds
+import com.mygdx.game.managers.VibrationManager
 
 class StartScreen : Screen {
     private val manager = AssetManager()
@@ -69,18 +73,24 @@ class StartScreen : Screen {
         shadow.animate()
 
         addClickListener(playButton) {
+            VibrationManager.vibrate()
             playButton.animate(true)
             title.animate(true)
             soundIcon.animate(true)
             vibrationIcon.animate(true)
-            shadow.animate(true, Runnable {ScreenManager.setScreen(GAME_SCREEN) })
+            shadow.animate(true, Runnable {
+                ScreenManager.setScreen(GAME_SCREEN)
+                AudioManager.stopAll()
+            })
         }
+        AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){
         actor.addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 function()
+                AudioManager.play(Sounds.CLICK_SOUND)
                 return super.touchDown(event, x, y, pointer, button)
             }
         })

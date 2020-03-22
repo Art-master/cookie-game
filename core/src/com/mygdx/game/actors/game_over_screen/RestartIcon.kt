@@ -74,7 +74,7 @@ class RestartIcon(manager : AssetManager) : Actor(), Animated {
     }
 
     override fun animate(isReverse:Boolean, runAfter: Runnable) {
-        val animDuration = Config.SHADOW_ANIMATION_TIME
+        val animDuration = Config.SHADOW_ANIMATION_TIME_S
         val move = if(isReverse){
             Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
         }else{

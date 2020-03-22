@@ -10,14 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
-import com.mygdx.game.ScreenManager
-import com.mygdx.game.ScreenManager.Screens.*
+import com.mygdx.game.managers.ScreenManager
+import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game_over_screen.GameOverTitle
 import com.mygdx.game.actors.game_over_screen.MainMenuIcon
 import com.mygdx.game.actors.game_over_screen.RestartIcon
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.AudioManager.MusicApp.*
+import com.mygdx.game.managers.AudioManager.Sounds.*
 
 class GameOverScreen : Screen {
     private val manager = AssetManager()
@@ -65,25 +68,31 @@ class GameOverScreen : Screen {
         mainMenuIcon.animate()
         stage.addActor(shadow)
         shadow.animate()
+        AudioManager.play(MAIN_MENU_MUSIC)
 
         addClickListener(restartIcon) {
             title.animate(true)
             restartIcon.animate(true)
             mainMenuIcon.animate(true)
-            shadow.animate(true, Runnable { ScreenManager.setScreen(GAME_SCREEN)})
+            shadow.animate(true, Runnable {
+                ScreenManager.setScreen(GAME_SCREEN)
+            })
         }
 
         addClickListener(mainMenuIcon) {
             title.animate(true)
             restartIcon.animate(true)
             mainMenuIcon.animate(true)
-            shadow.animate(true, Runnable { ScreenManager.setScreen(START_SCREEN)})
+            shadow.animate(true, Runnable {
+                ScreenManager.setScreen(START_SCREEN)
+            })
         }
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){
         actor.addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+                AudioManager.play(CLICK_SOUND)
                 function()
                 return super.touchDown(event, x, y, pointer, button)
             }

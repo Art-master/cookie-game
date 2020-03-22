@@ -9,11 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.mygdx.game.ScreenManager
-import com.mygdx.game.ScreenManager.Screens.*
+import com.mygdx.game.managers.ScreenManager
+import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
 import com.mygdx.game.impl.Callback
 import com.mygdx.game.impl.Scrollable
+import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.AudioManager.MusicApp
 
 
 class GameWorld(private val manager : AssetManager) {
@@ -103,6 +105,7 @@ class GameWorld(private val manager : AssetManager) {
     private fun checkContactCookieAndHand(){
         if(cookie.collides(hand)){
             ScreenManager.setScreen(GAME_OVER)
+            AudioManager.stopAll()
         }
     }
 

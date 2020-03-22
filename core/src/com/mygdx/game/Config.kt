@@ -6,8 +6,10 @@ import com.badlogic.gdx.Gdx
 object Config {
     const val WIDTH_GAME = 1920f
     const val HEIGHT_GAME = 1080f
-    const val SHADOW_ANIMATION_TIME = 1f
-    const val BUTTONS_ANIMATION_TIME = 1f
+    const val SHADOW_ANIMATION_TIME_S = 1f
+    const val BUTTONS_ANIMATION_TIME_S = 1f
+    const val VIBRATION_TIME_MS = 100
+    const val SOUNDS_FOLDER = "sounds/"
 
     private val heightDevise = Gdx.graphics.height.toFloat()
     private val widthDevise = Gdx.graphics.width.toFloat()

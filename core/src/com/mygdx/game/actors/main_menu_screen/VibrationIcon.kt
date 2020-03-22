@@ -10,22 +10,20 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.Config
-import com.mygdx.game.Prefs
 import com.mygdx.game.actors.Animated
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.AudioManager.Sounds
+import com.mygdx.game.managers.VibrationManager
 
 class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Animated {
-
-    private var prefs = Gdx.app.getPreferences(Prefs.NAME)
 
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
     private val vibrationOnRegion = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_ON)
     private val vibrationOffRegion = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_OFF)
     private var vibrationIcon = vibrationOnRegion
-
-    private var vibrationSettings = prefs.getBoolean(Prefs.VIBRATION, true)
 
     private var centerX = 0f
     private var centerY = 0f
@@ -44,9 +42,9 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Animated {
     private fun addClickListener(){
         addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                vibrationSettings = vibrationSettings.not()
-                prefs.putBoolean(Prefs.VIBRATION, vibrationSettings)
-                prefs.flush()
+                VibrationManager.switchVibrationSetting()
+                VibrationManager.vibrate()
+                AudioManager.play(Sounds.CLICK_SOUND)
                 changeVibrationIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }
@@ -54,7 +52,10 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Animated {
     }
 
     private fun changeVibrationIcon() {
-        vibrationIcon = if(vibrationSettings) vibrationOnRegion else vibrationOffRegion
+        vibrationIcon = if(VibrationManager.isVibrationEnable)
+            vibrationOnRegion
+        else
+            vibrationOffRegion
     }
 
     override fun act(delta: Float) {
@@ -74,7 +75,7 @@ class VibrationIcon(manager : AssetManager, sound: Actor) : Actor(), Animated {
     }
 
     override fun animate(isReverse: Boolean, runAfter: Runnable) {
-        val animDuration = Config.BUTTONS_ANIMATION_TIME / 2
+        val animDuration = Config.BUTTONS_ANIMATION_TIME_S / 2
         val moveToOutside = if(isReverse){
             Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
         }else{

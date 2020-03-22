@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.mygdx.game.Config
-import com.mygdx.game.ScreenManager
-import com.mygdx.game.ScreenManager.Screens.*
 import com.mygdx.game.actors.Animated
 
 class PlayButton(manager : AssetManager) : Actor(), Animated {
@@ -22,7 +20,6 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
 
     private var centerX = 0f
     private var centerY = 0f
-
 
     init {
         width = region.originalWidth.toFloat()
@@ -67,7 +64,7 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
     }
 
     override fun animate(isReverse: Boolean, runAfter: Runnable) {
-        val animDuration = Config.BUTTONS_ANIMATION_TIME
+        val animDuration = Config.BUTTONS_ANIMATION_TIME_S
         val moveToOutside = if(isReverse){
             moveTo(Gdx.graphics.width.toFloat(), y, animDuration, Interpolation.exp10)
         }else{

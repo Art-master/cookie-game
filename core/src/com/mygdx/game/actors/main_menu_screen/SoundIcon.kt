@@ -10,23 +10,21 @@ import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.mygdx.game.Config
-import com.mygdx.game.Prefs
 import com.mygdx.game.actors.Animated
+import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.AudioManager.MusicApp
+import com.mygdx.game.managers.AudioManager.Sounds
+import com.mygdx.game.managers.VibrationManager
 
 
 class SoundIcon(manager : AssetManager) : Actor(), Animated {
-    private var prefs = Gdx.app.getPreferences(Prefs.NAME)
-
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
     private val soundOnRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ON)
     private val soundOffRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_OFF)
     private var soundIcon = soundOnRegion
-
-    private var soundSettings = prefs.getBoolean(Prefs.SOUND, true)
 
     private var centerX = 0f
     private var centerY = 0f
@@ -44,9 +42,10 @@ class SoundIcon(manager : AssetManager) : Actor(), Animated {
     private fun addClickListener(){
         addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                soundSettings = soundSettings.not()
-                prefs.putBoolean(Prefs.SOUND, soundSettings)
-                prefs.flush()
+                VibrationManager.vibrate()
+                AudioManager.switchSoundSetting()
+                if(AudioManager.isMusicEnable) AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
+                AudioManager.play(Sounds.CLICK_SOUND)
                 changeSoundIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }
@@ -54,7 +53,7 @@ class SoundIcon(manager : AssetManager) : Actor(), Animated {
     }
 
     private fun changeSoundIcon(){
-        soundIcon = if(soundSettings) soundOnRegion else soundOffRegion
+        soundIcon = if(AudioManager.isMusicEnable) soundOnRegion else soundOffRegion
     }
 
     override fun act(delta: Float) {
@@ -74,7 +73,7 @@ class SoundIcon(manager : AssetManager) : Actor(), Animated {
     }
 
     override fun animate(isReverse: Boolean, runAfter: Runnable) {
-        val animDuration = Config.BUTTONS_ANIMATION_TIME / 2
+        val animDuration = Config.BUTTONS_ANIMATION_TIME_S / 2
         val moveToOutside = if(isReverse){
             moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
         }else{
