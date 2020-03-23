@@ -11,7 +11,8 @@ object AudioManager {
 
     interface Audio
     enum class Sounds(val fileName: String) : Audio {
-        CLICK_SOUND("click.mp3")
+        CLICK_SOUND("click.mp3"),
+        CRUNCH("crunch.mp3")
     }
 
     enum class MusicApp(val fileName: String) : Audio {
@@ -45,8 +46,7 @@ object AudioManager {
         var audio: Sound? = null
         try {
             val file = Gdx.files.internal("${Config.SOUNDS_FOLDER}/${sound.fileName}")
-            audio = if (isMusicEnable) Gdx.audio.newSound(file)
-            else null
+            audio = Gdx.audio.newSound(file)
         } catch (e: GdxRuntimeException){
             Gdx.app.log("Sounds file load error", e.message)
         }
@@ -57,10 +57,9 @@ object AudioManager {
         var audio: Music? = null
         try {
             val file = Gdx.files.internal("${Config.SOUNDS_FOLDER}/${music.fileName}")
-            audio = if (isMusicEnable) Gdx.audio.newMusic(file)
-            else null
+            audio = Gdx.audio.newMusic(file)
         } catch (e: GdxRuntimeException){
-            Gdx.app.log("Sounds file load error", e.message)
+            Gdx.app.log("Music file load error", e.message)
         }
         return audio
     }
@@ -70,12 +69,13 @@ object AudioManager {
         if(isMusicEnable.not()) stopAll()
     }
 
-    fun play(audio: Audio) {
+    fun play(audio: Audio, isLooping: Boolean = false) {
         if(isMusicEnable.not()) return
         if(audio is Sounds){
             sounds[audio.name]?.play()
         }else if(audio is MusicApp){
             music[audio.name]?.play()
+            music[audio.name]?.isLooping = isLooping
         }
     }
 

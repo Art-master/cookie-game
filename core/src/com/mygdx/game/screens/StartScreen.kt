@@ -83,14 +83,14 @@ class StartScreen : Screen {
                 AudioManager.stopAll()
             })
         }
-        AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
+        AudioManager.play(MusicApp.MAIN_MENU_MUSIC, true)
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){
         actor.addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 function()
-                AudioManager.play(Sounds.CLICK_SOUND)
+                AudioManager.play(Sounds.CRUNCH)
                 return super.touchDown(event, x, y, pointer, button)
             }
         })

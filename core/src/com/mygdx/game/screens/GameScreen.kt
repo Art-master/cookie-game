@@ -35,7 +35,7 @@ class GameScreen : Screen {
 
         if(manager.isFinished && gameWorld == null){
             gameWorld = GameWorld(manager)
-            AudioManager.play(MusicApp.GAME_MUSIC)
+            AudioManager.play(MusicApp.GAME_MUSIC, true)
         }
 
         gameWorld!!.update(delta)

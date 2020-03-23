@@ -12,10 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.mygdx.game.Config
 import com.mygdx.game.actors.Animated
 
-class PlayButton(manager : AssetManager) : Actor(), Animated {
+class PlayButton(manager: AssetManager) : Actor(), Animated {
 
     private val texture = manager.get(Descriptors.menu)
-    private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
+    private var region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
     private var playIcon = texture.findRegion(Assets.MainMenuAtlas.BUTTON_PLAY)
 
     private var centerX = 0f
@@ -31,7 +31,7 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
         addPlayIconAnimationPulse()
     }
 
-    private fun addPlayIconAnimationPulse(){
+    private fun addPlayIconAnimationPulse() {
         val animDuration = 0.05f
         val scaleAnim1 = scaleTo(1.01f, 1.01f, animDuration, Interpolation.smooth)
         val scaleAnim2 = scaleTo(1f, 1f, animDuration, Interpolation.smooth)
@@ -54,7 +54,7 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
         drawPlayIcon(batch)
     }
 
-    private fun drawPlayIcon(batch: Batch){
+    private fun drawPlayIcon(batch: Batch) {
         val iconWidth = playIcon.originalWidth.toFloat()
         val iconHeight = playIcon.originalHeight.toFloat()
         val x = centerX - (iconWidth / 2)
@@ -65,11 +65,20 @@ class PlayButton(manager : AssetManager) : Actor(), Animated {
 
     override fun animate(isReverse: Boolean, runAfter: Runnable) {
         val animDuration = Config.BUTTONS_ANIMATION_TIME_S
-        val moveToOutside = if(isReverse){
+        val move = if (isReverse) {
             moveTo(Gdx.graphics.width.toFloat(), y, animDuration, Interpolation.exp10)
-        }else{
+        } else {
             scaleTo(1f, 1f, animDuration / 2)
         }
-        addAction(moveToOutside)
+        val runAfterAnimation = run(runAfter)
+        val sequence = if (isReverse) {
+            val runBefore = run(Runnable {
+                region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_2)
+            })
+            sequence(runBefore)
+        } else {
+            sequence(move, runAfterAnimation)
+        }
+        addAction(sequence)
     }
 }
