@@ -10,13 +10,13 @@ import com.mygdx.game.Prefs
 object AudioManager {
 
     interface Audio
-    enum class Sounds(val fileName: String) : Audio {
-        CLICK_SOUND("click.mp3"),
-        CRUNCH("crunch.mp3")
+    enum class Sounds(val fileName: String, val volume: Float = 1f) : Audio {
+        CLICK_SOUND("click.mp3", 0.3f),
+        CRUNCH("crunch.mp3", 0.3f)
     }
 
-    enum class MusicApp(val fileName: String) : Audio {
-        GAME_MUSIC("gameMusic.mp3"),
+    enum class MusicApp(val fileName: String, val volume: Float = 1f) : Audio {
+        GAME_MUSIC("gameMusic.mp3", 0.3f),
         MAIN_MENU_MUSIC("mainMenuMusic.mp3"),
     }
 
@@ -72,10 +72,13 @@ object AudioManager {
     fun play(audio: Audio, isLooping: Boolean = false) {
         if(isMusicEnable.not()) return
         if(audio is Sounds){
-            sounds[audio.name]?.play()
+            sounds[audio.name]?.play(audio.volume)
         }else if(audio is MusicApp){
-            music[audio.name]?.play()
-            music[audio.name]?.isLooping = isLooping
+            music[audio.name]?.apply {
+                play()
+                this.isLooping = isLooping
+                volume = audio.volume
+            }
         }
     }
 
