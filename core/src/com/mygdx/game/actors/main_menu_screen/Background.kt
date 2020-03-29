@@ -8,7 +8,7 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.mygdx.game.Config
-import com.mygdx.game.actors.Animated
+import com.mygdx.game.api.Animated
 
 class Background(manager : AssetManager) : Actor(), Animated {
     private val backgroundTexture = manager.get(Descriptors.background)

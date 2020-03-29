@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.Config
-import com.mygdx.game.actors.Animated
+import com.mygdx.game.api.Animated
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager

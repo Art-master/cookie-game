@@ -1,4 +1,4 @@
-package com.mygdx.game.impl
+package com.mygdx.game.api
 
 interface Scrollable {
     fun stopMove()

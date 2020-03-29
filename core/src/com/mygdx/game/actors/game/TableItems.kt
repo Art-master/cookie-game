@@ -2,7 +2,7 @@ package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.utils.Array
-import com.mygdx.game.impl.Callback
+import com.mygdx.game.api.Callback
 import kotlin.random.Random
 
 class TableItems(private val manager : AssetManager,

@@ -9,13 +9,15 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
+import com.mygdx.game.api.Animated
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.impl.Physical
+import com.mygdx.game.api.Physical
 import java.util.*
 
-class Hand(manager : AssetManager) : Actor(), Physical {
+class Hand(manager : AssetManager) : Actor(), Physical, Animated {
 
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
@@ -77,5 +79,18 @@ class Hand(manager : AssetManager) : Actor(), Physical {
 
     override fun getBoundsRect(): Rectangle {
         return Rectangle(x, y, width, height)
+    }
+
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+        val animDuration = 0.5f
+        val move = if(isReverse){
+            Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+        }else{
+            val y = 100f
+            Actions.moveTo(x, y, animDuration)
+        }
+        val run = Actions.run(runAfter)
+        val sequence = Actions.sequence(move, run)
+        addAction(sequence)
     }
 }

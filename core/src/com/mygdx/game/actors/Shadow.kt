@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Config.SHADOW_ANIMATION_TIME_S
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.api.Animated
 
 class Shadow(manager : AssetManager) : Actor(), Animated {
     private val texture = manager.get(Descriptors.menu)

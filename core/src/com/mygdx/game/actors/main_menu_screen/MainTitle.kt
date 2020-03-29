@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.mygdx.game.Config
-import com.mygdx.game.actors.Animated
+import com.mygdx.game.api.Animated
 
 class MainTitle(manager : AssetManager) : Actor(), Animated {
     private val texture = manager.get(Descriptors.menu)

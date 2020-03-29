@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.Array
 import com.mygdx.game.Config
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.impl.Scrollable
-import com.mygdx.game.impl.Scrolled
+import com.mygdx.game.api.Scrollable
+import com.mygdx.game.api.Scrolled
 import java.util.*
 
 class Cupboard(manager : AssetManager, private val window : Window) : Actor(), Scrollable {

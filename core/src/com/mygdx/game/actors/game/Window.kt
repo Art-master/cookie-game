@@ -5,11 +5,11 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.mygdx.game.impl.Scrollable
+import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.impl.Listener
-import com.mygdx.game.impl.Scrolled
+import com.mygdx.game.api.Listener
+import com.mygdx.game.api.Scrolled
 import java.util.*
 import kotlin.collections.ArrayList
 

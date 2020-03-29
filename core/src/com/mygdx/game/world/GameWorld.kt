@@ -12,10 +12,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
-import com.mygdx.game.impl.Callback
-import com.mygdx.game.impl.Scrollable
+import com.mygdx.game.api.Callback
+import com.mygdx.game.api.Scrollable
 import com.mygdx.game.managers.AudioManager
-import com.mygdx.game.managers.AudioManager.MusicApp
 
 
 class GameWorld(private val manager : AssetManager) {

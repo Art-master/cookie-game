@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.mygdx.game.impl.Hideable
+import com.mygdx.game.api.Hideable
 import com.mygdx.game.beans.Position
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.impl.Listener
+import com.mygdx.game.api.Listener
 import java.util.*
 
 class FlowerInPot(manager : AssetManager, private val window: Window) : Actor(){

@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
 import com.mygdx.game.Config
-import com.mygdx.game.actors.Animated
+import com.mygdx.game.api.Animated
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
