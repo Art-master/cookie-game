@@ -17,10 +17,11 @@ import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Physical
 import java.util.*
 
-class Hand(manager : AssetManager) : Actor(), Physical, Animated {
+class Hand(manager : AssetManager, private val cookie: Cookie) : Actor(), Physical, Animated {
 
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
+    private val catchCookieRegion = texture.findRegion(Assets.EnvironmentAtlas.CATCH_COOKIE)
     private val handRegions = texture.findRegions(Assets.EnvironmentAtlas.HAND)
     private val handAnim = Animation(0.1f, handRegions, Animation.PlayMode.LOOP_PINGPONG)
 
@@ -31,6 +32,8 @@ class Hand(manager : AssetManager) : Actor(), Physical, Animated {
     private var limitY: Float = 0.0f
     private var moveToAction = MoveToAction()
     private var currentFrame: TextureRegion = handRegion
+
+    private var isFinalAnimation = false
 
     init {
         this.x = initPosition.x
@@ -49,8 +52,8 @@ class Hand(manager : AssetManager) : Actor(), Physical, Animated {
 
     private fun setMoveAction(){
         moveToAction = MoveToAction()
-        limitX = -getLimit( 50)
-        limitY = getLimit(50)
+        limitX = -getLimit()
+        limitY = getLimit()
         moveToAction.setPosition(initPosition.x + limitX, initPosition.y + limitY)
         moveToAction.duration = 2f
         moveToAction.interpolation = Interpolation.smooth
@@ -62,7 +65,9 @@ class Hand(manager : AssetManager) : Actor(), Physical, Animated {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        currentFrame = handAnim.getKeyFrame(runTime)
+        if(isFinalAnimation.not()){
+            currentFrame = handAnim.getKeyFrame(runTime)
+        }
 /*        if(handAnim.isAnimationFinished(runTime)){
             currentFrame = when(random.nextInt(3)){
                 2 -> {
@@ -72,9 +77,9 @@ class Hand(manager : AssetManager) : Actor(), Physical, Animated {
                 else -> handRegion
             }
         }*/
-
-        batch!!.draw(currentFrame, x, y,
-                currentFrame.regionWidth.toFloat(), currentFrame.regionHeight.toFloat())
+        val width = currentFrame.regionWidth.toFloat()
+        val height =  currentFrame.regionHeight.toFloat()
+        batch!!.draw(currentFrame, x, y, width, height)
     }
 
     override fun getBoundsRect(): Rectangle {
@@ -82,15 +87,26 @@ class Hand(manager : AssetManager) : Actor(), Physical, Animated {
     }
 
     override fun animate(isReverse: Boolean, runAfter: Runnable) {
+        isFinalAnimation = true
         val animDuration = 0.5f
-        val move = if(isReverse){
-            Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+       if(isReverse){
+           currentFrame = handRegion
+           val move = Actions.moveTo(cookie.x - 120, cookie.y + 40, animDuration)
+           val runAfterMove =  Actions.run {
+               cookie.remove()
+               currentFrame = catchCookieRegion
+           }
+           val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
+           val run = Actions.run(runAfter)
+           val sequence = Actions.sequence(move, runAfterMove, backAnimation, run)
+           addAction(sequence)
         }else{
-            val y = 100f
-            Actions.moveTo(x, y, animDuration)
+           val y = 100f
+           val move = Actions.moveTo(x, y, animDuration)
+           val run = Actions.run(runAfter)
+           val sequence = Actions.sequence(move, run)
+           addAction(sequence)
         }
-        val run = Actions.run(runAfter)
-        val sequence = Actions.sequence(move, run)
-        addAction(sequence)
+
     }
 }

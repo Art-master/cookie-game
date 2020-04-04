@@ -35,9 +35,12 @@ class GameWorld(private val manager : AssetManager) {
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
     private val score = Score(manager)
-    private val hand = Hand(manager)
+    private val hand = Hand(manager, cookie)
     private val items = TableItems(manager, table, cookie)
-    val actors : Array<Actor> = Array.with(background, cupboard, shadow, sky, moon, city, window, flower, table, hand, cookie, score)
+    val actors : Array<Actor> = Array.with(background, cupboard, shadow, sky, moon, city, window, flower, table, cookie, hand, score)
+
+    private var touchable = true
+    private var isGameOver = false
 
     init {
         actors.addAll(items.getActors())
@@ -45,12 +48,16 @@ class GameWorld(private val manager : AssetManager) {
         changeScore()
         stage.addListener(object : ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                cookie.startJumpForce()
+                if(touchable) {
+                    cookie.startJumpForce()
+                }
                 return super.touchDown(event, x, y, pointer, button)
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                cookie.endJumpForce()
+                if(touchable) {
+                    cookie.endJumpForce()
+                }
                 super.touchUp(event, x, y, pointer, button)
             }
         }
@@ -102,8 +109,15 @@ class GameWorld(private val manager : AssetManager) {
     }
 
     private fun checkContactCookieAndHand(){
-        if(cookie.collides(hand)){
-            ScreenManager.setScreen(GAME_OVER)
+        if(hand.x + hand.width >= cookie.x && isGameOver.not()){
+            isGameOver = true
+            touchable = false
+            stopMove()
+            hand.actions.clear()
+            hand.animate(true, Runnable{
+                ScreenManager.setScreen(GAME_OVER)
+            })
+
             AudioManager.stopAll()
         }
     }

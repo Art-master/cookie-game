@@ -44,6 +44,7 @@ class Cookie(manager : AssetManager, private val startY: Float,
     var state = State.RUN
 
     private var jumpFlag = false
+    var isHide = false
     private var startJumpY = 0f
     private var ground = startY
 
@@ -105,7 +106,10 @@ class Cookie(manager : AssetManager, private val startY: Float,
             else -> runAnimation.getKeyFrame(runTime)
         }
         if(isStopAnimation) currentFrame = runRegions[0]
-        batch.draw(currentFrame, x, y, width, height)
+
+        if(isHide.not()) {
+            batch.draw(currentFrame, x, y, width, height)
+        }
     }
 
     fun isFalling() = state == State.FALL

@@ -23,7 +23,7 @@ open class Scrolled (val originX: Float, val originY: Float, val width: Int, val
     open fun getY() = position.y
 
     enum class ScrollSpeed(val value: Float) {
-        LEVEL_1(-50f),//50
+        LEVEL_1(-200f),//50
         LEVEL_2(LEVEL_1.value * 3)
     }
 }
