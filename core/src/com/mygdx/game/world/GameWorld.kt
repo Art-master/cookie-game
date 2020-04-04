@@ -35,9 +35,9 @@ class GameWorld(private val manager : AssetManager) {
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
     private val score = Score(manager)
-    private val hand = Hand(manager, cookie)
+    private val arm = Arm(manager, cookie)
     private val items = TableItems(manager, table, cookie)
-    val actors : Array<Actor> = Array.with(background, cupboard, shadow, sky, moon, city, window, flower, table, cookie, hand, score)
+    val actors : Array<Actor> = Array.with(background, cupboard, shadow, sky, moon, city, window, flower, table, cookie, arm, score)
 
     private var touchable = true
     private var isGameOver = false
@@ -109,12 +109,12 @@ class GameWorld(private val manager : AssetManager) {
     }
 
     private fun checkContactCookieAndHand(){
-        if(hand.x + hand.width >= cookie.x && isGameOver.not()){
+        if(arm.x + arm.width >= cookie.x && isGameOver.not()){
             isGameOver = true
             touchable = false
             stopMove()
-            hand.actions.clear()
-            hand.animate(true, Runnable{
+            arm.actions.clear()
+            arm.animate(true, Runnable{
                 ScreenManager.setScreen(GAME_OVER)
             })
 

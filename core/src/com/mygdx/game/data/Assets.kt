@@ -48,6 +48,7 @@ class Assets {
             const val MILK_BOX = "milk_box"
             const val YOGURT_BOX = "yogurt_box"
             const val HAND = "hand"
+            const val PROLONGATION_HAND = "prolongationHand"
             const val CATCH_COOKIE = "catch_cookie"
         }
     }

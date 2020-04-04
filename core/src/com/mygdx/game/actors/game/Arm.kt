@@ -17,12 +17,13 @@ import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Physical
 import java.util.*
 
-class Hand(manager : AssetManager, private val cookie: Cookie) : Actor(), Physical, Animated {
+class Arm(manager : AssetManager, private val cookie: Cookie) : Actor(), Physical, Animated {
 
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
     private val catchCookieRegion = texture.findRegion(Assets.EnvironmentAtlas.CATCH_COOKIE)
     private val handRegions = texture.findRegions(Assets.EnvironmentAtlas.HAND)
+    private val prolongationArmRegion = texture.findRegion(Assets.EnvironmentAtlas.PROLONGATION_HAND)
     private val handAnim = Animation(0.1f, handRegions, Animation.PlayMode.LOOP_PINGPONG)
 
     private val random = Random()
@@ -34,6 +35,7 @@ class Hand(manager : AssetManager, private val cookie: Cookie) : Actor(), Physic
     private var currentFrame: TextureRegion = handRegion
 
     private var isFinalAnimation = false
+    private var isFinalHandBackAnimation = false
 
     init {
         this.x = initPosition.x
@@ -79,7 +81,18 @@ class Hand(manager : AssetManager, private val cookie: Cookie) : Actor(), Physic
         }*/
         val width = currentFrame.regionWidth.toFloat()
         val height =  currentFrame.regionHeight.toFloat()
-        batch!!.draw(currentFrame, x, y, width, height)
+        drawProlongationHand(batch!!)
+        batch.draw(currentFrame, x, y, width, height)
+    }
+
+    private fun drawProlongationHand(batch: Batch) {
+        val region = prolongationArmRegion
+        val width = region.originalWidth.toFloat()
+        val height = region.originalHeight.toFloat()
+        val y = if(isFinalHandBackAnimation) {
+            y+23 // fit to hand
+        } else y
+        batch.draw(region, x - region.originalWidth, y + 73, width, height)
     }
 
     override fun getBoundsRect(): Rectangle {
@@ -95,6 +108,7 @@ class Hand(manager : AssetManager, private val cookie: Cookie) : Actor(), Physic
            val runAfterMove =  Actions.run {
                cookie.remove()
                currentFrame = catchCookieRegion
+               isFinalHandBackAnimation = true
            }
            val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
            val run = Actions.run(runAfter)
