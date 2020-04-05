@@ -6,17 +6,19 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.mygdx.game.Config
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.mygdx.game.api.Animated
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Physical
 import com.mygdx.game.api.Scrollable
 
-class Cookie(manager : AssetManager, private val startY: Float,
-        startX: Float = Config.WIDTH_GAME/2): GameActor(), Scrollable, Physical{
+class Cookie(manager : AssetManager,
+             private val startY: Float,
+             private val startX: Float): GameActor(), Scrollable, Physical, Animated{
 
-    val position = Vector2(startX, startY)
+    private val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
     private val velocityJump = 50f
 
@@ -33,6 +35,7 @@ class Cookie(manager : AssetManager, private val startY: Float,
     private var currentFrame = runAnimation.getKeyFrame(0f)
 
     private var runTime = 0f
+
     private var isStopAnimation = false
 
     private val rectangle : Rectangle = Rectangle()
@@ -48,10 +51,13 @@ class Cookie(manager : AssetManager, private val startY: Float,
     private var startJumpY = 0f
     private var ground = startY
 
+    private var isStartingAnimation = true
+
     init {
-        updateCoordinates()
-        width = texture.findRegion(Assets.CookieAtlas.RUN).originalWidth.toFloat()
-        height = texture.findRegion(Assets.CookieAtlas.RUN).originalHeight.toFloat()
+        width = runRegions[0].originalWidth.toFloat()
+        height = runRegions[0].originalHeight.toFloat()
+        x = -width
+        y = startY
     }
 
     private fun updateCoordinates(){
@@ -62,11 +68,13 @@ class Cookie(manager : AssetManager, private val startY: Float,
     override fun act(delta: Float) {
         super.act(delta)
         runTime += delta
-        updateGravity()
-        updateActorState()
-        position.add(velocity.cpy().scl(delta))
-        updateCoordinates()
-        rectangle.set(position.x, position.y, width, height)
+        if(isStartingAnimation.not()){
+            updateGravity()
+            updateActorState()
+            position.add(velocity.cpy().scl(delta))
+            updateCoordinates()
+        }
+        rectangle.set(x, y, width, height)
     }
 
     private fun updateGravity(){
@@ -165,4 +173,12 @@ class Cookie(manager : AssetManager, private val startY: Float,
     private fun againstThe(obj : RandomTableItem) {position.x = obj.x - width}
 
     override fun getBoundsRect() = rectangle
+
+    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+        val animDuration = 2f
+        val move = Actions.moveTo(startX, startY, animDuration)
+        val run = Actions.run { isStartingAnimation = false }
+        val run2 = Actions.run(runAfter)
+        addAction(Actions.sequence(move, run, run2))
+    }
 }

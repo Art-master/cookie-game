@@ -53,5 +53,6 @@ class Background(manager : AssetManager) : GameActor(), Scrollable{
 
     override fun runMove() {
         scrollerFront.isStopMove = false
+        scrollerBack.isStopMove = false
     }
 }

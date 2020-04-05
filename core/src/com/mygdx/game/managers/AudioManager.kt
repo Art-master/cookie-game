@@ -95,7 +95,10 @@ object AudioManager {
             sound?.stop()
         }
         for(music in music.values){
-            music?.stop()
+            music?.apply {
+                stop()
+                isLooping = false
+            }
         }
     }
 }

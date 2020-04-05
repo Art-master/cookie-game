@@ -71,6 +71,7 @@ class GameOverScreen : Screen {
         AudioManager.play(MAIN_MENU_MUSIC)
 
         addClickListener(restartIcon) {
+            AudioManager.stopAll()
             title.animate(true)
             restartIcon.animate(true)
             mainMenuIcon.animate(true)
