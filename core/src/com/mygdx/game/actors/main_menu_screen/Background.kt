@@ -3,14 +3,14 @@ package com.mygdx.game.actors.main_menu_screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.GameActor
 
-class Background(manager : AssetManager) : Actor(), Animated {
+class Background(manager : AssetManager) : GameActor(), Animated {
     private val backgroundTexture = manager.get(Descriptors.background)
     //private val textureOther = manager.get(Descriptors.environment)
     private val textureMenu = manager.get(Descriptors.menu)

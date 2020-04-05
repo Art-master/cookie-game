@@ -7,17 +7,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Callback
-import com.mygdx.game.api.Physical
-import com.mygdx.game.api.Scrollable
-import com.mygdx.game.api.Scrolled
 import java.util.*
 
 class RandomTableItem(manager : AssetManager,
                       private val table : Table,
-                      private val cookie : Cookie) : Actor(), Scrollable, Physical{
+                      private val cookie : Cookie) : GameActor(), Scrollable, Physical{
 
     private val rand = Random()
     private val texture = manager.get(Descriptors.environment)

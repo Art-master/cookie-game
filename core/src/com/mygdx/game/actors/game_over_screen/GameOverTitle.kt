@@ -3,7 +3,6 @@ package com.mygdx.game.actors.game_over_screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
@@ -11,8 +10,9 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.GameActor
 
-class GameOverTitle(manager : AssetManager) : Actor(), Animated {
+class GameOverTitle(manager : AssetManager) : GameActor(), Animated {
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.GAME_OVER_TEXT)
 

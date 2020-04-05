@@ -2,14 +2,14 @@ package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Hideable
 import com.mygdx.game.beans.Position
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Scrollable
 
-class City(manager : AssetManager, private val window : Window) : Actor(), Scrollable {
+class City(manager : AssetManager, private val window : Window) : GameActor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val cityRegion = texture.findRegion(Assets.EnvironmentAtlas.CITY)
 

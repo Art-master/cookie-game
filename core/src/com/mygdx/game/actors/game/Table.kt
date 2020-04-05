@@ -3,13 +3,13 @@ package com.mygdx.game.actors.game
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Scrolled
 
-class Table(manager : AssetManager, yWorktop: Float) : Actor(), Scrollable {
+class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val region = texture.findRegion(Assets.EnvironmentAtlas.TABLE)
 
@@ -20,9 +20,6 @@ class Table(manager : AssetManager, yWorktop: Float) : Actor(), Scrollable {
 
     private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
             region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2.value)
-    init {
-
-    }
 
     override fun act(delta: Float) {
         super.act(delta)

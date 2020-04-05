@@ -2,7 +2,6 @@ package com.mygdx.game.actors.main_menu_screen
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.data.Assets
@@ -13,13 +12,13 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.AudioManager.Sounds
-import com.mygdx.game.managers.VibrationManager
 
 
-class SoundIcon(manager : AssetManager) : Actor(), Animated {
+class SoundIcon(manager : AssetManager) : GameActor(), Animated {
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
     private val soundOnRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ON)
@@ -30,6 +29,7 @@ class SoundIcon(manager : AssetManager) : Actor(), Animated {
     private var centerY = 0f
 
     init {
+        isVibrating = true
         x = 100f
         y = -Gdx.graphics.height.toFloat()
         width = region.originalWidth/3f
@@ -42,9 +42,8 @@ class SoundIcon(manager : AssetManager) : Actor(), Animated {
     private fun addClickListener(){
         addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                VibrationManager.vibrate()
                 AudioManager.switchSoundSetting()
-                if(AudioManager.isMusicEnable) AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
+                AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
                 AudioManager.play(Sounds.CLICK_SOUND)
                 changeSoundIcon()
                 return super.touchDown(event, x, y, pointer, button)

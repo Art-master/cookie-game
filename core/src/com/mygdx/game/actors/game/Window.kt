@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -13,7 +13,7 @@ import com.mygdx.game.api.Scrolled
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Window(manager : AssetManager, startY : Float) : Actor(), Scrollable {
+class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val region = texture.findRegion(Assets.EnvironmentAtlas.WINDOW)
 

@@ -3,13 +3,13 @@ package com.mygdx.game.actors.game
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Listener
 import java.util.*
 
-class FlowerInPot(manager : AssetManager, private val window: Window) : Actor(){
+class FlowerInPot(manager : AssetManager, private val window: Window) : GameActor(){
     private val texture = manager.get(Descriptors.environment)
     private var flowerTexture = texture.findRegion(Assets.EnvironmentAtlas.FLOWER_IN_POT)
 

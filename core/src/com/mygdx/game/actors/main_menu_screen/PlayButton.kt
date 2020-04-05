@@ -3,7 +3,6 @@ package com.mygdx.game.actors.main_menu_screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
@@ -11,8 +10,9 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.GameActor
 
-class PlayButton(manager: AssetManager) : Actor(), Animated {
+class PlayButton(manager: AssetManager) : GameActor(), Animated {
 
     private val texture = manager.get(Descriptors.menu)
     private var region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
@@ -22,6 +22,7 @@ class PlayButton(manager: AssetManager) : Actor(), Animated {
     private var centerY = 0f
 
     init {
+        isVibrating = true
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
         x = (Config.WIDTH_GAME / 2) - width / 2

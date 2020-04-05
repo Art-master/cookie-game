@@ -8,16 +8,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Physical
 import java.util.*
 
-class Arm(manager : AssetManager, private val cookie: Cookie) : Actor(), Physical, Animated {
+class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Physical, Animated {
 
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
@@ -103,17 +103,7 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : Actor(), Physica
         isFinalAnimation = true
         val animDuration = 0.5f
        if(isReverse){
-           currentFrame = handRegion
-           val move = Actions.moveTo(cookie.x - 120, cookie.y + 40, animDuration)
-           val runAfterMove =  Actions.run {
-               cookie.remove()
-               currentFrame = catchCookieRegion
-               isFinalHandBackAnimation = true
-           }
-           val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
-           val run = Actions.run(runAfter)
-           val sequence = Actions.sequence(move, runAfterMove, backAnimation, run)
-           addAction(sequence)
+            catchCookieAnimation(animDuration, runAfter)
         }else{
            val y = 100f
            val move = Actions.moveTo(x, y, animDuration)
@@ -121,6 +111,19 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : Actor(), Physica
            val sequence = Actions.sequence(move, run)
            addAction(sequence)
         }
+    }
 
+    private fun catchCookieAnimation(animDuration: Float, runAfter: Runnable){
+        currentFrame = handRegion
+        val move = Actions.moveTo(cookie.x - 120, cookie.y + 40, animDuration)
+        val runAfterMove =  Actions.run {
+            cookie.remove()
+            currentFrame = catchCookieRegion
+            isFinalHandBackAnimation = true
+        }
+        val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
+        val run = Actions.run(runAfter)
+        val sequence = Actions.sequence(move, runAfterMove, backAnimation, run)
+        addAction(sequence)
     }
 }

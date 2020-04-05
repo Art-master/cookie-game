@@ -3,13 +3,13 @@ package com.mygdx.game.actors.game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Hideable
 import com.mygdx.game.beans.Position
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
-class Moon(manager : AssetManager, private val window : Window) : Actor() {
+class Moon(manager : AssetManager, private val window : Window) : GameActor() {
     private val texture = manager.get(Descriptors.environment)
     private val moonRegion = texture.findRegion(Assets.EnvironmentAtlas.MOON)
 

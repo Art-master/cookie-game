@@ -73,7 +73,6 @@ class StartScreen : Screen {
         shadow.animate()
 
         addClickListener(playButton) {
-            VibrationManager.vibrate()
             playButton.animate(true)
             title.animate(true)
             soundIcon.animate(true)

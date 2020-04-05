@@ -5,17 +5,17 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.Config
 import com.mygdx.game.Prefs
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
-class MainMenuIcon(manager : AssetManager) : Actor(), Animated {
+class MainMenuIcon(manager : AssetManager) : GameActor(), Animated {
 
     private var prefs = Gdx.app.getPreferences(Prefs.NAME)
 
