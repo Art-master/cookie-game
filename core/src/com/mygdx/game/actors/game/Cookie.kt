@@ -125,7 +125,7 @@ class Cookie(manager : AssetManager,
     fun isJump() = state == State.JUMP
 
     fun startJumpForce() {
-        if(state == State.RUN){
+        if(state == State.RUN && isStartingAnimation.not()){
             startJumpY = y
             state = State.JUMP
             runTime = 0f
