@@ -82,7 +82,7 @@ class RestartIcon(manager : AssetManager) : GameActor(), Animated {
                 Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
             }
             AnimationType.SHOW_ON_SCENE -> {
-                val y = 100f
+                val y = 50f
                 Actions.moveTo(x, y, animDuration)
             }
             else -> return

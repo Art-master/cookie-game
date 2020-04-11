@@ -16,6 +16,7 @@ import com.mygdx.game.actors.game_over_screen.GameOverTitle
 import com.mygdx.game.actors.game_over_screen.MainMenuIcon
 import com.mygdx.game.actors.game_over_screen.RestartIcon
 import com.mygdx.game.actors.Shadow
+import com.mygdx.game.actors.game_over_screen.Scores
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.data.Descriptors
@@ -23,7 +24,8 @@ import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
 import com.mygdx.game.managers.AudioManager.Sounds.*
 
-class GameOverScreen : Screen {
+class GameOverScreen(private val params: Array<out Any>) : Screen {
+
     private val manager = AssetManager()
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
@@ -59,12 +61,16 @@ class GameOverScreen : Screen {
         val restartIcon = RestartIcon(manager)
         val mainMenuIcon = MainMenuIcon(manager)
         val shadow = Shadow(manager)
+        val scores = initScoreActor()
 
-        stage.addActor(background)
-        stage.addActor(title)
-        stage.addActor(restartIcon)
-        stage.addActor(mainMenuIcon)
-        stage.addActor(shadow)
+        stage.apply {
+            addActor(background)
+            addActor(title)
+            addActor(restartIcon)
+            addActor(mainMenuIcon)
+            addActor(shadow)
+            addActor(scores)
+        }
 
         title.animate(AnimationType.SHOW_ON_SCENE)
         restartIcon.animate(AnimationType.SHOW_ON_SCENE)
@@ -90,6 +96,17 @@ class GameOverScreen : Screen {
                 ScreenManager.setScreen(START_SCREEN)
             })
         }
+    }
+
+    private fun initScoreActor(): Scores{
+        var score = 0
+        if(params.isEmpty().not()){
+            val scoreRaw = params[0]
+            score =if(scoreRaw is Int){
+               scoreRaw
+            } else 0
+        }
+        return Scores(score)
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){

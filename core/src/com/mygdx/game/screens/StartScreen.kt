@@ -3,7 +3,6 @@ package com.mygdx.game.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -20,7 +19,6 @@ import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.AudioManager.Sounds
-import com.mygdx.game.managers.VibrationManager
 
 class StartScreen : Screen {
     private val manager = AssetManager()
@@ -61,12 +59,14 @@ class StartScreen : Screen {
         val playButton = PlayButton(manager)
         val shadow = Shadow(manager)
 
-        stage.addActor(background)
-        stage.addActor(title)
-        stage.addActor(soundIcon)
-        stage.addActor(vibrationIcon)
-        stage.addActor(playButton)
-        stage.addActor(shadow)
+        stage.apply {
+            addActor(background)
+            addActor(title)
+            addActor(soundIcon)
+            addActor(vibrationIcon)
+            addActor(playButton)
+            addActor(shadow)
+        }
 
         title.animate(AnimationType.SHOW_ON_SCENE)
         soundIcon.animate(AnimationType.SHOW_ON_SCENE)

@@ -36,7 +36,7 @@ class GameOverTitle(manager : AssetManager) : GameActor(), Animated {
                 Actions.moveTo(x, Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
             }
             AnimationType.SHOW_ON_SCENE -> {
-                val posY = Config.HEIGHT_GAME - height - 50
+                val posY = Config.HEIGHT_GAME - height - 20
                 Actions.moveTo(x, posY, animDuration, Interpolation.exp10)
             }
             else -> return

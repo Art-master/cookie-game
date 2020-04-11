@@ -124,7 +124,7 @@ class GameWorld(private val manager : AssetManager) {
             stopMoveAllActors()
             arm.actions.clear()
             arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable{
-                ScreenManager.setScreen(GAME_OVER)
+                ScreenManager.setScreen(GAME_OVER, score.scoreNum)
             })
 
             AudioManager.stopAll()
