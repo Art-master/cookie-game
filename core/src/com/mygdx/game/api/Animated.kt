@@ -1,5 +1,5 @@
 package com.mygdx.game.api
 
 interface Animated {
-    fun animate(isReverse: Boolean = false, runAfter: Runnable = Runnable {  })
+    fun animate(type: AnimationType, runAfter: Runnable = Runnable {  })
 }

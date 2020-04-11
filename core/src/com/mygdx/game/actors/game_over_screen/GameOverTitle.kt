@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor
 
 class GameOverTitle(manager : AssetManager) : GameActor(), Animated {
@@ -28,14 +29,18 @@ class GameOverTitle(manager : AssetManager) : GameActor(), Animated {
         batch.draw(region, x, y, width, height)
     }
 
-    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+    override fun animate(type: AnimationType, runAfter: Runnable){
         val animDuration = 0.5f
-        val moveToOutside = if(isReverse){
-             Actions.moveTo(x, Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
-        }else{
-            val posY = Config.HEIGHT_GAME - height - 50
-            Actions.moveTo(x, posY, animDuration, Interpolation.exp10)
+        val animation = when(type){
+            AnimationType.HIDE_FROM_SCENE -> {
+                Actions.moveTo(x, Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+            }
+            AnimationType.SHOW_ON_SCENE -> {
+                val posY = Config.HEIGHT_GAME - height - 50
+                Actions.moveTo(x, posY, animDuration, Interpolation.exp10)
+            }
+            else -> return
         }
-        addAction(moveToOutside)
+        addAction(animation)
     }
 }

@@ -7,12 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.mygdx.game.api.Animated
-import com.mygdx.game.api.GameActor
+import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Physical
-import com.mygdx.game.api.Scrollable
 
 class Cookie(manager : AssetManager,
              private val startY: Float,
@@ -174,11 +171,13 @@ class Cookie(manager : AssetManager,
 
     override fun getBoundsRect() = rectangle
 
-    override fun animate(isReverse: Boolean, runAfter: Runnable) {
-        val animDuration = 2f
-        val move = Actions.moveTo(startX, startY, animDuration)
-        val run = Actions.run { isStartingAnimation = false }
-        val run2 = Actions.run(runAfter)
-        addAction(Actions.sequence(move, run, run2))
+    override fun animate(type: AnimationType, runAfter: Runnable) {
+        if(type == AnimationType.SHOW_ON_SCENE){
+            val animDuration = 2f
+            val move = Actions.moveTo(startX, startY, animDuration)
+            val run = Actions.run { isStartingAnimation = false }
+            val run2 = Actions.run(runAfter)
+            addAction(Actions.sequence(move, run, run2))
+        }
     }
 }

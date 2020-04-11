@@ -13,6 +13,7 @@ import com.mygdx.game.Config
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.Callback
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.managers.AudioManager
@@ -71,10 +72,10 @@ class GameWorld(private val manager : AssetManager) {
         }
     }
     private fun startInitAnimation(){
-        cookie.animate(false, Runnable {
+        cookie.animate(AnimationType.SHOW_ON_SCENE, Runnable {
             startMoveAllActors()
         })
-        arm.animate(false, Runnable {
+        arm.animate(AnimationType.SHOW_ON_SCENE, Runnable {
             arm.startRepeatableMove()
         })
     }
@@ -122,7 +123,7 @@ class GameWorld(private val manager : AssetManager) {
             touchable = false
             stopMoveAllActors()
             arm.actions.clear()
-            arm.animate(true, Runnable{
+            arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable{
                 ScreenManager.setScreen(GAME_OVER)
             })
 

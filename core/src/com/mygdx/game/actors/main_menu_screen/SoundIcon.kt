@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
@@ -71,14 +72,18 @@ class SoundIcon(manager : AssetManager) : GameActor(), Animated {
         batch.draw(soundIcon, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
     }
 
-    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+    override fun animate(type: AnimationType, runAfter: Runnable) {
         val animDuration = Config.BUTTONS_ANIMATION_TIME_S / 2
-        val moveToOutside = if(isReverse){
-            moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
-        }else{
-            val y = 50f
-            moveTo(x, y, animDuration)
+        val action = when(type) {
+            AnimationType.HIDE_FROM_SCENE -> {
+                moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+            }
+            AnimationType.SHOW_ON_SCENE -> {
+                val y = 50f
+                moveTo(x, y, animDuration)
+            }
+            else -> return
         }
-        addAction(moveToOutside)
+        addAction(action)
     }
 }

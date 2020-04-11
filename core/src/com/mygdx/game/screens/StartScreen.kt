@@ -15,6 +15,7 @@ import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
@@ -62,22 +63,23 @@ class StartScreen : Screen {
 
         stage.addActor(background)
         stage.addActor(title)
-        title.animate()
         stage.addActor(soundIcon)
-        soundIcon.animate()
         stage.addActor(vibrationIcon)
-        vibrationIcon.animate()
         stage.addActor(playButton)
-        playButton.animate()
         stage.addActor(shadow)
-        shadow.animate()
+
+        title.animate(AnimationType.SHOW_ON_SCENE)
+        soundIcon.animate(AnimationType.SHOW_ON_SCENE)
+        vibrationIcon.animate(AnimationType.SHOW_ON_SCENE)
+        playButton.animate(AnimationType.SHOW_ON_SCENE)
+        shadow.animate(AnimationType.SHOW_ON_SCENE)
 
         addClickListener(playButton) {
-            playButton.animate(true)
-            title.animate(true)
-            soundIcon.animate(true)
-            vibrationIcon.animate(true)
-            shadow.animate(true, Runnable {
+            playButton.animate(AnimationType.HIDE_FROM_SCENE)
+            title.animate(AnimationType.HIDE_FROM_SCENE)
+            soundIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            vibrationIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(GAME_SCREEN)
                 AudioManager.stopAll()
             })

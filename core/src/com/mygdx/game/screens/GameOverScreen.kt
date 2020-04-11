@@ -17,6 +17,7 @@ import com.mygdx.game.actors.game_over_screen.MainMenuIcon
 import com.mygdx.game.actors.game_over_screen.RestartIcon
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
@@ -61,30 +62,31 @@ class GameOverScreen : Screen {
 
         stage.addActor(background)
         stage.addActor(title)
-        title.animate()
         stage.addActor(restartIcon)
-        restartIcon.animate()
         stage.addActor(mainMenuIcon)
-        mainMenuIcon.animate()
         stage.addActor(shadow)
-        shadow.animate()
+
+        title.animate(AnimationType.SHOW_ON_SCENE)
+        restartIcon.animate(AnimationType.SHOW_ON_SCENE)
+        mainMenuIcon.animate(AnimationType.SHOW_ON_SCENE)
+        shadow.animate(AnimationType.SHOW_ON_SCENE)
         AudioManager.play(MAIN_MENU_MUSIC)
 
         addClickListener(restartIcon) {
             AudioManager.stopAll()
-            title.animate(true)
-            restartIcon.animate(true)
-            mainMenuIcon.animate(true)
-            shadow.animate(true, Runnable {
+            title.animate(AnimationType.HIDE_FROM_SCENE)
+            restartIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            mainMenuIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(GAME_SCREEN)
             })
         }
 
         addClickListener(mainMenuIcon) {
-            title.animate(true)
-            restartIcon.animate(true)
-            mainMenuIcon.animate(true)
-            shadow.animate(true, Runnable {
+            title.animate(AnimationType.HIDE_FROM_SCENE)
+            restartIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            mainMenuIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(START_SCREEN)
             })
         }

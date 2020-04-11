@@ -7,10 +7,9 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.mygdx.game.Config
-import com.mygdx.game.api.Animated
 import com.mygdx.game.api.GameActor
 
-class Background(manager : AssetManager) : GameActor(), Animated {
+class Background(manager : AssetManager) : GameActor() {
     private val backgroundTexture = manager.get(Descriptors.background)
     //private val textureOther = manager.get(Descriptors.environment)
     private val textureMenu = manager.get(Descriptors.menu)
@@ -48,9 +47,5 @@ class Background(manager : AssetManager) : GameActor(), Animated {
     private fun drawBlur(batch: Batch){
         batch.draw(blurRegion, 0f, 0f, Gdx.graphics.width.toFloat(),
                 Gdx.graphics.height.toFloat())
-    }
-
-    override fun animate(isReverse: Boolean, runAfter: Runnable) {
-
     }
 }

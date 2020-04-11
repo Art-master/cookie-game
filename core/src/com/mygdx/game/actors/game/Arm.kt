@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -19,7 +20,7 @@ import com.mygdx.game.api.Physical
 import java.util.*
 import kotlin.random.Random as RandomK
 
-class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Physical, Animated {
+class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Physical, Animated {
 
     private val texture = manager.get(Descriptors.environment)
     private val handRegion = texture.findRegion(Assets.EnvironmentAtlas.HAND)
@@ -33,7 +34,7 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Phy
 
     private val random = Random()
     private var runTime = 0f
-    private val initPosition = Vector2(0f , Gdx.graphics.height/3f)
+    private val initPosition = Vector2(0f, Gdx.graphics.height / 3f)
     private var limitX: Float = 0.0f
     private var limitY: Float = 0.0f
     private var moveToAction = MoveToAction()
@@ -51,14 +52,14 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Phy
         updateAnimationTimerIfNeed()
     }
 
-    private fun updateAnimationTimerIfNeed(){
-        if(isTimerNeedRestart){
+    private fun updateAnimationTimerIfNeed() {
+        if (isTimerNeedRestart) {
             isTimerNeedRestart = false
             setAnimationHandTimer()
         }
     }
 
-    private fun setAnimationHandTimer(){
+    private fun setAnimationHandTimer() {
         val handAnimationDurationTask = object : TimerTask() {
             override fun run() {
                 handAnim.frameDuration = RandomK.nextDouble(0.05, 0.2).toFloat()
@@ -71,17 +72,17 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Phy
 
     override fun act(delta: Float) {
         super.act(delta)
-        if(actions.isEmpty) setMoveAction()
+        if (actions.isEmpty) setMoveAction()
         updateFinishAnimationIfNeed()
         updateAnimationTimerIfNeed()
         runTime += delta
     }
 
-    private fun updateFinishAnimationIfNeed(){
+    private fun updateFinishAnimationIfNeed() {
         moveToCatchCookieAnimation?.setPosition(cookie.x - 120, cookie.y + 40)
     }
 
-    private fun setMoveAction(){
+    private fun setMoveAction() {
         moveToAction = MoveToAction()
         limitX = -getLimit()
         limitY = getLimit()
@@ -91,18 +92,21 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Phy
         this.addAction(moveToAction)
     }
 
-    private fun getLimit(max : Int = 50): Float{
+    private fun getLimit(max: Int = 50): Float {
         return random.nextInt(max).toFloat()
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if(isFinalAnimation.not()){
+        if (isFinalAnimation.not()) {
             currentFrame = handAnim.getKeyFrame(runTime)
         }
-
-        val width = currentFrame.regionWidth.toFloat()
-        val height =  currentFrame.regionHeight.toFloat()
         drawProlongationHand(batch!!)
+        drawHand(batch)
+    }
+
+    private fun drawHand(batch: Batch) {
+        val width = currentFrame.regionWidth.toFloat()
+        val height = currentFrame.regionHeight.toFloat()
         batch.draw(currentFrame, x, y, width, height)
     }
 
@@ -110,8 +114,8 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Phy
         val region = prolongationArmRegion
         val width = region.originalWidth.toFloat()
         val height = region.originalHeight.toFloat()
-        val y = if(isFinalHandBackAnimation) {
-            y+23 // fit to hand
+        val y = if (isFinalHandBackAnimation) {
+            y + 23 // fit to hand
         } else y
         batch.draw(region, x - region.originalWidth, y + 73, width, height)
     }
@@ -120,26 +124,28 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Phy
         return Rectangle(x, y, width, height)
     }
 
-    override fun animate(isReverse: Boolean, runAfter: Runnable) {
-       val sequence = if(isReverse){
-           isFinalAnimation = true
-           catchCookieAnimation(runAfter)
-        }else{
-           showArmAnimation(runAfter)
+    override fun animate(type: AnimationType, runAfter: Runnable) {
+        val sequence = when (type) {
+            AnimationType.HIDE_FROM_SCENE -> {
+                isFinalAnimation = true
+                catchCookieAnimation(runAfter)
+            }
+            AnimationType.SHOW_ON_SCENE -> showArmAnimation(runAfter)
+            else -> return
         }
         addAction(sequence)
     }
 
-    fun startRepeatableMove(){
+    fun startRepeatableMove() {
         actions.clear()
         setMoveAction()
     }
 
     private fun showArmAnimation(runAfter: Runnable): SequenceAction? {
-       val animDuration = 2f
-       val move = Actions.moveTo(initPosition.x, initPosition.y, animDuration)
-       val run = Actions.run(runAfter)
-       return Actions.sequence(move, run)
+        val animDuration = 2f
+        val move = Actions.moveTo(initPosition.x, initPosition.y, animDuration)
+        val run = Actions.run(runAfter)
+        return Actions.sequence(move, run)
     }
 
     private fun catchCookieAnimation(runAfter: Runnable): SequenceAction? {
@@ -147,7 +153,7 @@ class Arm(manager : AssetManager, private val cookie: Cookie) : GameActor(), Phy
         currentFrame = handRegion
         moveToCatchCookieAnimation = Actions.moveTo(0f, 0f, animDuration)
         updateFinishAnimationIfNeed()
-        val runAfterMove =  Actions.run {
+        val runAfterMove = Actions.run {
             cookie.remove()
             currentFrame = catchCookieRegion
             isFinalHandBackAnimation = true

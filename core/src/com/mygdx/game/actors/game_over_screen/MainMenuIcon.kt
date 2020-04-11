@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.Config
 import com.mygdx.game.Prefs
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -93,14 +94,19 @@ class MainMenuIcon(manager : AssetManager) : GameActor(), Animated {
         batch.draw(buttonPlay, x, y, originX, originY, iconWidth, iconHeight, scaleX, scaleY, 0f)
     }
 
-    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+    override fun animate(type: AnimationType, runAfter: Runnable) {
         val animDuration = Config.SHADOW_ANIMATION_TIME_S
-        val moveToOutside = if(isReverse){
-            Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
-        }else{
-            val y = 100f
-            Actions.moveTo(x, y, animDuration)
+
+        val animation = when(type){
+            AnimationType.HIDE_FROM_SCENE -> {
+                Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+            }
+            AnimationType.SHOW_ON_SCENE -> {
+                val y = 100f
+                Actions.moveTo(x, y, animDuration)
+            }
+            else -> return
         }
-        addAction(moveToOutside)
+        addAction(animation)
     }
 }

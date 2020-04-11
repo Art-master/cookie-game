@@ -11,6 +11,7 @@ import com.mygdx.game.Config.SHADOW_ANIMATION_TIME_S
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.AnimationType
 
 class Shadow(manager : AssetManager) : Actor(), Animated {
     private val texture = manager.get(Descriptors.menu)
@@ -35,17 +36,19 @@ class Shadow(manager : AssetManager) : Actor(), Animated {
         batch.setColor(color.r, color.g, color.b, 1f)
     }
 
-    override fun animate(isReverse: Boolean, runAfter: Runnable) {
+    override fun animate(type: AnimationType, runAfter: Runnable) {
         val animDuration = SHADOW_ANIMATION_TIME_S
-        val moveToOutside = if(isReverse){
-            Actions.alpha(1f, animDuration)
-        }else{
-            val color = color
-            setColor(color.r, color.g, color.b, 1f)
-            Actions.alpha(0f, animDuration)
+        val action = when(type) {
+            AnimationType.HIDE_FROM_SCENE -> Actions.alpha(1f, animDuration)
+            AnimationType.SHOW_ON_SCENE -> {
+                val color = color
+                setColor(color.r, color.g, color.b, 1f)
+                Actions.alpha(0f, animDuration)
+            }
+            else -> return
         }
         val run = Actions.run(runAfter)
-        val sequence = Actions.sequence(moveToOutside, run)
+        val sequence = Actions.sequence(action, run)
         addAction(sequence)
     }
 }

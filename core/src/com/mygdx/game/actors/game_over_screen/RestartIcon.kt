@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
+import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -73,16 +74,22 @@ class RestartIcon(manager : AssetManager) : GameActor(), Animated {
         batch.draw(buttonPlay, x, y, iconWidth, iconHeight)
     }
 
-    override fun animate(isReverse:Boolean, runAfter: Runnable) {
+    override fun animate(type: AnimationType, runAfter: Runnable) {
         val animDuration = Config.SHADOW_ANIMATION_TIME_S
-        val move = if(isReverse){
-            Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
-        }else{
-            val y = 100f
-            Actions.moveTo(x, y, animDuration)
+
+        val animation = when(type){
+            AnimationType.HIDE_FROM_SCENE -> {
+                Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+            }
+            AnimationType.SHOW_ON_SCENE -> {
+                val y = 100f
+                Actions.moveTo(x, y, animDuration)
+            }
+            else -> return
         }
+
         val run = Actions.run(runAfter)
-        val sequence = Actions.sequence(move, run)
+        val sequence = Actions.sequence(animation, run)
         addAction(sequence)
     }
 }
