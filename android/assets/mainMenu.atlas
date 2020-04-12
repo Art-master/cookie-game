@@ -6,105 +6,105 @@ filter: Nearest,Nearest
 repeat: none
 blackSquare
   rotate: false
-  xy: 465, 516
+  xy: 465, 802
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 blur
   rotate: false
-  xy: 1786, 1393
+  xy: 1786, 1613
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 buttonPlay
   rotate: false
-  xy: 1786, 1396
+  xy: 1786, 1616
   size: 201, 225
   orig: 201, 225
   offset: 0, 0
   index: -1
 circle
   rotate: false
-  xy: 929, 682
+  xy: 2, 80
   size: 328, 328
   orig: 328, 328
   offset: 0, 0
   index: -1
 cookieButton
   rotate: false
-  xy: 465, 519
+  xy: 465, 805
   size: 462, 491
   orig: 462, 491
   offset: 0, 0
   index: -1
 cookieButton2
   rotate: false
-  xy: 2, 515
+  xy: 2, 801
   size: 461, 495
   orig: 461, 495
   offset: 0, 0
   index: -1
 cookieButtonPlayMini
   rotate: false
-  xy: 2, 2
+  xy: 929, 1176
   size: 107, 120
   orig: 107, 120
   offset: 0, 0
   index: -1
 gameOverText
   rotate: false
-  xy: 2, 1012
-  size: 1492, 309
-  orig: 1492, 309
+  xy: 2, 1298
+  size: 1166, 243
+  orig: 1166, 243
   offset: 0, 0
   index: -1
 mainMenuButton
   rotate: false
-  xy: 1496, 1182
+  xy: 1170, 1402
   size: 141, 139
   orig: 141, 139
   offset: 0, 0
   index: -1
 replayButton
   rotate: false
-  xy: 2, 124
+  xy: 2, 410
   size: 326, 389
   orig: 326, 389
   offset: 0, 0
   index: -1
 soundOff
   rotate: false
-  xy: 330, 437
+  xy: 2, 2
   size: 97, 76
   orig: 97, 76
   offset: 0, 0
   index: -1
 soundOn
   rotate: false
-  xy: 1496, 1104
+  xy: 1313, 1465
   size: 90, 76
   orig: 90, 76
   offset: 0, 0
   index: -1
 title
   rotate: false
-  xy: 2, 1323
+  xy: 2, 1543
   size: 1782, 298
   orig: 1782, 298
   offset: 0, 0
   index: -1
 vibrOff
   rotate: false
-  xy: 1259, 937
+  xy: 1170, 1327
   size: 98, 73
   orig: 98, 73
   offset: 0, 0
   index: -1
 vibrOn
   rotate: false
-  xy: 929, 607
+  xy: 330, 726
   size: 98, 73
   orig: 98, 73
   offset: 0, 0

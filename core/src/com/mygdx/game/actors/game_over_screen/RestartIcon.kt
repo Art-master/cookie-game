@@ -25,7 +25,7 @@ class RestartIcon(manager : AssetManager) : GameActor(), Animated {
     private var centerY = 0f
 
     init {
-        x = 200f
+        x = 100f
         y = -Gdx.graphics.height.toFloat()
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()

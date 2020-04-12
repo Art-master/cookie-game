@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 class Parameters {
     companion object{
         val scoreFontParams = FreetypeFontLoader.FreeTypeFontLoaderParameter().apply {
-            fontFileName = Assets.Fonts.NAME
+            fontFileName = Assets.Fonts.SCORE_FONT
             fontParameters.color = Color.YELLOW
             fontParameters.shadowOffsetX = -5
             fontParameters.shadowOffsetY = 5

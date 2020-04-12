@@ -18,7 +18,9 @@ import com.mygdx.game.actors.game_over_screen.RestartIcon
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.game_over_screen.Scores
 import com.mygdx.game.actors.main_menu_screen.*
+import com.mygdx.game.api.Animated
 import com.mygdx.game.api.AnimationType
+import com.mygdx.game.api.AnimationType.*
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
@@ -72,27 +74,30 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
             addActor(scores)
         }
 
-        title.animate(AnimationType.SHOW_ON_SCENE)
-        restartIcon.animate(AnimationType.SHOW_ON_SCENE)
-        mainMenuIcon.animate(AnimationType.SHOW_ON_SCENE)
-        shadow.animate(AnimationType.SHOW_ON_SCENE)
+        title.animate(SHOW_ON_SCENE)
+        restartIcon.animate(SHOW_ON_SCENE)
+        mainMenuIcon.animate(SHOW_ON_SCENE)
+        shadow.animate(SHOW_ON_SCENE)
+        scores.animate(SHOW_ON_SCENE)
         AudioManager.play(MAIN_MENU_MUSIC)
 
         addClickListener(restartIcon) {
             AudioManager.stopAll()
-            title.animate(AnimationType.HIDE_FROM_SCENE)
-            restartIcon.animate(AnimationType.HIDE_FROM_SCENE)
-            mainMenuIcon.animate(AnimationType.HIDE_FROM_SCENE)
-            shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
+            title.animate(HIDE_FROM_SCENE)
+            restartIcon.animate(HIDE_FROM_SCENE)
+            mainMenuIcon.animate(HIDE_FROM_SCENE)
+            scores.animate(HIDE_FROM_SCENE)
+            shadow.animate(HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(GAME_SCREEN)
             })
         }
 
         addClickListener(mainMenuIcon) {
-            title.animate(AnimationType.HIDE_FROM_SCENE)
-            restartIcon.animate(AnimationType.HIDE_FROM_SCENE)
-            mainMenuIcon.animate(AnimationType.HIDE_FROM_SCENE)
-            shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
+            title.animate(HIDE_FROM_SCENE)
+            restartIcon.animate(HIDE_FROM_SCENE)
+            mainMenuIcon.animate(HIDE_FROM_SCENE)
+            scores.animate(HIDE_FROM_SCENE)
+            shadow.animate(HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(START_SCREEN)
             })
         }

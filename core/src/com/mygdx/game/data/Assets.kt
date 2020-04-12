@@ -76,7 +76,7 @@ class Assets {
 
     class Fonts{
         companion object{
-            const val NAME = "fonts/Arkipelago.ttf"
+            const val SCORE_FONT = "fonts/Arkipelago.ttf"
         }
     }
 }

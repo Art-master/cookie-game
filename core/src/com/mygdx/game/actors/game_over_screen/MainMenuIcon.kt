@@ -31,7 +31,7 @@ class MainMenuIcon(manager : AssetManager) : GameActor(), Animated {
     private var centerY = 0f
 
     init {
-        x = 1200f
+        x = 1300f
         y = -Gdx.graphics.height.toFloat()
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
