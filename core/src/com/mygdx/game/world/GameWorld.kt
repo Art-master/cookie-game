@@ -39,13 +39,16 @@ class GameWorld(private val manager : AssetManager) {
     private val score = Score(manager)
     private val arm = Arm(manager, cookie)
     private val items = TableItems(manager, table, cookie)
-    val actors : Array<Actor> = Array.with(background, cupboard, shadow, sky, moon, city, window, flower, table, cookie, arm, score)
+    val actors : Array<Actor> = Array()
 
     private var touchable = true
     private var isGameOver = false
 
     init {
+        actors.addAll(background, cupboard, shadow, sky, moon, city, window, flower, table)
         actors.addAll(items.getActors())
+        actors.addAll(cookie, arm, score)
+
         addActorsToStage()
         startInitAnimation()
         stopMoveAllActors()

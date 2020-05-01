@@ -50,6 +50,10 @@ class Assets {
             const val HAND = "hand"
             const val PROLONGATION_HAND = "prolongationHand"
             const val CATCH_COOKIE = "catch_cookie"
+            const val BOX1 = "box1"
+            const val BOX2 = "box2"
+            const val BOX3 = "box3"
+            const val BOX4 = "box4"
         }
     }
 

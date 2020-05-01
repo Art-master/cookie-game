@@ -157,17 +157,17 @@ class Cookie(manager : AssetManager,
     }
 
     private fun isAfter(obj : RandomTableItem) : Boolean{
-        val tailObj = obj.x + obj.width
+        val tailObj = obj.getBoundsRect().x + obj.getBoundsRect().width
         return x >= tailObj && x < tailObj + 30f
     }
 
     private fun getTailX() = x + width
-    private fun isHigherThen(obj : RandomTableItem) = y > obj.y + obj.height - 30
+    private fun isHigherThen(obj : RandomTableItem) = y > obj.getBoundsRect().y + obj.getBoundsRect().height - 30
     private fun setOnTop(obj : RandomTableItem) {
         resetState()
-        position.y = obj.y + obj.height
+        position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
     }
-    private fun againstThe(obj : RandomTableItem) {position.x = obj.x - width}
+    private fun againstThe(obj : RandomTableItem) {position.x = obj.getBoundsRect().x - width}
 
     override fun getBoundsRect() = rectangle
 
