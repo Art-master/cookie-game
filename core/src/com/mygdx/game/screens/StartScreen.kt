@@ -18,7 +18,7 @@ import com.mygdx.game.api.AnimationType
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
-import com.mygdx.game.managers.AudioManager.Sounds
+import com.mygdx.game.managers.AudioManager.Sound
 
 class StartScreen : Screen {
     private val manager = AssetManager()
@@ -91,7 +91,7 @@ class StartScreen : Screen {
         actor.addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 function()
-                AudioManager.play(Sounds.CRUNCH)
+                AudioManager.play(Sound.CRUNCH)
                 return super.touchDown(event, x, y, pointer, button)
             }
         })

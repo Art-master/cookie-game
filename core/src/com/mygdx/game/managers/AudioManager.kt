@@ -2,7 +2,6 @@ package com.mygdx.game.managers
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.utils.GdxRuntimeException
 import com.mygdx.game.Config
 import com.mygdx.game.Prefs
@@ -10,7 +9,7 @@ import com.mygdx.game.Prefs
 object AudioManager {
 
     interface Audio
-    enum class Sounds(val fileName: String, val volume: Float = 1f) : Audio {
+    enum class Sound(val fileName: String, val volume: Float = 1f) : Audio {
         CLICK_SOUND("click.mp3", 0.3f),
         CRUNCH("crunch.mp3", 0.3f)
     }
@@ -29,11 +28,11 @@ object AudioManager {
             prefs.flush()
         }
 
-    private val sounds = HashMap<String, Sound?>()
+    private val sounds = HashMap<String, com.badlogic.gdx.audio.Sound?>()
     private val music = HashMap<String, Music?>()
 
     init {
-        for(sound in Sounds.values()){
+        for(sound in Sound.values()){
             sounds[sound.name] = getSound(sound)
         }
 
@@ -42,13 +41,13 @@ object AudioManager {
         }
     }
 
-    private fun getSound(sound: Sounds):Sound? {
-        var audio: Sound? = null
+    private fun getSound(sound: Sound): com.badlogic.gdx.audio.Sound? {
+        var audio: com.badlogic.gdx.audio.Sound? = null
         try {
             val file = Gdx.files.internal("${Config.SOUNDS_FOLDER}/${sound.fileName}")
             audio = Gdx.audio.newSound(file)
         } catch (e: GdxRuntimeException){
-            Gdx.app.log("Sounds file load error", e.message)
+            Gdx.app.log("Sound file load error", e.message)
         }
         return audio
     }
@@ -71,7 +70,7 @@ object AudioManager {
 
     fun play(audio: Audio, isLooping: Boolean = false) {
         if(isMusicEnable.not()) return
-        if(audio is Sounds){
+        if(audio is Sound){
             sounds[audio.name]?.play(audio.volume)
         }else if(audio is MusicApp){
             music[audio.name]?.apply {
@@ -83,7 +82,7 @@ object AudioManager {
     }
 
     fun stop(audio: Audio) {
-        if(audio is Sounds){
+        if(audio is Sound){
             sounds[audio.name]?.stop()
         }else if(audio is MusicApp){
             music[audio.name]?.stop()

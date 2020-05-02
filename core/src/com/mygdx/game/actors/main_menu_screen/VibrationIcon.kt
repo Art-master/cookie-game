@@ -15,7 +15,7 @@ import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
-import com.mygdx.game.managers.AudioManager.Sounds
+import com.mygdx.game.managers.AudioManager.Sound
 import com.mygdx.game.managers.VibrationManager
 
 class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animated {
@@ -45,7 +45,7 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 VibrationManager.switchVibrationSetting()
                 VibrationManager.vibrate()
-                AudioManager.play(Sounds.CLICK_SOUND)
+                AudioManager.play(Sound.CLICK_SOUND)
                 changeVibrationIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }

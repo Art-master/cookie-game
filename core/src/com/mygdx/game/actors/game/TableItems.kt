@@ -24,7 +24,7 @@ class TableItems(private val manager : AssetManager,
         for(i in 0 until randomItemNum){
             val actor = RandomTableItem(manager, table, cookie)
             actor.distanceUntil = random.nextInt(minDistance, limitDistance)
-            if(i > 0)actor.prevActor = actionItems.get(i -1)
+            if(i > 0)actor.prevActor = actionItems.get(i - 1)
             actor.callback = object : Callback{
                 override fun call() {
                     actor.distanceUntil = random.nextInt(minDistance, limitDistance)

@@ -147,6 +147,7 @@ class Cookie(manager : AssetManager,
         if(collides(obj)){
              if(isHigherThen(obj)){
                  setOnTop(obj)
+                 obj.jumpedOn()
             }else{
                  againstThe(obj)
             }

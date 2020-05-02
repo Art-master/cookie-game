@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.managers.AudioManager
 import java.util.*
 
 class RandomTableItem(manager : AssetManager,
@@ -27,6 +28,7 @@ class RandomTableItem(manager : AssetManager,
 
     private lateinit var scroller: Scrolled
 
+    private val jumpOnSound = ""
     var startAct = false
     var distanceUntil = 100
     var prevActor: RandomTableItem? = null
@@ -45,15 +47,8 @@ class RandomTableItem(manager : AssetManager,
 
     override fun act(delta: Float) {
         super.act(delta)
-
         checkDistance()
         if(startAct){
-            cookie.checkCollides(this)
-            updateCoordinates()
-            scroller.update(delta)
-            updateBound()
-            isGoThrough(cookie)
-
             if(scroller.isScrolledLeft){
                 startAct = false
                 isScored = false
@@ -61,6 +56,11 @@ class RandomTableItem(manager : AssetManager,
                 resetScroller()
                 callback!!.call()
             }
+            cookie.checkCollides(this)
+            updateCoordinates()
+            scroller.update(delta)
+            updateBound()
+            isGoThrough(cookie)
         }
     }
 
@@ -171,6 +171,12 @@ class RandomTableItem(manager : AssetManager,
 
     override fun runMove() {
         scroller.isStopMove = false
+    }
+
+    fun jumpedOn(){
+        if(jumpOnSound.isEmpty()) {
+            AudioManager.play(AudioManager.Sound.CRUNCH)
+        }
     }
 
     override fun getBoundsRect() = bound

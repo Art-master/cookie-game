@@ -11,7 +11,7 @@ open class Scrolled (val originX: Float, val originY: Float, val width: Int, val
     open fun update(delta: Float) {
         if(!isStopMove) position.add(velocity.cpy().scl(delta))
 
-        if (position.x + width < 0) isScrolledLeft = true
+        if (getTailX() < 0) isScrolledLeft = true
     }
     open fun reset(newX: Float) {
         position.x = newX

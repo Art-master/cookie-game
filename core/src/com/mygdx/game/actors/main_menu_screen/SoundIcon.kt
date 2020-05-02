@@ -16,7 +16,7 @@ import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
-import com.mygdx.game.managers.AudioManager.Sounds
+import com.mygdx.game.managers.AudioManager.Sound
 
 
 class SoundIcon(manager : AssetManager) : GameActor(), Animated {
@@ -45,7 +45,7 @@ class SoundIcon(manager : AssetManager) : GameActor(), Animated {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 AudioManager.switchSoundSetting()
                 AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
-                AudioManager.play(Sounds.CLICK_SOUND)
+                AudioManager.play(Sound.CLICK_SOUND)
                 changeSoundIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }
