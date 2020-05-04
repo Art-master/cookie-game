@@ -142,7 +142,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     private fun showArmAnimation(runAfter: Runnable): SequenceAction? {
-        val animDuration = 2f
+        val animDuration = 3f
         val move = Actions.moveTo(initPosition.x, initPosition.y, animDuration)
         val run = Actions.run(runAfter)
         return Actions.sequence(move, run)

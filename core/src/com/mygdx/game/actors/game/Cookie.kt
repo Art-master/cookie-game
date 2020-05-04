@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.managers.AudioManager
 
 class Cookie(manager : AssetManager,
              private val startY: Float,
@@ -123,6 +124,7 @@ class Cookie(manager : AssetManager,
 
     fun startJumpForce() {
         if(state == State.RUN && isStartingAnimation.not()){
+            AudioManager.play(AudioManager.Sound.JUMP)
             startJumpY = y
             state = State.JUMP
             runTime = 0f
@@ -174,7 +176,7 @@ class Cookie(manager : AssetManager,
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
         if(type == AnimationType.SHOW_ON_SCENE){
-            val animDuration = 2f
+            val animDuration = 3f
             val move = Actions.moveTo(startX, startY, animDuration)
             val run = Actions.run { isStartingAnimation = false }
             val run2 = Actions.run(runAfter)

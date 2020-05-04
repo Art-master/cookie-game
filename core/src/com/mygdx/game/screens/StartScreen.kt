@@ -54,7 +54,8 @@ class StartScreen : Screen {
     private fun addActorsToStage(){
         val background = Background(manager)
         val title = MainTitle(manager)
-        val soundIcon = SoundIcon(manager)
+        val soundIcon = MusicIcon(manager)
+        val musicIcon = SoundIcon(manager, soundIcon)
         val vibrationIcon = VibrationIcon(manager, soundIcon)
         val playButton = PlayButton(manager)
         val shadow = Shadow(manager)
@@ -63,6 +64,7 @@ class StartScreen : Screen {
             addActor(background)
             addActor(title)
             addActor(soundIcon)
+            addActor(musicIcon)
             addActor(vibrationIcon)
             addActor(playButton)
             addActor(shadow)
@@ -70,6 +72,7 @@ class StartScreen : Screen {
 
         title.animate(AnimationType.SHOW_ON_SCENE)
         soundIcon.animate(AnimationType.SHOW_ON_SCENE)
+        musicIcon.animate(AnimationType.SHOW_ON_SCENE)
         vibrationIcon.animate(AnimationType.SHOW_ON_SCENE)
         playButton.animate(AnimationType.SHOW_ON_SCENE)
         shadow.animate(AnimationType.SHOW_ON_SCENE)
@@ -78,6 +81,7 @@ class StartScreen : Screen {
             playButton.animate(AnimationType.HIDE_FROM_SCENE)
             title.animate(AnimationType.HIDE_FROM_SCENE)
             soundIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            musicIcon.animate(AnimationType.HIDE_FROM_SCENE)
             vibrationIcon.animate(AnimationType.HIDE_FROM_SCENE)
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(GAME_SCREEN)

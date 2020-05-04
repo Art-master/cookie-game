@@ -11,6 +11,7 @@ import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.AudioManager.Sound
 import java.util.*
 
 class RandomTableItem(manager : AssetManager,
@@ -28,7 +29,7 @@ class RandomTableItem(manager : AssetManager,
 
     private lateinit var scroller: Scrolled
 
-    private val jumpOnSound = ""
+    private var jumpOnSound = Sound.NONE
     var startAct = false
     var distanceUntil = 100
     var prevActor: RandomTableItem? = null
@@ -93,6 +94,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 100 - 92
                 startBound = Rectangle(92f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 25f
+                jumpOnSound = Sound.JUMP_ON_BOX
             }
             2 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
@@ -100,6 +102,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 90 - 32
                 startBound = Rectangle(32f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 35f
+                jumpOnSound = Sound.JUMP_ON_BOX
             }
             3 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX3)
@@ -107,6 +110,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 35
                 startBound = Rectangle(0f, 70f, boundWidth, boundHeight)
                 y = table.worktopY - 70
+                jumpOnSound = Sound.JUMP_ON_BOX
             }
             4 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX4)
@@ -114,6 +118,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 10
                 startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
                 y = table.worktopY - 25
+                jumpOnSound = Sound.JUMP_ON_BOX
             }
             5 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.MILK_BOX)
@@ -121,6 +126,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat()
                 startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
                 y = table.worktopY
+                jumpOnSound = Sound.JUMP_ON_BOX
             }
             //1 -> texture.findRegion(Assets.EnvironmentAtlas.LIME)
             //2 -> texture.findRegion(Assets.EnvironmentAtlas.APPLE)
@@ -174,9 +180,8 @@ class RandomTableItem(manager : AssetManager,
     }
 
     fun jumpedOn(){
-        if(jumpOnSound.isEmpty()) {
-            AudioManager.play(AudioManager.Sound.CRUNCH)
-        }
+        if(jumpOnSound == Sound.NONE) return
+        AudioManager.play(jumpOnSound)
     }
 
     override fun getBoundsRect() = bound

@@ -30,11 +30,10 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
     private var centerY = 0f
 
     init {
-        val soundPosX = sound.x + sound.width
-        x = soundPosX + 100f
-        y = sound.y
         width = region.originalWidth/3f
         height = region.originalHeight/3f
+        x = Gdx.graphics.width - sound.x - width
+        y = sound.y
 
         addClickListener()
         changeVibrationIcon()

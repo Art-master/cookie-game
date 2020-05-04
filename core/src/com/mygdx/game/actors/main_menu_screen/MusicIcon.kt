@@ -19,7 +19,7 @@ import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.AudioManager.Sound
 
 
-class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animated {
+class MusicIcon(manager : AssetManager) : GameActor(), Animated {
     private val texture = manager.get(Descriptors.menu)
     private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
     private val soundOnRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ON)
@@ -31,29 +31,29 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
 
     init {
         isVibrating = true
-        x = sound.right + 100f
-        y = sound.y
+        x = 100f
+        y = -Gdx.graphics.height.toFloat()
         width = region.originalWidth/3f
         height = region.originalHeight/3f
 
         addClickListener()
-        changeSoundIcon()
+        changeMusicIcon()
     }
 
     private fun addClickListener(){
         addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                AudioManager.switchSoundSetting()
+                AudioManager.switchMusicSetting()
                 AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
                 AudioManager.play(Sound.CLICK_SOUND)
-                changeSoundIcon()
+                changeMusicIcon()
                 return super.touchDown(event, x, y, pointer, button)
             }
         })
     }
 
-    private fun changeSoundIcon(){
-        soundIcon = if(AudioManager.isSoundEnable) soundOnRegion else soundOffRegion
+    private fun changeMusicIcon(){
+        soundIcon = if(AudioManager.isMusicEnable) soundOnRegion else soundOffRegion
     }
 
     override fun act(delta: Float) {

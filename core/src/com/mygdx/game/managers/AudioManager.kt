@@ -10,8 +10,12 @@ object AudioManager {
 
     interface Audio
     enum class Sound(val fileName: String, val volume: Float = 1f) : Audio {
+        NONE("", 0f),
         CLICK_SOUND("click.mp3", 0.3f),
-        CRUNCH("crunch.mp3", 0.3f)
+        CRUNCH("crunch.mp3", 0.3f),
+        JUMP_ON_BOX("jump_on_box.wav"),
+        JUMP("jump.wav"),
+        SCORE("score.wav", 0.3f)
     }
 
     enum class MusicApp(val fileName: String, val volume: Float = 1f) : Audio {
@@ -21,10 +25,17 @@ object AudioManager {
 
     private val prefs = Gdx.app.getPreferences(Prefs.NAME)
 
-    var isMusicEnable = prefs.getBoolean(Prefs.SOUND, true)
+    var isSoundEnable = prefs.getBoolean(Prefs.SOUND, true)
         private set(isEnable) {
             field = isEnable
             prefs.putBoolean(Prefs.SOUND, isEnable)
+            prefs.flush()
+        }
+
+    var isMusicEnable = prefs.getBoolean(Prefs.MUSIC, true)
+        private set(isEnable) {
+            field = isEnable
+            prefs.putBoolean(Prefs.MUSIC, isEnable)
             prefs.flush()
         }
 
@@ -64,15 +75,21 @@ object AudioManager {
     }
 
     fun switchSoundSetting() {
+        isSoundEnable = isSoundEnable.not()
+        if(isSoundEnable.not()) stopAll()
+    }
+
+    fun switchMusicSetting() {
         isMusicEnable = isMusicEnable.not()
         if(isMusicEnable.not()) stopAll()
     }
 
     fun play(audio: Audio, isLooping: Boolean = false) {
-        if(isMusicEnable.not()) return
         if(audio is Sound){
+            if(isSoundEnable.not()) return
             sounds[audio.name]?.play(audio.volume)
         }else if(audio is MusicApp){
+            if(isMusicEnable.not()) return
             music[audio.name]?.apply {
                 play()
                 this.isLooping = isLooping
