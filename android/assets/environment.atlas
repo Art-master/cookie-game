@@ -6,226 +6,233 @@ filter: Nearest,Nearest
 repeat: none
 apple
   rotate: false
-  xy: 1504, 24
+  xy: 2, 490
   size: 204, 210
   orig: 204, 210
   offset: 0, 0
   index: -1
 blueSky
   rotate: false
-  xy: 2044, 1922
+  xy: 2044, 1917
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 box1
   rotate: false
-  xy: 1393, 1122
+  xy: 1393, 1365
   size: 465, 259
   orig: 465, 259
   offset: 0, 0
   index: -1
-box2
-  rotate: false
-  xy: 2, 2
-  size: 370, 232
-  orig: 370, 232
-  offset: 0, 0
-  index: -1
 box4
   rotate: false
-  xy: 1795, 794
+  xy: 1795, 1038
   size: 217, 203
   orig: 217, 203
   offset: 0, 0
   index: -1
 cactus
   rotate: false
-  xy: 1924, 1591
+  xy: 1924, 1586
   size: 103, 173
   orig: 103, 173
   offset: 0, 0
   index: -1
-carrot
+catch_cookie
   rotate: false
-  xy: 1393, 1383
-  size: 474, 246
-  orig: 474, 246
+  xy: 493, 506
+  size: 301, 194
+  orig: 301, 194
   offset: 0, 0
   index: -1
 city
   rotate: false
-  xy: 2, 1631
+  xy: 2, 1626
   size: 1915, 128
   orig: 1915, 128
   offset: 0, 0
   index: -1
+closeDoor
+  rotate: false
+  xy: 1379, 55
+  size: 352, 422
+  orig: 352, 422
+  offset: 0, 0
+  index: -1
 cup
   rotate: false
-  xy: 962, 164
+  xy: 933, 601
   size: 99, 99
   orig: 99, 99
   offset: 0, 0
   index: -1
 cupboard
   rotate: false
-  xy: 362, 265
+  xy: 362, 37
   size: 710, 440
   orig: 710, 440
   offset: 0, 0
   index: -1
 curtainRight
   rotate: false
-  xy: 1393, 236
+  xy: 1393, 479
   size: 400, 884
   orig: 400, 884
   offset: 0, 0
   index: -1
-flowerInPot
-  rotate: false
-  xy: 374, 7
-  size: 282, 256
-  orig: 282, 256
-  offset: 0, 0
-  index: -1
 flowerInPot2
   rotate: false
-  xy: 1860, 1118
+  xy: 1860, 1257
   size: 167, 244
   orig: 167, 244
   offset: 0, 0
   index: -1
 glass
   rotate: false
-  xy: 1853, 538
+  xy: 1795, 782
   size: 153, 254
   orig: 153, 254
   offset: 0, 0
   index: -1
 hand
   rotate: false
-  xy: 1074, 534
+  xy: 1074, 529
   size: 304, 171
   orig: 304, 171
   offset: 0, 0
   index: 6
 hand
   rotate: false
-  xy: 1074, 361
+  xy: 1074, 356
   size: 303, 171
   orig: 303, 171
   offset: 0, 0
   index: 5
 hand
   rotate: false
-  xy: 1074, 188
+  xy: 1074, 183
   size: 303, 171
   orig: 303, 171
   offset: 0, 0
   index: 7
 hand
   rotate: false
-  xy: 658, 8
+  xy: 1074, 3
   size: 302, 178
   orig: 302, 178
   offset: 0, 0
   index: 1
 hand
   rotate: false
-  xy: 1200, 10
+  xy: 1733, 301
   size: 302, 176
   orig: 302, 176
   offset: 0, 0
   index: 2
+hand
+  rotate: false
+  xy: 1733, 127
+  size: 302, 172
+  orig: 302, 172
+  offset: 0, 0
+  index: 3
 jar1
   rotate: false
-  xy: 1924, 1766
+  xy: 1924, 1761
   size: 118, 157
   orig: 118, 157
   offset: 0, 0
   index: -1
 jar2
   rotate: false
-  xy: 1063, 8
+  xy: 796, 522
   size: 135, 178
   orig: 135, 178
   offset: 0, 0
   index: -1
 jar3
   rotate: false
-  xy: 962, 39
+  xy: 1733, 2
   size: 93, 123
   orig: 93, 123
   offset: 0, 0
   index: -1
 lime
   rotate: false
-  xy: 1924, 1925
+  xy: 1924, 1920
   size: 122, 114
   orig: 122, 114
   offset: 0, 0
   index: -1
 milk_box
   rotate: false
-  xy: 1710, 28
+  xy: 208, 494
   size: 141, 206
   orig: 141, 206
   offset: 0, 0
   index: -1
 openDoor
   rotate: false
-  xy: 2, 246
+  xy: 2, 18
   size: 358, 459
   orig: 358, 459
   offset: 0, 0
   index: -1
 orange
   rotate: false
-  xy: 1853, 392
+  xy: 1795, 636
   size: 151, 144
   orig: 151, 144
   offset: 0, 0
   index: -1
 paper
   rotate: false
-  xy: 1795, 999
+  xy: 1860, 1503
   size: 61, 121
   orig: 61, 121
   offset: 0, 0
   index: -1
 salt
   rotate: false
-  xy: 1795, 270
+  xy: 1795, 1243
   size: 60, 120
   orig: 60, 120
   offset: 0, 0
   index: -1
 shadow
   rotate: false
-  xy: 2044, 1919
+  xy: 2044, 1914
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 table
   rotate: false
-  xy: 2, 1761
+  xy: 2, 1756
   size: 1920, 278
   orig: 1920, 278
   offset: 0, 0
   index: -1
+tomato
+  rotate: false
+  xy: 1795, 479
+  size: 142, 155
+  orig: 142, 155
+  offset: 0, 0
+  index: -1
 window
   rotate: false
-  xy: 2, 707
+  xy: 2, 702
   size: 1389, 922
   orig: 1389, 922
   offset: 0, 0
   index: -1
 yogurt_box
   rotate: false
-  xy: 1869, 1364
-  size: 175, 225
-  orig: 175, 225
+  xy: 351, 495
+  size: 140, 205
+  orig: 140, 205
   offset: 0, 0
   index: -1
 
@@ -234,65 +241,51 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+box2
+  rotate: false
+  xy: 1202, 1792
+  size: 370, 232
+  orig: 370, 232
+  offset: 0, 0
+  index: -1
 box3
   rotate: false
-  xy: 1202, 1464
+  xy: 402, 859
   size: 256, 285
   orig: 256, 285
   offset: 0, 0
   index: -1
-catch_cookie
-  rotate: false
-  xy: 402, 523
-  size: 301, 194
-  orig: 301, 194
-  offset: 0, 0
-  index: -1
-closeDoor
-  rotate: false
-  xy: 402, 719
-  size: 352, 422
-  orig: 352, 422
-  offset: 0, 0
-  index: -1
 curtainLeft
   rotate: false
-  xy: 2, 257
+  xy: 2, 260
   size: 398, 884
   orig: 398, 884
   offset: 0, 0
   index: -1
-hand
+flowerInPot
   rotate: false
-  xy: 756, 969
-  size: 302, 172
-  orig: 302, 172
+  xy: 2, 2
+  size: 282, 256
+  orig: 282, 256
   offset: 0, 0
-  index: 3
+  index: -1
 hand
   rotate: false
-  xy: 1460, 1578
+  xy: 1574, 1853
   size: 302, 171
   orig: 302, 171
   offset: 0, 0
   index: 4
 moon
   rotate: false
-  xy: 2, 1143
+  xy: 2, 1146
   size: 1198, 878
   orig: 1198, 878
   offset: 0, 0
   index: -1
-pie
-  rotate: false
-  xy: 1202, 1751
-  size: 571, 270
-  orig: 571, 270
-  offset: 0, 0
-  index: -1
 prolongationHand
   rotate: false
-  xy: 2, 2
+  xy: 1202, 1537
   size: 280, 253
   orig: 280, 253
   offset: 0, 0

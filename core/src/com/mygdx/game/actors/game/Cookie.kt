@@ -168,6 +168,7 @@ class Cookie(manager : AssetManager,
     private fun isHigherThen(obj : RandomTableItem) = y > obj.getBoundsRect().y + obj.getBoundsRect().height - 30
     private fun setOnTop(obj : RandomTableItem) {
         resetState()
+        obj.animate(AnimationType.ITEM_SQUASH)
         position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
     }
     private fun againstThe(obj : RandomTableItem) {position.x = obj.getBoundsRect().x - width}

@@ -5,8 +5,11 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.mygdx.game.Config
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -16,7 +19,7 @@ import java.util.*
 
 class RandomTableItem(manager : AssetManager,
                       private val table : Table,
-                      private val cookie : Cookie) : GameActor(), Scrollable, Physical{
+                      private val cookie : Cookie) : GameActor(), Scrollable, Physical, Animated{
 
     private val rand = Random()
     private val texture = manager.get(Descriptors.environment)
@@ -87,7 +90,7 @@ class RandomTableItem(manager : AssetManager,
     }
 
     private fun setRandomItem(){
-        when(rand.nextInt(6)){
+        when(rand.nextInt(11)){
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
@@ -128,12 +131,47 @@ class RandomTableItem(manager : AssetManager,
                 y = table.worktopY
                 jumpOnSound = Sound.JUMP_ON_BOX
             }
-            //1 -> texture.findRegion(Assets.EnvironmentAtlas.LIME)
-            //2 -> texture.findRegion(Assets.EnvironmentAtlas.APPLE)
-            //4 -> texture.findRegion(Assets.EnvironmentAtlas.YOGURT_BOX)
+            6 -> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.YOGURT_BOX)
+                val boundHeight = region.originalHeight.toFloat()
+                val boundWidth = region.originalWidth.toFloat()
+                startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
+                y = table.worktopY
+                jumpOnSound = Sound.JUMP_ON_BOX
+            }
+            7 -> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.TOMATO)
+                val boundHeight = region.originalHeight.toFloat() -40
+                val boundWidth = region.originalWidth.toFloat() -50
+                startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
+                y = table.worktopY -20
+                jumpOnSound = Sound.JUMP_ON_BOX
+            }
+            8 -> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.APPLE)
+                val boundHeight = region.originalHeight.toFloat() -60
+                val boundWidth = region.originalWidth.toFloat() -80
+                startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
+                y = table.worktopY -20
+                jumpOnSound = Sound.JUMP_ON_BOX
+            }
+            9 -> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.LIME)
+                val boundHeight = region.originalHeight.toFloat() -5
+                val boundWidth = region.originalWidth.toFloat() -80
+                startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
+                y = table.worktopY -20
+                jumpOnSound = Sound.JUMP_ON_BOX
+            }
+            10 -> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.ORANGE)
+                val boundHeight = region.originalHeight.toFloat() -5
+                val boundWidth = region.originalWidth.toFloat() -80
+                startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
+                y = table.worktopY -20
+                jumpOnSound = Sound.JUMP_ON_BOX
+            }
             //1 -> texture.findRegion(Assets.EnvironmentAtlas.GLASS)
-            //6 -> texture.findRegion(Assets.EnvironmentAtlas.PIE)
-            //5 -> texture.findRegion(Assets.EnvironmentAtlas.CARROT)
             else -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
                 val boundHeight = region.originalHeight.toFloat() - 35 - 15
@@ -152,7 +190,9 @@ class RandomTableItem(manager : AssetManager,
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if(startAct) batch!!.draw(region, x, y, region.originalWidth.toFloat(), region.originalHeight.toFloat())
+        val width = region.originalWidth.toFloat()
+        val height = region.originalHeight.toFloat()
+        if(startAct) batch!!.draw(region, x, y, x,y,  width, height, scaleX, scaleY, rotation)
 /*        if(startAct){
             shape.setAutoShapeType(true)
             shape.begin()
@@ -185,4 +225,17 @@ class RandomTableItem(manager : AssetManager,
     }
 
     override fun getBoundsRect() = bound
+
+    override fun animate(type: AnimationType, runAfter: Runnable) {
+        val animDuration = 0.1f
+        val action = when(type) {
+            AnimationType.ITEM_SQUASH -> {
+                val act1 = Actions.scaleTo(0.995f, 1f, animDuration, Interpolation.exp10)
+                val act2 = Actions.scaleTo(1f, 1f, animDuration, Interpolation.exp10)
+                Actions.sequence(act1, act2)
+            }
+            else -> return
+        }
+        addAction(action)
+    }
 }

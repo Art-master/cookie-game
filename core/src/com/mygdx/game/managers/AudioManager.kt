@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.utils.GdxRuntimeException
 import com.mygdx.game.Config
 import com.mygdx.game.Prefs
+import com.badlogic.gdx.audio.Sound as SoundGdx
 
 object AudioManager {
 
@@ -39,7 +40,7 @@ object AudioManager {
             prefs.flush()
         }
 
-    private val sounds = HashMap<String, com.badlogic.gdx.audio.Sound?>()
+    private val sounds = HashMap<String, SoundGdx?>()
     private val music = HashMap<String, Music?>()
 
     init {
@@ -52,8 +53,8 @@ object AudioManager {
         }
     }
 
-    private fun getSound(sound: Sound): com.badlogic.gdx.audio.Sound? {
-        var audio: com.badlogic.gdx.audio.Sound? = null
+    private fun getSound(sound: Sound): SoundGdx? {
+        var audio: SoundGdx? = null
         try {
             val file = Gdx.files.internal("${Config.SOUNDS_FOLDER}/${sound.fileName}")
             audio = Gdx.audio.newSound(file)
