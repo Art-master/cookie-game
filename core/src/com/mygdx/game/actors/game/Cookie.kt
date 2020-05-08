@@ -75,6 +75,7 @@ class Cookie(manager : AssetManager,
             position.add(velocity.cpy().scl(delta))
             updateCoordinates()
             move.update(delta)
+            controlCookieVelocity()
         }
         rectangle.set(x, y, width, height)
     }
@@ -135,7 +136,7 @@ class Cookie(manager : AssetManager,
             state = State.JUMP
             runTime = 0f
             jumpFlag = true
-            normalMove()
+            fastMove()
         }
     }
 
@@ -165,7 +166,7 @@ class Cookie(manager : AssetManager,
         }
         if(isAfter(obj) && state == State.RUN){
             state = State.FALL
-            normalMove()
+            fastMove()
         }
     }
 
@@ -176,7 +177,7 @@ class Cookie(manager : AssetManager,
         return x >= tailObj && x < tailObj + 30f
     }
 
-    private fun isHigherThen(obj : RandomTableItem) = y > obj.getBoundsRect().y + obj.getBoundsRect().height - 3
+    private fun isHigherThen(obj : RandomTableItem) = y > obj.getBoundsRect().y + obj.getBoundsRect().height - 20
     private fun setOnTop(obj : RandomTableItem) {
         if(obj.isSticky()) slowMove()
         resetState()
@@ -184,8 +185,19 @@ class Cookie(manager : AssetManager,
         position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
     }
 
+    private fun controlCookieVelocity(){
+        if(x > startX) {
+            x = startX
+            normalMove()
+        }
+    }
+
     private fun normalMove(){
         move.update(speed = ScrollSpeed.NONE)
+    }
+
+    private fun fastMove(){
+        move.update(speed = ScrollSpeed.FAST_MOVE)
     }
 
     private fun slowMove(){

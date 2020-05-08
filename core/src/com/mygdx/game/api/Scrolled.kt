@@ -44,6 +44,7 @@ open class Scrolled(val originX: Float,
         NONE(0f),
         LEVEL_1(-200f),//50
         LEVEL_2(LEVEL_1.value * 3),
-        SLOW_MOVE(LEVEL_1.value / 1.1f)
+        SLOW_MOVE(LEVEL_1.value / 1.1f),
+        FAST_MOVE(100f)
     }
 }
