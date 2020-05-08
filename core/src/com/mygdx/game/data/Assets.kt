@@ -53,6 +53,8 @@ class Assets {
             const val BOX2 = "box2"
             const val BOX3 = "box3"
             const val BOX4 = "box4"
+            const val JAM = "jam"
+            const val JAM2 = "jam2"
         }
     }
 

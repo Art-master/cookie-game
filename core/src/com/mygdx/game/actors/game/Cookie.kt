@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.api.*
+import com.mygdx.game.api.Scrolled.ScrollSpeed
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
@@ -51,6 +52,8 @@ class Cookie(manager : AssetManager,
 
     private var isStartingAnimation = true
 
+    private var move = Scrolled(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
+
     init {
         width = runRegions[0].originalWidth.toFloat()
         height = runRegions[0].originalHeight.toFloat()
@@ -59,7 +62,7 @@ class Cookie(manager : AssetManager,
     }
 
     private fun updateCoordinates(){
-        x = position.x
+        x = move.getX()
         y = position.y
     }
 
@@ -71,6 +74,7 @@ class Cookie(manager : AssetManager,
             updateActorState()
             position.add(velocity.cpy().scl(delta))
             updateCoordinates()
+            move.update(delta)
         }
         rectangle.set(x, y, width, height)
     }
@@ -111,7 +115,9 @@ class Cookie(manager : AssetManager,
             isFalling() -> jumpDownAnimation
             else -> runAnimation.getKeyFrame(runTime)
         }
-        if(isStopAnimation) currentFrame = runRegions[0]
+        if(isStopAnimation) {
+            currentFrame = runRegions[0]
+        }
 
         if(isHide.not()) {
             batch.draw(currentFrame, x, y, width, height)
@@ -129,6 +135,7 @@ class Cookie(manager : AssetManager,
             state = State.JUMP
             runTime = 0f
             jumpFlag = true
+            normalMove()
         }
     }
 
@@ -139,9 +146,11 @@ class Cookie(manager : AssetManager,
 
     override fun stopMove() {
         isStopAnimation = true
+        move.isStopMove = true
     }
 
     override fun runMove() {
+        move.isStopMove = false
         isStopAnimation = false
     }
 
@@ -150,28 +159,40 @@ class Cookie(manager : AssetManager,
              if(isHigherThen(obj)){
                  setOnTop(obj)
                  obj.jumpedOn()
-            }else{
+            }else if(isForward(obj)){
                  againstThe(obj)
             }
         }
         if(isAfter(obj) && state == State.RUN){
             state = State.FALL
+            normalMove()
         }
     }
+
+    private fun isForward(obj : RandomTableItem) = x < obj.getBoundsRect().x + 10
 
     private fun isAfter(obj : RandomTableItem) : Boolean{
         val tailObj = obj.getBoundsRect().x + obj.getBoundsRect().width
         return x >= tailObj && x < tailObj + 30f
     }
 
-    private fun getTailX() = x + width
-    private fun isHigherThen(obj : RandomTableItem) = y > obj.getBoundsRect().y + obj.getBoundsRect().height - 30
+    private fun isHigherThen(obj : RandomTableItem) = y > obj.getBoundsRect().y + obj.getBoundsRect().height - 3
     private fun setOnTop(obj : RandomTableItem) {
+        if(obj.isSticky()) slowMove()
         resetState()
         obj.animate(AnimationType.ITEM_SQUASH)
         position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
     }
-    private fun againstThe(obj : RandomTableItem) {position.x = obj.getBoundsRect().x - width}
+
+    private fun normalMove(){
+        move.update(speed = ScrollSpeed.NONE)
+    }
+
+    private fun slowMove(){
+        move.update(speed = ScrollSpeed.SLOW_MOVE)
+    }
+
+    private fun againstThe(obj : RandomTableItem) {move.setX(obj.getBoundsRect().x - width)}
 
     override fun getBoundsRect() = rectangle
 

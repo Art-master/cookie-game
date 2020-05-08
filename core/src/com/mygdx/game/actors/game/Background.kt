@@ -12,10 +12,10 @@ class Background(manager : AssetManager) : GameActor(), Scrollable{
     private val texture = manager.get(Descriptors.background)
 
     private var scrollerBack = Scrolled(0f, 0f,
-            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1.value)
+            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1)
 
     private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
-            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1.value)
+            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1)
 
 
     override fun act(delta: Float) {

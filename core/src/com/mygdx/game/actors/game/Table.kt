@@ -16,10 +16,10 @@ class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
     val worktopY = yWorktop
 
     private var scrollerBack = Scrolled(0f, 0f,
-            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2.value)
+            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2)
 
     private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
-            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2.value)
+            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2)
 
     override fun act(delta: Float) {
         super.act(delta)

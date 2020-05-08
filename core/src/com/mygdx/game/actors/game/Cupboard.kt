@@ -37,7 +37,7 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
             startY,
             cupBoardRegion.originalWidth + leftDoorRegion.originalWidth,
             cupBoardRegion.originalHeight,
-            Scrolled.ScrollSpeed.LEVEL_1.value)
+            Scrolled.ScrollSpeed.LEVEL_1)
 
     private val randPositionX = Random(startX.toLong())
 

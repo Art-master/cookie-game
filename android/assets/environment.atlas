@@ -27,7 +27,7 @@ box1
   index: -1
 box4
   rotate: false
-  xy: 1795, 1038
+  xy: 1795, 982
   size: 217, 203
   orig: 217, 203
   offset: 0, 0
@@ -90,7 +90,7 @@ flowerInPot2
   index: -1
 glass
   rotate: false
-  xy: 1795, 782
+  xy: 1795, 726
   size: 153, 254
   orig: 153, 254
   offset: 0, 0
@@ -137,6 +137,13 @@ hand
   orig: 302, 172
   offset: 0, 0
   index: 3
+jam
+  rotate: false
+  xy: 1795, 1187
+  size: 225, 54
+  orig: 225, 54
+  offset: 0, 0
+  index: -1
 jar1
   rotate: false
   xy: 1924, 1761
@@ -179,13 +186,6 @@ openDoor
   orig: 358, 459
   offset: 0, 0
   index: -1
-orange
-  rotate: false
-  xy: 1795, 636
-  size: 151, 144
-  orig: 151, 144
-  offset: 0, 0
-  index: -1
 paper
   rotate: false
   xy: 1860, 1503
@@ -216,7 +216,7 @@ table
   index: -1
 tomato
   rotate: false
-  xy: 1795, 479
+  xy: 1795, 569
   size: 142, 155
   orig: 142, 155
   offset: 0, 0
@@ -276,11 +276,25 @@ hand
   orig: 302, 171
   offset: 0, 0
   index: 4
+jam2
+  rotate: false
+  xy: 660, 1095
+  size: 384, 49
+  orig: 384, 49
+  offset: 0, 0
+  index: -1
 moon
   rotate: false
   xy: 2, 1146
   size: 1198, 878
   orig: 1198, 878
+  offset: 0, 0
+  index: -1
+orange
+  rotate: false
+  xy: 402, 713
+  size: 151, 144
+  orig: 151, 144
   offset: 0, 0
   index: -1
 prolongationHand

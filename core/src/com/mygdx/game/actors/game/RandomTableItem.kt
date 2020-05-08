@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.mygdx.game.Config
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -78,8 +77,7 @@ class RandomTableItem(manager : AssetManager,
 
     private fun resetScroller(){
        scroller = Scrolled(screenWidth, y,
-                region.originalWidth, region.originalHeight,
-                Scrolled.ScrollSpeed.LEVEL_2.value)
+                region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2)
     }
 
     private fun updateBound(){
@@ -171,6 +169,20 @@ class RandomTableItem(manager : AssetManager,
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
             }
+            11-> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.JAM)
+                val boundWidth = region.originalWidth.toFloat()
+                startBound = Rectangle(0f, 0f, boundWidth, 21f)
+                y = table.worktopY -20
+                jumpOnSound = Sound.JUMP_ON_BOX
+            }
+            12-> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.JAM2)
+                val boundWidth = region.originalWidth.toFloat()
+                startBound = Rectangle(0f, 0f, boundWidth, 21f)
+                y = table.worktopY -20
+                jumpOnSound = Sound.JUMP_ON_BOX
+            }
             //1 -> texture.findRegion(Assets.EnvironmentAtlas.GLASS)
             else -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
@@ -225,6 +237,11 @@ class RandomTableItem(manager : AssetManager,
     }
 
     override fun getBoundsRect() = bound
+
+    fun isSticky():Boolean {
+        return region.name == Assets.EnvironmentAtlas.JAM ||
+                region.name == Assets.EnvironmentAtlas.JAM2
+    }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
         val animDuration = 0.1f

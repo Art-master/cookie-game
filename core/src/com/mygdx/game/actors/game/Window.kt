@@ -27,7 +27,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
             Gdx.graphics.width.toFloat(), startY,
             region.originalWidth,
             region.originalHeight,
-            Scrolled.ScrollSpeed.LEVEL_1.value)
+            Scrolled.ScrollSpeed.LEVEL_1)
 
     private val listeners = ArrayList<Listener>()
 
