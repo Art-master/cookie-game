@@ -88,7 +88,7 @@ class RandomTableItem(manager : AssetManager,
     }
 
     private fun setRandomItem(){
-        when(rand.nextInt(13)){
+        when(13){//rand.nextInt(14)
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
@@ -183,7 +183,13 @@ class RandomTableItem(manager : AssetManager,
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
             }
-            //1 -> texture.findRegion(Assets.EnvironmentAtlas.GLASS)
+            13-> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.JELLY)
+                val boundHeight = region.originalHeight.toFloat() - 35 - 15
+                val boundWidth = region.originalWidth.toFloat() - 90 - 65
+                startBound = Rectangle(65f, 25f, boundWidth, boundHeight)
+                y = table.worktopY - 35f
+            }
             else -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
                 val boundHeight = region.originalHeight.toFloat() - 35 - 15
