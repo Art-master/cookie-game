@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.mygdx.game.actors.game.RandomTableItem.Structure
 import com.mygdx.game.api.*
 import com.mygdx.game.api.Scrolled.ScrollSpeed
 import com.mygdx.game.data.Assets
@@ -20,8 +21,6 @@ class Cookie(manager : AssetManager,
     private val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
     private val velocityJump = 50f
-
-    private val acceleration = Vector2(0f, -10f)
 
     private val texture = manager.get(Descriptors.cookie)
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
@@ -132,12 +131,16 @@ class Cookie(manager : AssetManager,
     fun startJumpForce() {
         if(state == State.RUN && isStartingAnimation.not()){
             AudioManager.play(AudioManager.Sound.JUMP)
-            startJumpY = y
-            state = State.JUMP
-            runTime = 0f
-            jumpFlag = true
+            initJump()
             fastMove()
         }
+    }
+
+    private fun initJump(){
+        startJumpY = y
+        state = State.JUMP
+        runTime = 0f
+        jumpFlag = true
     }
 
     fun endJumpForce() {
@@ -177,10 +180,17 @@ class Cookie(manager : AssetManager,
         return x >= tailObj && x < tailObj + 30f
     }
 
-    private fun isHigherThen(obj : RandomTableItem) = y > obj.getBoundsRect().y + obj.getBoundsRect().height - 20
+    private fun isHigherThen(obj : RandomTableItem): Boolean{
+        val top = obj.getBoundsRect().y + obj.getBoundsRect().height
+        return y > top - 30
+    }
     private fun setOnTop(obj : RandomTableItem) {
-        if(obj.isSticky()) slowMove()
         resetState()
+        when(obj.structure) {
+            Structure.STICKY -> slowMove()
+            Structure.JELLY -> initJump()
+            else -> {}
+        }
         obj.animate(AnimationType.ITEM_SQUASH)
         position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
     }

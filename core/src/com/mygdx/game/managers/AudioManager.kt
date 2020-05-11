@@ -54,6 +54,7 @@ object AudioManager {
     }
 
     private fun getSound(sound: Sound): SoundGdx? {
+        if(sound.fileName.isEmpty() || sound == Sound.NONE) return null
         var audio: SoundGdx? = null
         try {
             val file = Gdx.files.internal("${Config.SOUNDS_FOLDER}/${sound.fileName}")

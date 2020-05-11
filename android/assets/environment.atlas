@@ -243,70 +243,84 @@ filter: Nearest,Nearest
 repeat: none
 box2
   rotate: false
-  xy: 1202, 1792
+  xy: 2, 2
   size: 370, 232
   orig: 370, 232
   offset: 0, 0
   index: -1
 box3
   rotate: false
-  xy: 402, 859
+  xy: 402, 835
   size: 256, 285
   orig: 256, 285
   offset: 0, 0
   index: -1
+cookware
+  rotate: false
+  xy: 402, 648
+  size: 255, 185
+  orig: 255, 185
+  offset: 0, 0
+  index: -1
 curtainLeft
   rotate: false
-  xy: 2, 260
+  xy: 2, 236
   size: 398, 884
   orig: 398, 884
   offset: 0, 0
   index: -1
 flowerInPot
   rotate: false
-  xy: 2, 2
+  xy: 1202, 1497
   size: 282, 256
   orig: 282, 256
   offset: 0, 0
   index: -1
 hand
   rotate: false
-  xy: 1574, 1853
+  xy: 1601, 1829
   size: 302, 171
   orig: 302, 171
   offset: 0, 0
   index: 4
 jam2
   rotate: false
-  xy: 660, 1095
+  xy: 1601, 1778
   size: 384, 49
   orig: 384, 49
   offset: 0, 0
   index: -1
 moon
   rotate: false
-  xy: 2, 1146
+  xy: 2, 1122
   size: 1198, 878
   orig: 1198, 878
   offset: 0, 0
   index: -1
+open_box
+  rotate: false
+  xy: 1202, 1755
+  size: 397, 245
+  orig: 397, 245
+  offset: 0, 0
+  index: -1
 orange
   rotate: false
-  xy: 1202, 1391
+  xy: 942, 976
   size: 151, 144
   orig: 151, 144
   offset: 0, 0
   index: -1
 prolongationHand
   rotate: false
-  xy: 1202, 1537
+  xy: 660, 867
   size: 280, 253
   orig: 280, 253
   offset: 0, 0
   index: -1
 tomato
   rotate: false
-  xy: 402, 702
+  xy: 1202, 1340
   size: 142, 155
   orig: 142, 155
   offset: 0, 0

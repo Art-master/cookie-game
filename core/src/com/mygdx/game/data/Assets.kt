@@ -56,6 +56,7 @@ class Assets {
             const val JAM = "jam"
             const val JAM2 = "jam2"
             const val JELLY = "jelly"
+            const val OPEN_BOX = "open_box"
         }
     }
 

@@ -41,6 +41,13 @@ class RandomTableItem(manager : AssetManager,
     var isScored = false
     val shape = ShapeRenderer()
 
+    var structure = Structure.NORMAL
+    private set
+
+    enum class Structure{
+        NORMAL, STICKY, JELLY
+    }
+
     init {
         setRandomItem()
         resetScroller()
@@ -88,7 +95,7 @@ class RandomTableItem(manager : AssetManager,
     }
 
     private fun setRandomItem(){
-        when(13){//rand.nextInt(14)
+        when(14){//rand.nextInt(15)
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
@@ -96,6 +103,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(92f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 25f
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             2 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
@@ -104,6 +112,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(32f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 35f
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             3 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX3)
@@ -112,6 +121,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(0f, 70f, boundWidth, boundHeight)
                 y = table.worktopY - 70
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             4 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX4)
@@ -120,6 +130,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
                 y = table.worktopY - 25
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             5 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.MILK_BOX)
@@ -128,6 +139,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
                 y = table.worktopY
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             6 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.YOGURT_BOX)
@@ -136,6 +148,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
                 y = table.worktopY
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             7 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.TOMATO)
@@ -144,6 +157,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             8 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.APPLE)
@@ -152,6 +166,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             9 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.LIME)
@@ -160,6 +175,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             10 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.ORANGE)
@@ -168,6 +184,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.NORMAL
             }
             11-> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.JAM)
@@ -175,6 +192,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(0f, 0f, boundWidth, 21f)
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.STICKY
             }
             12-> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.JAM2)
@@ -182,6 +200,7 @@ class RandomTableItem(manager : AssetManager,
                 startBound = Rectangle(0f, 0f, boundWidth, 21f)
                 y = table.worktopY -20
                 jumpOnSound = Sound.JUMP_ON_BOX
+                structure = Structure.STICKY
             }
             13-> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.JELLY)
@@ -189,6 +208,15 @@ class RandomTableItem(manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 90 - 65
                 startBound = Rectangle(65f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 35f
+                structure = Structure.JELLY
+            }
+            14-> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.OPEN_BOX)
+                val boundHeight = region.originalHeight.toFloat() - 35 - 15
+                val boundWidth = region.originalWidth.toFloat() - 90 - 65
+                startBound = Rectangle(65f, 25f, boundWidth, boundHeight)
+                y = table.worktopY - 35f
+                structure = Structure.JELLY
             }
             else -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
@@ -196,6 +224,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 90 - 32
                 startBound = Rectangle(32f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 35f
+                structure = Structure.NORMAL
             }
         }
     }
@@ -243,11 +272,6 @@ class RandomTableItem(manager : AssetManager,
     }
 
     override fun getBoundsRect() = bound
-
-    fun isSticky():Boolean {
-        return region.name == Assets.EnvironmentAtlas.JAM ||
-                region.name == Assets.EnvironmentAtlas.JAM2
-    }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
         val animDuration = 0.1f
