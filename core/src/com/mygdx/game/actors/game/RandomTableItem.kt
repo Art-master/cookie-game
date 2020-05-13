@@ -2,6 +2,7 @@ package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -95,7 +96,7 @@ class RandomTableItem(manager : AssetManager,
     }
 
     private fun setRandomItem(){
-        when(14){//rand.nextInt(15)
+        when(rand.nextInt(15)){//rand.nextInt(15)
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
@@ -155,7 +156,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundHeight = region.originalHeight.toFloat() -40
                 val boundWidth = region.originalWidth.toFloat() -50
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
-                y = table.worktopY -20
+                y = table.worktopY -30
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
@@ -164,7 +165,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundHeight = region.originalHeight.toFloat() -60
                 val boundWidth = region.originalWidth.toFloat() -80
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
-                y = table.worktopY -20
+                y = table.worktopY -30
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
@@ -173,7 +174,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundHeight = region.originalHeight.toFloat() -5
                 val boundWidth = region.originalWidth.toFloat() -80
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
-                y = table.worktopY -20
+                y = table.worktopY -30
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
@@ -182,7 +183,7 @@ class RandomTableItem(manager : AssetManager,
                 val boundHeight = region.originalHeight.toFloat() -5
                 val boundWidth = region.originalWidth.toFloat() -80
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
-                y = table.worktopY -20
+                y = table.worktopY -30
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
@@ -213,10 +214,10 @@ class RandomTableItem(manager : AssetManager,
             14-> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.OPEN_BOX)
                 val boundHeight = region.originalHeight.toFloat() - 35 - 15
-                val boundWidth = region.originalWidth.toFloat() - 90 - 65
-                startBound = Rectangle(65f, 25f, boundWidth, boundHeight)
+                val boundWidth = region.originalWidth.toFloat() - 90 - 32
+                startBound = Rectangle(32f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 35f
-                structure = Structure.JELLY
+                structure = Structure.NORMAL
             }
             else -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
@@ -241,10 +242,12 @@ class RandomTableItem(manager : AssetManager,
         val height = region.originalHeight.toFloat()
         if(startAct) batch!!.draw(region, x, y, x,y,  width, height, scaleX, scaleY, rotation)
 /*        if(startAct){
+            Gdx.gl.glEnable(GL20.GL_BLEND)
             shape.setAutoShapeType(true)
             shape.begin()
             shape.rect(bound.x, bound.y, bound.width, bound.height)
             shape.end()
+            Gdx.gl.glDisable(GL20.GL_BLEND)
         }*/
     }
 
