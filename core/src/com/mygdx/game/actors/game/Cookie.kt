@@ -14,7 +14,7 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 
-class Cookie(manager : AssetManager,
+class Cookie(private val manager : AssetManager,
              private val startY: Float,
              private val startX: Float): GameActor(), Scrollable, Physical, Animated{
 
@@ -122,6 +122,7 @@ class Cookie(manager : AssetManager,
         if(isHide.not()) {
             batch.draw(currentFrame, x, y, width, height)
         }
+        debugIfEnable(batch, manager)
     }
 
     fun isFalling() = state == State.FALL
