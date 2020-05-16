@@ -93,13 +93,13 @@ class RandomTableItem(private val manager : AssetManager,
     }
 
     private fun setRandomItem(){
-        when(5){//rand.nextInt(15)
+        when(rand.nextInt(14)){//rand.nextInt(15)
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
                 val boundWidth = region.originalWidth.toFloat() - 100 - 92
                 startBound = Rectangle(92f, 25f, boundWidth, boundHeight)
-                y = table.worktopY - 25f
+                y = table.worktopY - 45f
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
@@ -115,8 +115,8 @@ class RandomTableItem(private val manager : AssetManager,
             3 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX3)
                 val boundHeight = region.originalHeight.toFloat() - 70 - 23
-                val boundWidth = region.originalWidth.toFloat() - 35
-                startBound = Rectangle(0f, 70f, boundWidth, boundHeight)
+                val boundWidth = region.originalWidth.toFloat() - 35 - 70
+                startBound = Rectangle(70f, 70f, boundWidth, boundHeight)
                 y = table.worktopY - 70
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
@@ -124,9 +124,9 @@ class RandomTableItem(private val manager : AssetManager,
             4 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX4)
                 val boundHeight = region.originalHeight.toFloat() - 20
-                val boundWidth = region.originalWidth.toFloat() - 10
-                startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
-                y = table.worktopY - 25
+                val boundWidth = region.originalWidth.toFloat() - 10 - 50
+                startBound = Rectangle(50f, 0f, boundWidth, boundHeight)
+                y = table.worktopY - 30
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
@@ -142,9 +142,9 @@ class RandomTableItem(private val manager : AssetManager,
             6 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.YOGURT_BOX)
                 val boundHeight = region.originalHeight.toFloat()
-                val boundWidth = region.originalWidth.toFloat()
-                startBound = Rectangle(0f, 0f, boundWidth, boundHeight)
-                y = table.worktopY
+                val boundWidth = region.originalWidth.toFloat() - 95
+                startBound = Rectangle(95f, 0f, boundWidth, boundHeight)
+                y = table.worktopY - 30
                 jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
@@ -208,20 +208,21 @@ class RandomTableItem(private val manager : AssetManager,
                 y = table.worktopY - 35f
                 structure = Structure.JELLY
             }
-            14-> {
+/*            14-> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.OPEN_BOX)
                 val boundHeight = region.originalHeight.toFloat() - 35 - 15
                 val boundWidth = region.originalWidth.toFloat() - 90 - 32
                 startBound = Rectangle(32f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 35f
                 structure = Structure.NORMAL
-            }
+            }*/
             else -> {
-                region = texture.findRegion(Assets.EnvironmentAtlas.BOX2)
-                val boundHeight = region.originalHeight.toFloat() - 35 - 15
-                val boundWidth = region.originalWidth.toFloat() - 90 - 32
-                startBound = Rectangle(32f, 25f, boundWidth, boundHeight)
-                y = table.worktopY - 35f
+                region = texture.findRegion(Assets.EnvironmentAtlas.BOX4)
+                val boundHeight = region.originalHeight.toFloat() - 20
+                val boundWidth = region.originalWidth.toFloat() - 10 - 50
+                startBound = Rectangle(50f, 0f, boundWidth, boundHeight)
+                y = table.worktopY - 30
+                jumpOnSound = Sound.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
         }
@@ -238,7 +239,7 @@ class RandomTableItem(private val manager : AssetManager,
         val width = region.originalWidth.toFloat()
         val height = region.originalHeight.toFloat()
         if(startAct) batch!!.draw(region, x, y, x,y,  width, height, scaleX, scaleY, rotation)
-        debugIfEnable(batch, manager)
+        debugCollidesIfEnable(batch, manager)
     }
 
     private fun isGoThrough(actor: Actor) {

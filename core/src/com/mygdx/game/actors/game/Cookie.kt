@@ -76,7 +76,6 @@ class Cookie(private val manager : AssetManager,
             move.update(delta)
             controlCookieVelocity()
         }
-        rectangle.set(x, y, width, height)
     }
 
     private fun updateGravity(){
@@ -122,7 +121,7 @@ class Cookie(private val manager : AssetManager,
         if(isHide.not()) {
             batch.draw(currentFrame, x, y, width, height)
         }
-        debugIfEnable(batch, manager)
+        debugCollidesIfEnable(batch, manager)
     }
 
     fun isFalling() = state == State.FALL
@@ -165,7 +164,7 @@ class Cookie(private val manager : AssetManager,
                  setOnTop(obj)
                  obj.jumpedOn()
             }else if(isForward(obj)){
-                 againstThe(obj)
+                 setAgainstTheObject(obj)
             }
         }
         if(isAfter(obj) && state == State.RUN){
@@ -215,9 +214,14 @@ class Cookie(private val manager : AssetManager,
         move.update(speed = ScrollSpeed.SLOW_MOVE)
     }
 
-    private fun againstThe(obj : RandomTableItem) {move.setX(obj.getBoundsRect().x - width)}
+    private fun setAgainstTheObject(obj : RandomTableItem) {
+        move.setX(obj.getBoundsRect().x - getBoundsRect().width - 35)
+    }
 
-    override fun getBoundsRect() = rectangle
+    override fun getBoundsRect(): Rectangle{
+        rectangle.set(x + 30, y, width - 60, height)
+        return rectangle
+    }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
         if(type == AnimationType.SHOW_ON_SCENE){

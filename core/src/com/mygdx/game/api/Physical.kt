@@ -19,10 +19,11 @@ interface Physical{
         return false
     }
 
-    fun debugIfEnable(batch: Batch?, manager: AssetManager){
+    fun debugCollidesIfEnable(batch: Batch?, manager: AssetManager){
         if(!GameSettings.DEBUG.state) return
         val texture = manager.get(Descriptors.environment)
         val bound = getBoundsRect()
-        batch?.draw(texture.findRegion(Assets.EnvironmentAtlas.SHADOW), bound.x, bound.y, bound.width, bound.height)
+        val region = texture.findRegion(Assets.EnvironmentAtlas.SHADOW)
+        batch?.draw(region, bound.x, bound.y, bound.width, bound.height)
     }
 }

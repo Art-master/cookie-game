@@ -10,7 +10,7 @@ class GdxGame : Game() {
     override fun create() {
         ScreenManager.game = this
         ScreenManager.setScreen(GAME_SCREEN)
-        GameSettings.DEBUG.state = true
+        GameSettings.DEBUG.state = false
     }
 
     override fun render() {
