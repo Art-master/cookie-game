@@ -34,6 +34,7 @@ class GameWorld(private val manager : AssetManager) {
     private val sky = Sky(manager, window)
     private val flower = FlowerInPot(manager, window)
     private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME/2)
+    private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
     private val score = Score(manager)
@@ -47,7 +48,7 @@ class GameWorld(private val manager : AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, sky, moon, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookie, arm, score)
+        actors.addAll(cookieShadow, cookie, arm, score)
 
         addActorsToStage()
         startInitAnimation()

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.actors.game.RandomTableItem
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
@@ -25,5 +26,26 @@ interface Physical{
         val bound = getBoundsRect()
         val region = texture.findRegion(Assets.EnvironmentAtlas.SHADOW)
         batch?.draw(region, bound.x, bound.y, bound.width, bound.height)
+    }
+
+    fun  <T> isAboveObject(actor : T): Boolean where T : Actor, T : Physical{
+        val actorBound = actor.getBoundsRect()
+        val bound = getBoundsRect()
+        return bound.y > actorBound.y && bound.x >= actorBound.x && bound.x < actorBound.x + actorBound.width
+    }
+
+    fun  <T> isAfterObject(actor : T): Boolean where T : Actor, T : Physical{
+        val tailObj = actor.getBoundsRect().x + actor.getBoundsRect().width
+        return getBoundsRect().x >= tailObj && getBoundsRect().x < tailObj + 30f
+    }
+
+    fun  <T> getTop(actor : T): Float where T : Actor, T : Physical{
+        val actorBound = actor.getBoundsRect()
+        return actorBound.y + actorBound.height
+    }
+
+    fun  <T> getRight(actor : T): Float where T : Actor, T : Physical{
+        val actorBound = actor.getBoundsRect()
+        return actorBound.x + actorBound.width
     }
 }

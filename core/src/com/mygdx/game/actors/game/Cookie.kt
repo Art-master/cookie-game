@@ -15,7 +15,7 @@ import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 
 class Cookie(private val manager : AssetManager,
-             private val startY: Float,
+             val startY: Float,
              private val startX: Float): GameActor(), Scrollable, Physical, Animated{
 
     private val position = Vector2(startX, startY)
@@ -47,7 +47,9 @@ class Cookie(private val manager : AssetManager,
     private var jumpFlag = false
     var isHide = false
     private var startJumpY = 0f
-    private var ground = startY
+
+    var ground = startY
+    private set
 
     private var isStartingAnimation = true
 
@@ -100,10 +102,10 @@ class Cookie(private val manager : AssetManager,
         state = State.RUN
         runTime = 0f
         velocity.y = 0f
-        position.y = ground
+        position.y = startY
     }
 
-    private fun isGround() = position.y <= ground
+    private fun isGround() = position.y <= startY
     private fun isMaxJump() = position.y >= startJumpY + maxJumpHeight
     private fun isCeiling() = position.y >= maxJumpHeight
 
@@ -167,23 +169,21 @@ class Cookie(private val manager : AssetManager,
                  setAgainstTheObject(obj)
             }
         }
-        if(isAfter(obj) && state == State.RUN){
+        if(isAfterObject(obj) && state == State.RUN){
             state = State.FALL
             fastMove()
+        }
+
+        if(isAboveObject(obj)){
+            ground = getTop(obj)
+        } else if(isAfterObject(obj)){
+            ground = startY
         }
     }
 
     private fun isForward(obj : RandomTableItem) = x < obj.getBoundsRect().x + 10
+    private fun isHigherThen(obj : RandomTableItem) = y > obj.top - 30
 
-    private fun isAfter(obj : RandomTableItem) : Boolean{
-        val tailObj = obj.getBoundsRect().x + obj.getBoundsRect().width
-        return x >= tailObj && x < tailObj + 30f
-    }
-
-    private fun isHigherThen(obj : RandomTableItem): Boolean{
-        val top = obj.getBoundsRect().y + obj.getBoundsRect().height
-        return y > top - 30
-    }
     private fun setOnTop(obj : RandomTableItem) {
         resetState()
         when(obj.structure) {

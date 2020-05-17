@@ -39,6 +39,7 @@ class Assets {
             const val SALT = "salt"
             const val TABLE = "table"
             const val SHADOW = "shadow"
+            const val CIRCLE_SHADOW = "circle_shadow"
             const val GLASS = "glass"
             const val ORANGE = "orange"
             const val LIME = "lime"
