@@ -29,9 +29,7 @@ class GameWorld(private val manager : AssetManager) {
     private val background = Background(manager)
     private val table = Table(manager, 240f)
     private val window = Window(manager, 270f)
-    private val moon = Moon(manager, window)
     private val city = City(manager, window)
-    private val sky = Sky(manager, window)
     private val flower = FlowerInPot(manager, window)
     private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME/2)
     private val cookieShadow = CookieShadow(manager, cookie)
@@ -46,7 +44,7 @@ class GameWorld(private val manager : AssetManager) {
     private var isGameOver = false
 
     init {
-        actors.addAll(background, cupboard, shadow, sky, moon, city, window, flower, table)
+        actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
         actors.addAll(cookieShadow, cookie, arm, score)
 

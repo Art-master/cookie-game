@@ -11,7 +11,7 @@ import com.mygdx.game.data.Descriptors
 
 class Moon(manager : AssetManager, private val window : Window) : GameActor() {
     private val texture = manager.get(Descriptors.environment)
-    private val moonRegion = texture.findRegion(Assets.EnvironmentAtlas.MOON)
+    private val moonRegion = texture.findRegion(Assets.EnvironmentAtlas.SHADOW)
 
     private val posMoon = Position(
             (Gdx.graphics.width/2).toFloat(),

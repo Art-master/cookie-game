@@ -47,10 +47,10 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
                 scroll.width.toFloat(), scroll.height.toFloat())
 
         //batch.color = curtainColor
-        batch.draw(curtainLeft, scroll.getX(), scroll.getY(),
+        batch.draw(curtainLeft, scroll.getX() - 40, scroll.getY(),
                 curtainLeft.originalWidth.toFloat(), curtainLeft.originalHeight.toFloat())
 
-        batch.draw(curtainRight, scroll.getX() + scroll.width - curtainRight.originalWidth, scroll.getY(),
+        batch.draw(curtainRight, scroll.getX() + 850, scroll.getY(),
                 curtainLeft.originalWidth.toFloat(), curtainLeft.originalHeight.toFloat())
         batch.color = Color.GRAY
     }

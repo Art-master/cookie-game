@@ -23,7 +23,6 @@ class Assets {
             const val CURTAIN_RIGHT = "curtainRight"
             const val CURTAIN_LEFT = "curtainLeft"
             const val BLUE_SKY = "blueSky"
-            const val MOON = "moon"
             const val FLOWER_IN_POT = "flowerInPot"
             const val FLOWER_IN_POT_2 = "flowerInPot2"
             const val CACTUS = "cactus"

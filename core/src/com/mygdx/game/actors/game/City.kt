@@ -23,9 +23,9 @@ class City(manager : AssetManager, private val window : Window) : GameActor(), S
 
         val windowPos = Position(
                 window.scroll.getX() + 110,
-                window.scroll.getY(),
-                window.scroll.width -280f,
-                window.scroll.height -560f)
+                window.scroll.getY() - 40,
+                window.scroll.width -200f,
+                window.scroll.height -100f)
 
         val cityHidePos = Hideable(posCity, windowPos)
 
