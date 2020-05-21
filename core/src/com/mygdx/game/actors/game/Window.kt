@@ -47,10 +47,10 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
                 scroll.width.toFloat(), scroll.height.toFloat())
 
         //batch.color = curtainColor
-        batch.draw(curtainLeft, scroll.getX() - 40, scroll.getY(),
+        batch.draw(curtainLeft, scroll.getX() - 80, scroll.getY() - 60,
                 curtainLeft.originalWidth.toFloat(), curtainLeft.originalHeight.toFloat())
 
-        batch.draw(curtainRight, scroll.getX() + 850, scroll.getY(),
+        batch.draw(curtainRight, scroll.getX() + 900, scroll.getY() - 60,
                 curtainLeft.originalWidth.toFloat(), curtainLeft.originalHeight.toFloat())
         batch.color = Color.GRAY
     }
@@ -81,7 +81,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
 
     override fun getX() = scroll.getX()
     override fun getY() = scroll.getY()
-    fun getWindowsillY() = scroll.getY() + 160
+    fun getWindowsillY() = scroll.getY() + 90
     fun getWindowsillX() = scroll.getX() + 280
 
     fun addResetListener(listener: Listener){

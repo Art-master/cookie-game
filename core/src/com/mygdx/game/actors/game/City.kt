@@ -22,10 +22,10 @@ class City(manager : AssetManager, private val window : Window) : GameActor(), S
     override fun draw(batch: Batch?, parentAlpha: Float) {
 
         val windowPos = Position(
-                window.scroll.getX() + 110,
-                window.scroll.getY() - 40,
-                window.scroll.width -200f,
-                window.scroll.height -100f)
+                window.scroll.getX() + 85,
+                window.scroll.getY() - 0,
+                window.scroll.width - 150f,
+                window.scroll.height - 100f)
 
         val cityHidePos = Hideable(posCity, windowPos)
 
