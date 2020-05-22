@@ -21,10 +21,11 @@ import com.mygdx.game.managers.AudioManager.Sound
 
 class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animated {
     private val texture = manager.get(Descriptors.menu)
-    private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
-    private val soundOnRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ON)
-    private val soundOffRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_OFF)
-    private var soundIcon = soundOnRegion
+    private val soundRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ICON)
+    private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
+    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
+    private var region = backgroundRegion
+    private var soundIcon = soundRegion
 
     private var centerX = 0f
     private var centerY = 0f
@@ -33,11 +34,11 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
         isVibrating = true
         x = sound.right + 100f
         y = sound.y
-        width = region.originalWidth/3f
-        height = region.originalHeight/3f
+        width = region.originalWidth.toFloat()
+        height = region.originalHeight.toFloat()
 
         addClickListener()
-        changeSoundIcon()
+        changeBackground()
     }
 
     private fun addClickListener(){
@@ -46,14 +47,14 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
                 AudioManager.switchSoundSetting()
                 AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
                 AudioManager.play(Sound.CLICK_SOUND)
-                changeSoundIcon()
+                changeBackground()
                 return super.touchDown(event, x, y, pointer, button)
             }
         })
     }
 
-    private fun changeSoundIcon(){
-        soundIcon = if(AudioManager.isSoundEnable) soundOnRegion else soundOffRegion
+    private fun changeBackground(){
+        region = if(AudioManager.isSoundEnable) backgroundRegion else backgroundRegion2
     }
 
     override fun act(delta: Float) {

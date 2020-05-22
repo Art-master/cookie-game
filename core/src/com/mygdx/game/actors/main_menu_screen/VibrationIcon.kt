@@ -21,22 +21,24 @@ import com.mygdx.game.managers.VibrationManager
 class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animated {
 
     private val texture = manager.get(Descriptors.menu)
-    private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
-    private val vibrationOnRegion = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_ON)
-    private val vibrationOffRegion = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_OFF)
-    private var vibrationIcon = vibrationOnRegion
+
+    private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
+    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
+    private var background = backgroundRegion
+
+    private var vibrationIcon = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_ICON)
 
     private var centerX = 0f
     private var centerY = 0f
 
     init {
-        width = region.originalWidth/3f
-        height = region.originalHeight/3f
+        width = background.originalWidth.toFloat()
+        height = background.originalHeight.toFloat()
         x = Gdx.graphics.width - sound.x - width
         y = sound.y
 
         addClickListener()
-        changeVibrationIcon()
+        changeBackground()
     }
 
     private fun addClickListener(){
@@ -45,17 +47,14 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
                 VibrationManager.switchVibrationSetting()
                 VibrationManager.vibrate()
                 AudioManager.play(Sound.CLICK_SOUND)
-                changeVibrationIcon()
+                changeBackground()
                 return super.touchDown(event, x, y, pointer, button)
             }
         })
     }
 
-    private fun changeVibrationIcon() {
-        vibrationIcon = if(VibrationManager.isVibrationEnable)
-            vibrationOnRegion
-        else
-            vibrationOffRegion
+    private fun changeBackground(){
+        background = if(VibrationManager.isVibrationEnable) backgroundRegion else backgroundRegion2
     }
 
     override fun act(delta: Float) {
@@ -67,7 +66,7 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
-        batch.draw(region, x, y, width, height)
+        batch.draw(background, x, y, width, height)
 
         val iconWidth = vibrationIcon.originalWidth.toFloat()
         val iconHeight = vibrationIcon.originalHeight.toFloat()

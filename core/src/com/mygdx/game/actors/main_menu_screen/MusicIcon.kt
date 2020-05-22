@@ -21,10 +21,11 @@ import com.mygdx.game.managers.AudioManager.Sound
 
 class MusicIcon(manager : AssetManager) : GameActor(), Animated {
     private val texture = manager.get(Descriptors.menu)
-    private val region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON)
-    private val soundOnRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ON)
-    private val soundOffRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_OFF)
-    private var soundIcon = soundOnRegion
+    private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
+    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
+    private var background = backgroundRegion
+
+    private var musicIcon = texture.findRegion(Assets.MainMenuAtlas.MUSIC_ICON)
 
     private var centerX = 0f
     private var centerY = 0f
@@ -33,11 +34,11 @@ class MusicIcon(manager : AssetManager) : GameActor(), Animated {
         isVibrating = true
         x = 100f
         y = -Gdx.graphics.height.toFloat()
-        width = region.originalWidth/3f
-        height = region.originalHeight/3f
+        width = background.originalWidth.toFloat()
+        height = background.originalHeight.toFloat()
 
         addClickListener()
-        changeMusicIcon()
+        changeBackground()
     }
 
     private fun addClickListener(){
@@ -46,14 +47,14 @@ class MusicIcon(manager : AssetManager) : GameActor(), Animated {
                 AudioManager.switchMusicSetting()
                 AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
                 AudioManager.play(Sound.CLICK_SOUND)
-                changeMusicIcon()
+                changeBackground()
                 return super.touchDown(event, x, y, pointer, button)
             }
         })
     }
 
-    private fun changeMusicIcon(){
-        soundIcon = if(AudioManager.isMusicEnable) soundOnRegion else soundOffRegion
+    private fun changeBackground(){
+        background = if(AudioManager.isMusicEnable) backgroundRegion else backgroundRegion2
     }
 
     override fun act(delta: Float) {
@@ -65,11 +66,11 @@ class MusicIcon(manager : AssetManager) : GameActor(), Animated {
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
-        batch.draw(region, x, y, width, height)
+        batch.draw(background, x, y, width, height)
 
-        val iconWidth = soundIcon.originalWidth.toFloat()
-        val iconHeight = soundIcon.originalHeight.toFloat()
-        batch.draw(soundIcon, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
+        val iconWidth = musicIcon.originalWidth.toFloat()
+        val iconHeight = musicIcon.originalHeight.toFloat()
+        batch.draw(musicIcon, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
