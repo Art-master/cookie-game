@@ -7,9 +7,8 @@ import com.mygdx.game.api.Hideable
 import com.mygdx.game.beans.Position
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Scrollable
 
-class City(manager : AssetManager, private val window : Window) : GameActor(), Scrollable {
+class City(manager : AssetManager, private val window : Window) : GameActor() {
     private val texture = manager.get(Descriptors.environment)
     private val cityRegion = texture.findRegion(Assets.EnvironmentAtlas.CITY)
 
@@ -46,11 +45,5 @@ class City(manager : AssetManager, private val window : Window) : GameActor(), S
                 cityHidePos.getDrawHeight().toInt(),
                 false,
                 false)
-    }
-
-    override fun runMove() {
-    }
-
-    override fun stopMove() {
     }
 }

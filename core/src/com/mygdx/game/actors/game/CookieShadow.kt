@@ -29,6 +29,7 @@ class CookieShadow(manager : AssetManager,
     private fun calculateShadowSize(){
         val widthChange = 1f
         val heightChange = 0.4f
+        setShadowOpacity()
         isDraw = true
         if(cookie.y > peak){
             peak = cookie.y
@@ -46,9 +47,21 @@ class CookieShadow(manager : AssetManager,
         }
     }
 
+    private fun setShadowOpacity(){
+        val invisiblePoint = 100
+        val shadowOpacity = 100 - ((cookie.y - cookie.startY ) / (invisiblePoint / 100))
+        val alpha = when {
+            shadowOpacity / 100 > 1 -> 1f
+            shadowOpacity / 100 < 0 -> 0f
+            else -> shadowOpacity / 100
+        }
+        color.a = alpha
+    }
+
     override fun draw(batch: Batch?, parentAlpha: Float) {
         val x = cookie.x
         val y = cookie.startY - 20
-        if(isDraw) batch!!.draw(region, x, y, x, y,  width, height, scaleX, scaleY, rotation)
+        batch!!.color = color
+        if(isDraw) batch.draw(region, x, y, x, y,  width, height, scaleX, scaleY, rotation)
     }
 }

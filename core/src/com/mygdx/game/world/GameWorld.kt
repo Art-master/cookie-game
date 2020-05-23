@@ -89,7 +89,6 @@ class GameWorld(private val manager : AssetManager) {
     private fun controlScore(actor: RandomTableItem){
         actor.callbackGoThrough = object : Callback {
             override fun call() {
-                AudioManager.play(AudioManager.Sound.SCORE)
                 score.scoreNum++
             }
         }

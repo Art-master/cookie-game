@@ -54,7 +54,13 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
     }
 
     private fun changeBackground(){
-        background = if(VibrationManager.isVibrationEnable) backgroundRegion else backgroundRegion2
+        background = if(VibrationManager.isVibrationEnable) {
+            color.a = 1f
+            backgroundRegion
+        } else {
+            color.a = 0.5f
+            backgroundRegion2
+        }
     }
 
     override fun act(delta: Float) {
@@ -65,7 +71,7 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch!!.color = Color.WHITE
+        batch!!.color = color
         batch.draw(background, x, y, width, height)
 
         val iconWidth = vibrationIcon.originalWidth.toFloat()

@@ -24,7 +24,7 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
     private val soundRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ICON)
     private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
     private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
-    private var region = backgroundRegion
+    private var background = backgroundRegion
     private var soundIcon = soundRegion
 
     private var centerX = 0f
@@ -34,8 +34,8 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
         isVibrating = true
         x = sound.right + 100f
         y = sound.y
-        width = region.originalWidth.toFloat()
-        height = region.originalHeight.toFloat()
+        width = background.originalWidth.toFloat()
+        height = background.originalHeight.toFloat()
 
         addClickListener()
         changeBackground()
@@ -54,7 +54,13 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
     }
 
     private fun changeBackground(){
-        region = if(AudioManager.isSoundEnable) backgroundRegion else backgroundRegion2
+        background = if(AudioManager.isSoundEnable) {
+            color.a = 1f
+            backgroundRegion
+        } else {
+            color.a = 0.5f
+            backgroundRegion2
+        }
     }
 
     override fun act(delta: Float) {
@@ -65,11 +71,14 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch!!.color = Color.WHITE
-        batch.draw(region, x, y, width, height)
+        batch!!.color = color
+        batch.draw(background, x, y, width, height)
+
 
         val iconWidth = soundIcon.originalWidth.toFloat()
         val iconHeight = soundIcon.originalHeight.toFloat()
+
+        batch.color = color
         batch.draw(soundIcon, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
     }
 

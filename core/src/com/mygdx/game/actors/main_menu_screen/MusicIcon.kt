@@ -54,7 +54,13 @@ class MusicIcon(manager : AssetManager) : GameActor(), Animated {
     }
 
     private fun changeBackground(){
-        background = if(AudioManager.isMusicEnable) backgroundRegion else backgroundRegion2
+        background = if(AudioManager.isMusicEnable) {
+            color.a = 1f
+            backgroundRegion
+        } else {
+            color.a = 0.5f
+            backgroundRegion2
+        }
     }
 
     override fun act(delta: Float) {
@@ -65,7 +71,7 @@ class MusicIcon(manager : AssetManager) : GameActor(), Animated {
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch!!.color = Color.WHITE
+        batch!!.color = color
         batch.draw(background, x, y, width, height)
 
         val iconWidth = musicIcon.originalWidth.toFloat()

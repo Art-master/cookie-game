@@ -41,9 +41,9 @@ cactus
   index: -1
 circle_shadow
   rotate: false
-  xy: 229, 18
-  size: 104, 38
-  orig: 104, 38
+  xy: 229, 22
+  size: 92, 34
+  orig: 92, 34
   offset: 0, 0
   index: -1
 city
