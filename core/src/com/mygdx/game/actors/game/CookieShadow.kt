@@ -14,7 +14,6 @@ class CookieShadow(manager : AssetManager,
     private val origWidth = region.originalWidth.toFloat()
     private val origHeight = region.originalHeight.toFloat()
     private var peak = cookie.ground
-    private var isDraw = true
 
     init {
         width = origWidth
@@ -30,7 +29,6 @@ class CookieShadow(manager : AssetManager,
         val widthChange = 1f
         val heightChange = 0.4f
         setShadowOpacity()
-        isDraw = true
         if(cookie.y > peak){
             peak = cookie.y
             width -= widthChange
@@ -42,8 +40,6 @@ class CookieShadow(manager : AssetManager,
             if(cookie.y <= cookie.ground) peak = cookie.ground
             width = origWidth
             height = origHeight
-        } else {
-            isDraw = false
         }
     }
 
@@ -62,6 +58,6 @@ class CookieShadow(manager : AssetManager,
         val x = cookie.x
         val y = cookie.startY - 20
         batch!!.color = color
-        if(isDraw) batch.draw(region, x, y, x, y,  width, height, scaleX, scaleY, rotation)
+        batch.draw(region, x, y, x, y,  width, height, scaleX, scaleY, rotation)
     }
 }

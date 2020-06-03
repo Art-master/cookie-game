@@ -14,7 +14,7 @@ interface Physical{
     fun <T> collides(actor : T): Boolean where T : Actor, T : Physical{
         val bound = getBoundsRect()
         val boundActor = actor.getBoundsRect()
-        if(boundActor.x + boundActor.width >= bound.x && Intersector.overlaps(boundActor, bound)){
+        if(bound.x + bound.width >= boundActor.x && Intersector.overlaps(boundActor, bound)){
             return true
         }
         return false

@@ -7,6 +7,12 @@ class Assets {
         }
     }
 
+    class ComicsTexture{
+        companion object{
+            const val NAME = "comics.jpg"
+        }
+    }
+
     class CookieAtlas{
         companion object{
             const val NAME = "cookie.atlas"
@@ -23,6 +29,7 @@ class Assets {
             const val CURTAIN_RIGHT = "curtainRight"
             const val CURTAIN_LEFT = "curtainLeft"
             const val BLUE_SKY = "blueSky"
+            const val BLACK = "black"
             const val FLOWER_IN_POT = "flowerInPot"
             const val FLOWER_IN_POT_2 = "flowerInPot2"
             const val CACTUS = "cactus"

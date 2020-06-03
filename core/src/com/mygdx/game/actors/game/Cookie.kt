@@ -165,9 +165,9 @@ class Cookie(private val manager : AssetManager,
              if(isHigherThen(obj)){
                  setOnTop(obj)
                  obj.jumpedOn()
-            }else if(isForward(obj)){
-                 setAgainstTheObject(obj)
-            }
+            }else if(isForward(obj) && getTop(obj) - y < 20){
+                 setOnTop(obj)
+            }else setAgainstTheObject(obj)
         }
         if(isAfterObject(obj) && state == State.RUN){
             state = State.FALL
@@ -182,7 +182,7 @@ class Cookie(private val manager : AssetManager,
     }
 
     private fun isForward(obj : RandomTableItem) = x < obj.getBoundsRect().x + 10
-    private fun isHigherThen(obj : RandomTableItem) = y > obj.top - 30
+    private fun isHigherThen(obj : RandomTableItem) = y > getTop(obj) - 30
 
     private fun setOnTop(obj : RandomTableItem) {
         resetState()
@@ -192,17 +192,18 @@ class Cookie(private val manager : AssetManager,
             else -> {}
         }
         obj.animate(AnimationType.ITEM_SQUASH)
-        position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
+        position.y = getTop(obj)
     }
 
     private fun controlCookieVelocity(){
-        if(x > startX) {
+        if(move.scrollSpeed != ScrollSpeed.NONE && x > startX) {
             x = startX
             normalMove()
         }
     }
 
     private fun normalMove(){
+        println("NORMAL_MOVE")
         move.update(speed = ScrollSpeed.NONE)
     }
 
@@ -211,6 +212,7 @@ class Cookie(private val manager : AssetManager,
     }
 
     private fun slowMove(){
+        println("SLOW_MOVE")
         move.update(speed = ScrollSpeed.SLOW_MOVE)
     }
 

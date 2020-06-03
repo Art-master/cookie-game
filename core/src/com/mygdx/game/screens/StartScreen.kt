@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
+import com.mygdx.game.Prefs
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.Shadow
@@ -24,14 +25,20 @@ class StartScreen : Screen {
     private val manager = AssetManager()
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
+    var firstRun = false
 
     init {
+        val prefs = Gdx.app.getPreferences(Prefs.NAME)
+        firstRun = prefs.getBoolean(Prefs.FIRST_RUN, true)
+        prefs.putBoolean(Prefs.FIRST_RUN, true)
+
         loadResources()
         Gdx.input.inputProcessor = stage
     }
 
     private fun loadResources(){
         manager.load(Descriptors.background)
+        if(firstRun) manager.load(Descriptors.comics)
         manager.load(Descriptors.menu)
         manager.load(Descriptors.environment)
         manager.finishLoading()
@@ -84,11 +91,17 @@ class StartScreen : Screen {
             musicIcon.animate(AnimationType.HIDE_FROM_SCENE)
             vibrationIcon.animate(AnimationType.HIDE_FROM_SCENE)
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(GAME_SCREEN)
+                setScreen()
                 AudioManager.stopAll()
             })
         }
         AudioManager.play(MusicApp.MAIN_MENU_MUSIC, true)
+    }
+
+    private fun setScreen(){
+        firstRun = true // TODO test
+        if(firstRun) ScreenManager.setScreen(COMICS_SCREEN, manager)
+        else ScreenManager.setScreen(GAME_SCREEN)
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){
