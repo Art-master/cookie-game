@@ -51,11 +51,13 @@ class ComicsScreen(params: Array<out Any>) : Screen {
             addActor(comics)
             addActor(shadow)
         }
-
+        var isComicsShowed = false
+        comics.animate(AnimationType.SHOW_ON_SCENE, Runnable { isComicsShowed =true; })
         shadow.animate(AnimationType.SHOW_ON_SCENE)
         AudioManager.play(AudioManager.MusicApp.MAIN_MENU_MUSIC)
 
         addClickListener(comics) {
+            if(!isComicsShowed) return@addClickListener
             AudioManager.stopAll()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(ScreenManager.Screens.GAME_SCREEN)
