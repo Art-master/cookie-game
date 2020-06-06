@@ -146,7 +146,7 @@ salt
   index: -1
 shadow
   rotate: false
-  xy: 1197, 367
+  xy: 388, 106
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -156,6 +156,13 @@ table
   xy: 2, 1180
   size: 1920, 278
   orig: 1920, 278
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 1197, 367
+  size: 1, 1
+  orig: 1, 1
   offset: 0, 0
   index: -1
 window

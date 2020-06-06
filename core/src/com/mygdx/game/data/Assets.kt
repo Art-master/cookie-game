@@ -7,9 +7,14 @@ class Assets {
         }
     }
 
-    class ComicsTexture{
+    class ComicsAtlas{
         companion object{
-            const val NAME = "comics.jpg"
+            const val NAME = "comics.atlas"
+            const val BACKGROUND = "background"
+            const val FRAME_1 = "frame1"
+            const val FRAME_2 = "frame2"
+            const val FRAME_3 = "frame3"
+            const val FRAME_4 = "frame4"
         }
     }
 
@@ -30,6 +35,7 @@ class Assets {
             const val CURTAIN_LEFT = "curtainLeft"
             const val BLUE_SKY = "blueSky"
             const val BLACK = "black"
+            const val WHITE = "white"
             const val FLOWER_IN_POT = "flowerInPot"
             const val FLOWER_IN_POT_2 = "flowerInPot2"
             const val CACTUS = "cactus"

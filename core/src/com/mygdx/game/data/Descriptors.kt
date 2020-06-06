@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 class Descriptors {
     companion object{
         val background = AssetDescriptor<Texture>(Assets.BackgroundTexture.NAME, Texture::class.java)
-        val comics = AssetDescriptor<Texture>(Assets.ComicsTexture.NAME, Texture::class.java)
+        val comics = AssetDescriptor<TextureAtlas>(Assets.ComicsAtlas.NAME, TextureAtlas::class.java)
         val cookie = AssetDescriptor<TextureAtlas>(Assets.CookieAtlas.NAME, TextureAtlas::class.java)
         val environment = AssetDescriptor<TextureAtlas>(Assets.EnvironmentAtlas.NAME, TextureAtlas::class.java)
         val menu = AssetDescriptor<TextureAtlas>(Assets.MainMenuAtlas.NAME, TextureAtlas::class.java)

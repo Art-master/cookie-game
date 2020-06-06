@@ -1,0 +1,53 @@
+
+comics.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background
+  rotate: false
+  xy: 2, 815
+  size: 1446, 1080
+  orig: 1446, 1080
+  offset: 0, 0
+  index: -1
+frame3
+  rotate: false
+  xy: 2, 2
+  size: 1104, 811
+  orig: 1104, 811
+  offset: 0, 0
+  index: -1
+
+comics2.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame2
+  rotate: false
+  xy: 2, 2
+  size: 1096, 805
+  orig: 1096, 805
+  offset: 0, 0
+  index: -1
+frame4
+  rotate: false
+  xy: 2, 809
+  size: 1103, 810
+  orig: 1103, 810
+  offset: 0, 0
+  index: -1
+
+comics3.png
+size: 2048,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame1
+  rotate: false
+  xy: 2, 2
+  size: 1094, 804
+  orig: 1094, 804
+  offset: 0, 0
+  index: -1

@@ -10,10 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
-import com.mygdx.game.actors.Comics
 import com.mygdx.game.actors.Shadow
+import com.mygdx.game.actors.comics.*
 import com.mygdx.game.api.AnimationType
-import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager
 
@@ -44,19 +43,33 @@ class ComicsScreen(params: Array<out Any>) : Screen {
     }
 
     private fun addActorsToStage() {
-        val comics = Comics(manager)
+        val background = Background(manager)
+        val frame1 = Frame1(manager, background)
+        val frame2 = Frame2(manager, frame1)
+        val frame3 = Frame3(manager, frame1)
+        val frame4 = Frame4(manager, frame2, frame3)
         val shadow = Shadow(manager)
 
         stage.apply {
-            addActor(comics)
+            addActor(background)
+            addActor(frame1)
+            addActor(frame2)
+            addActor(frame3)
+            addActor(frame4)
             addActor(shadow)
         }
+
         var isComicsShowed = false
-        comics.animate(AnimationType.SHOW_ON_SCENE, Runnable { isComicsShowed =true; })
         shadow.animate(AnimationType.SHOW_ON_SCENE)
+        frame1.animate(AnimationType.SHOW_ON_SCENE,
+                Runnable { frame2.animate(AnimationType.SHOW_ON_SCENE,
+                        Runnable { frame3.animate(AnimationType.SHOW_ON_SCENE,
+                                Runnable { frame4.animate(AnimationType.SHOW_ON_SCENE,
+                                        Runnable { isComicsShowed = true }) }) }) })
+
         AudioManager.play(AudioManager.MusicApp.MAIN_MENU_MUSIC)
 
-        addClickListener(comics) {
+        addClickListener(background) {
             if(!isComicsShowed) return@addClickListener
             AudioManager.stopAll()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
