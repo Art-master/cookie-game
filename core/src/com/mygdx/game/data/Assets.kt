@@ -80,6 +80,7 @@ class Assets {
             const val VIBRATION_ICON = "vibrationIcon"
             const val MUSIC_ICON = "musicIcon"
             const val BLUR = "blur"
+            const val DISABLE_LINE = "disableLine"
             const val BUTTON_PLAY = "buttonPlay"
             const val BUTTON_PLAY_MINI = "cookieButtonPlayMini"
             const val CIRCLE = "circle"

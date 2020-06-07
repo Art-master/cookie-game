@@ -2,7 +2,6 @@ package com.mygdx.game.actors.main_menu_screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -24,6 +23,7 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
 
     private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
     private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
+    private var disableLineRegion = texture.findRegion(Assets.MainMenuAtlas.DISABLE_LINE)
     private var background = backgroundRegion
 
     private var vibrationIcon = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_ICON)
@@ -77,6 +77,15 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
         val iconWidth = vibrationIcon.originalWidth.toFloat()
         val iconHeight = vibrationIcon.originalHeight.toFloat()
         batch.draw(vibrationIcon, centerX - (iconWidth / 2), centerY - (iconHeight/2), iconWidth, iconHeight)
+        drawDisableLine(batch)
+    }
+
+    private fun drawDisableLine(batch: Batch){
+        if(VibrationManager.isVibrationEnable.not()){
+            val iconWidth = disableLineRegion.originalWidth.toFloat()
+            val iconHeight = disableLineRegion.originalHeight.toFloat()
+            batch.draw(disableLineRegion, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
+        }
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {

@@ -17,7 +17,7 @@ class Background(manager: AssetManager) : GameActor() {
     init {
         val screenWidth = Gdx.graphics.width
         width = background.originalWidth.toFloat()
-        height = background.originalWidth.toFloat()
+        height = background.originalHeight.toFloat()
         x = (screenWidth - width) / 2f
         y = 0f
     }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.mygdx.game.Config
@@ -24,6 +23,7 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
     private val soundRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ICON)
     private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
     private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
+    private var disableLineRegion = texture.findRegion(Assets.MainMenuAtlas.DISABLE_LINE)
     private var background = backgroundRegion
     private var soundIcon = soundRegion
 
@@ -80,6 +80,15 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
 
         batch.color = color
         batch.draw(soundIcon, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
+        drawDisableLine(batch)
+    }
+
+    private fun drawDisableLine(batch: Batch){
+        if(AudioManager.isSoundEnable.not()){
+            val iconWidth = disableLineRegion.originalWidth.toFloat()
+            val iconHeight = disableLineRegion.originalHeight.toFloat()
+            batch.draw(disableLineRegion, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
+        }
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
