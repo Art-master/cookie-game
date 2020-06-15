@@ -18,7 +18,7 @@ object ScreenManager {
         val currentScreen = game?.screen
         val nextScreen= when(screen){
             Screens.START_SCREEN -> StartScreen()
-            Screens.GAME_SCREEN -> GameScreen()
+            Screens.GAME_SCREEN -> GameScreen(params)
             Screens.GAME_OVER -> GameOverScreen(params)
             Screens.COMICS_SCREEN -> ComicsScreen(params)
         }

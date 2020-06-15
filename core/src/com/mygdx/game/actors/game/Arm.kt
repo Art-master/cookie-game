@@ -72,7 +72,6 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
 
     override fun act(delta: Float) {
         super.act(delta)
-        if (actions.isEmpty) setMoveAction()
         updateFinishAnimationIfNeed()
         updateAnimationTimerIfNeed()
         runTime += delta
@@ -142,6 +141,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     private fun showArmAnimation(runAfter: Runnable): SequenceAction? {
+        setMoveAction()
         val animDuration = 3f
         val move = Actions.moveTo(initPosition.x, initPosition.y, animDuration)
         val run = Actions.run(runAfter)

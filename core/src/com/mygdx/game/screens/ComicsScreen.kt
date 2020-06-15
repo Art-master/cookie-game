@@ -18,14 +18,12 @@ import com.mygdx.game.managers.ScreenManager
 
 class ComicsScreen(params: Array<out Any>) : Screen {
 
-    private var manager: AssetManager
+    private var manager = params.first { it is AssetManager } as AssetManager
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
     init {
         Gdx.input.inputProcessor = stage
-        manager = params.first { it is AssetManager } as AssetManager
-
     }
 
     override fun hide() {
@@ -73,7 +71,7 @@ class ComicsScreen(params: Array<out Any>) : Screen {
             if(!isComicsShowed) return@addClickListener
             AudioManager.stopAll()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(ScreenManager.Screens.GAME_SCREEN)
+                ScreenManager.setScreen(ScreenManager.Screens.GAME_SCREEN, manager)
             })
         }
     }

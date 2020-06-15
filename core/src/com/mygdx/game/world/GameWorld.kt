@@ -2,7 +2,6 @@ package com.mygdx.game.world
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -17,12 +16,10 @@ import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.Callback
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.actors.Shadow as SceneShadow
 
 
 class GameWorld(private val manager : AssetManager) {
-    companion object{
-        val gravity = Vector2(0f, 12f)
-    }
 
     val stage = Stage(ScreenViewport())
 
@@ -38,6 +35,7 @@ class GameWorld(private val manager : AssetManager) {
     private val score = Score(manager)
     private val arm = Arm(manager, cookie)
     private val items = TableItems(manager, table, cookie)
+    private val sceneShadow = SceneShadow(manager)
     val actors : Array<Actor> = Array()
 
     private var touchable = true
@@ -46,11 +44,11 @@ class GameWorld(private val manager : AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, arm, score)
+        actors.addAll(cookieShadow, cookie, arm, score, sceneShadow)
 
         addActorsToStage()
-        startInitAnimation()
         stopMoveAllActors()
+        startInitAnimation()
         cookie.runMove()
         changeScore()
         stage.addListener(object : ClickListener(){
@@ -74,11 +72,13 @@ class GameWorld(private val manager : AssetManager) {
         }
     }
     private fun startInitAnimation(){
-        cookie.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-            startMoveAllActors()
-        })
-        arm.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-            arm.startRepeatableMove()
+        sceneShadow.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+            cookie.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                startMoveAllActors()
+            })
+            arm.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                arm.startRepeatableMove()
+            })
         })
     }
 
@@ -126,7 +126,7 @@ class GameWorld(private val manager : AssetManager) {
             stopMoveAllActors()
             arm.actions.clear()
             arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable{
-                ScreenManager.setScreen(GAME_OVER, score.scoreNum)
+                ScreenManager.setScreen(GAME_OVER, manager, score.scoreNum)
             })
 
             AudioManager.stopAll()

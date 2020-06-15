@@ -19,26 +19,18 @@ import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.game_over_screen.Scores
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.api.AnimationType.*
-import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
 import com.mygdx.game.managers.AudioManager.Sound.*
 
 class GameOverScreen(private val params: Array<out Any>) : Screen {
 
-    private val manager = AssetManager()
+    private val manager: AssetManager = params.first { it is AssetManager } as AssetManager
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
     init {
-        loadResources()
         Gdx.input.inputProcessor = stage
-    }
-
-    private fun loadResources(){
-        manager.load(Descriptors.background)
-        manager.load(Descriptors.menu)
-        manager.finishLoading()
     }
 
     override fun hide() {
@@ -86,7 +78,7 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
             mainMenuIcon.animate(HIDE_FROM_SCENE)
             scores.animate(HIDE_FROM_SCENE)
             shadow.animate(HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(GAME_SCREEN)
+                ScreenManager.setScreen(GAME_SCREEN, manager)
             })
         }
 
@@ -104,7 +96,7 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
     private fun initScoreActor(): Scores{
         var score = 0
         if(params.isEmpty().not()){
-            val scoreRaw = params[0]
+            val scoreRaw = params[1]
             score =if(scoreRaw is Int){
                scoreRaw
             } else 0

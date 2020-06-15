@@ -40,6 +40,7 @@ class StartScreen : Screen {
         manager.load(Descriptors.background)
         if(firstRun) manager.load(Descriptors.comics)
         manager.load(Descriptors.menu)
+        manager.load(Descriptors.cookie)
         manager.load(Descriptors.environment)
         manager.finishLoading()
     }
@@ -101,7 +102,7 @@ class StartScreen : Screen {
     private fun setScreen(){
         firstRun = true // TODO test
         if(firstRun) ScreenManager.setScreen(COMICS_SCREEN, manager)
-        else ScreenManager.setScreen(GAME_SCREEN)
+        else ScreenManager.setScreen(GAME_SCREEN, manager)
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){
