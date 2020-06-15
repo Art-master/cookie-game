@@ -16,7 +16,8 @@ import com.mygdx.game.data.Assets
 abstract class Frame(manager: AssetManager) : GameActor(), Animated {
     protected val atlas = manager.get(Descriptors.comics)!!
     protected var region = atlas.findRegion(Assets.ComicsAtlas.FRAME_1)!!
-    private val finalScale = 0.62f
+    protected val finalScale = 0.62f
+    protected val framePadding = 30f
 
     init {
         atlas.textures.forEach{ it.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)}
@@ -31,7 +32,7 @@ abstract class Frame(manager: AssetManager) : GameActor(), Animated {
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
-        batch.draw(region, x,  y, x, y, width, height, scaleX, scaleY, rotation)
+        batch.draw(region, x,  y, 0f, 0f, width, height, scaleX, scaleY, rotation)
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {

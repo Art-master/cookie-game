@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.mygdx.game.Config
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
@@ -15,11 +16,16 @@ class Background(manager: AssetManager) : GameActor() {
     private val white = environmentAtlas.findRegion(Assets.EnvironmentAtlas.WHITE)
 
     init {
-        val screenWidth = Gdx.graphics.width
+        val screenWidth = Config.WIDTH_GAME
         width = background.originalWidth.toFloat()
         height = background.originalHeight.toFloat()
         x = (screenWidth - width) / 2f
         y = 0f
+    }
+
+    override fun act(delta: Float) {
+        super.act(delta)
+        x = (Config.WIDTH_GAME - width) / 2f
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {

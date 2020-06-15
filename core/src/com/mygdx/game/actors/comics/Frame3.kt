@@ -11,6 +11,6 @@ class Frame3(manager: AssetManager, private val frame1: Frame) : Frame(manager) 
 
     override fun getFinalMoveX() = frame1.getFinalMoveX()
 
-    override fun getFinalMoveY() = 30f
+    override fun getFinalMoveY() = frame1.y - (height * finalScale) - framePadding
 
 }

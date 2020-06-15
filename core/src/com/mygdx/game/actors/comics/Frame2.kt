@@ -10,7 +10,7 @@ class Frame2(manager: AssetManager, private val frame1: Frame) : Frame(manager) 
     }
 
     override fun getFinalMoveX(): Float{
-        return frame1.getFinalMoveX() + 510
+        return frame1.getFinalMoveX() + (frame1.width * finalScale) + framePadding
     }
     override fun getFinalMoveY() = frame1.getFinalMoveY()
 
