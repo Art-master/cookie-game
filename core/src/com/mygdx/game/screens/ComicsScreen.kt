@@ -42,10 +42,10 @@ class ComicsScreen(params: Array<out Any>) : Screen {
 
     private fun addActorsToStage() {
         val background = Background(manager)
-        val frame1 = Frame1(manager, background)
-        val frame2 = Frame2(manager, frame1)
-        val frame3 = Frame3(manager, frame1)
-        val frame4 = Frame4(manager, frame2, frame3)
+        val frame1 = ComicsFrame1(manager, background)
+        val frame2 = ComicsFrame2(manager, frame1)
+        val frame3 = ComicsFrame3(manager, frame1)
+        val frame4 = ComicsFrame4(manager, frame2, frame3)
         val shadow = Shadow(manager)
 
         stage.apply {
@@ -60,15 +60,21 @@ class ComicsScreen(params: Array<out Any>) : Screen {
         var isComicsShowed = false
         shadow.animate(AnimationType.SHOW_ON_SCENE)
         frame1.animate(AnimationType.SHOW_ON_SCENE,
-                Runnable { frame2.animate(AnimationType.SHOW_ON_SCENE,
-                        Runnable { frame3.animate(AnimationType.SHOW_ON_SCENE,
-                                Runnable { frame4.animate(AnimationType.SHOW_ON_SCENE,
-                                        Runnable { isComicsShowed = true }) }) }) })
+                Runnable {
+                    frame2.animate(AnimationType.SHOW_ON_SCENE,
+                            Runnable {
+                                frame3.animate(AnimationType.SHOW_ON_SCENE,
+                                        Runnable {
+                                            frame4.animate(AnimationType.SHOW_ON_SCENE,
+                                                    Runnable { isComicsShowed = true })
+                                        })
+                            })
+                })
 
         AudioManager.play(AudioManager.MusicApp.MAIN_MENU_MUSIC)
 
         addClickListener(background) {
-            if(!isComicsShowed) return@addClickListener
+            if (!isComicsShowed) return@addClickListener
             AudioManager.stopAll()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(ScreenManager.Screens.GAME_SCREEN, manager)

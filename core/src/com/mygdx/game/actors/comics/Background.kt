@@ -10,16 +10,13 @@ import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 
 class Background(manager: AssetManager) : GameActor() {
-    private val atlas = manager.get(Descriptors.comics)
-    private val background = atlas.findRegion(Assets.ComicsAtlas.BACKGROUND)
     private val environmentAtlas = manager.get(Descriptors.environment)
     private val white = environmentAtlas.findRegion(Assets.EnvironmentAtlas.WHITE)
 
     init {
-        val screenWidth = Config.WIDTH_GAME
-        width = background.originalWidth.toFloat()
-        height = background.originalHeight.toFloat()
-        x = (screenWidth - width) / 2f
+        width = Gdx.graphics.width.toFloat()
+        height = Gdx.graphics.height.toFloat()
+        x = 0f
         y = 0f
     }
 
@@ -30,7 +27,6 @@ class Background(manager: AssetManager) : GameActor() {
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
-        batch.draw(white, 0f,  0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        batch.draw(background, x,  y, width, height)
+        batch.draw(white, x,  y, width, height)
     }
 }
