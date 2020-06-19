@@ -46,6 +46,7 @@ class ComicsScreen(params: Array<out Any>) : Screen {
         val frame2 = ComicsFrame2(manager, frame1)
         val frame3 = ComicsFrame3(manager, frame1)
         val frame4 = ComicsFrame4(manager, frame2, frame3)
+        val arrowForward = ArrowForward(manager)
         val shadow = Shadow(manager)
 
         stage.apply {
@@ -54,6 +55,7 @@ class ComicsScreen(params: Array<out Any>) : Screen {
             addActor(frame2)
             addActor(frame3)
             addActor(frame4)
+            addActor(arrowForward)
             addActor(shadow)
         }
 
@@ -66,7 +68,10 @@ class ComicsScreen(params: Array<out Any>) : Screen {
                                 frame3.animate(AnimationType.SHOW_ON_SCENE,
                                         Runnable {
                                             frame4.animate(AnimationType.SHOW_ON_SCENE,
-                                                    Runnable { isComicsShowed = true })
+                                                    Runnable {
+                                                        isComicsShowed = true
+                                                        arrowForward.animate(AnimationType.SHOW_ON_SCENE)
+                                                    })
                                         })
                             })
                 })

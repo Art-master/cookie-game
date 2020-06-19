@@ -10,7 +10,7 @@ class Assets {
     class ComicsAtlas{
         companion object{
             const val NAME = "comics.atlas"
-            const val BACKGROUND = "background"
+            const val ARROW_RIGHT = "arrowRight"
             const val FRAME_1 = "frame1"
             const val FRAME_2 = "frame2"
             const val FRAME_3 = "frame3"

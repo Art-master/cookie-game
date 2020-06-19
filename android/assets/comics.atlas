@@ -4,6 +4,13 @@ size: 2048,2048
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+arrowRight
+  rotate: false
+  xy: 1098, 1435
+  size: 157, 177
+  orig: 157, 177
+  offset: 0, 0
+  index: -1
 frame2
   rotate: false
   xy: 2, 808

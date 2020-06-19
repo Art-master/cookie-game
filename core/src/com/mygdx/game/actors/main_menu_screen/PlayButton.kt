@@ -7,6 +7,7 @@ import com.mygdx.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.*
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.mygdx.game.Config
 import com.mygdx.game.api.Animated
@@ -39,7 +40,7 @@ class PlayButton(manager: AssetManager) : GameActor(), Animated {
         val scaleAnim2 = scaleTo(1f, 1f, animDuration, Interpolation.smooth)
         val scaleAnim3 = scaleTo(1.01f, 1.01f, animDuration, Interpolation.smooth)
         val scaleAnim4 = scaleTo(1f, 1f, animDuration, Interpolation.smooth)
-        addAction(repeat(100, sequence(scaleAnim1, scaleAnim2, delay(animDuration),
+        addAction(repeat(RepeatAction.FOREVER, sequence(scaleAnim1, scaleAnim2, delay(animDuration),
                 scaleAnim3, scaleAnim4, delay(5f))))
     }
 
