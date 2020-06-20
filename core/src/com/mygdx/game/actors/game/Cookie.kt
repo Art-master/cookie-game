@@ -198,12 +198,11 @@ class Cookie(private val manager : AssetManager,
     private fun controlCookieVelocity(){
         if(move.scrollSpeed != ScrollSpeed.NONE && x > startX) {
             x = startX
-            normalMove()
+            if(move.scrollSpeed == ScrollSpeed.FAST_MOVE) normalMove()
         }
     }
 
     private fun normalMove(){
-        println("NORMAL_MOVE")
         move.update(speed = ScrollSpeed.NONE)
     }
 
@@ -212,7 +211,6 @@ class Cookie(private val manager : AssetManager,
     }
 
     private fun slowMove(){
-        println("SLOW_MOVE")
         move.update(speed = ScrollSpeed.SLOW_MOVE)
     }
 

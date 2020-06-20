@@ -127,6 +127,13 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
         val sequence = when (type) {
             AnimationType.HIDE_FROM_SCENE -> {
                 isFinalAnimation = true
+                val animDuration = 0.5f
+                val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
+                val run = Actions.run(runAfter)
+                Actions.sequence(backAnimation, run)
+            }
+            AnimationType.COOKIE_CATCH -> {
+                isFinalAnimation = true
                 catchCookieAnimation(runAfter)
             }
             AnimationType.SHOW_ON_SCENE -> showArmAnimation(runAfter)
@@ -154,12 +161,11 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
         moveToCatchCookieAnimation = Actions.moveTo(0f, 0f, animDuration)
         updateFinishAnimationIfNeed()
         val runAfterMove = Actions.run {
-            cookie.remove()
+            cookie.isVisible = false
             currentFrame = catchCookieRegion
             isFinalHandBackAnimation = true
         }
-        val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
         val run = Actions.run(runAfter)
-        return Actions.sequence(moveToCatchCookieAnimation, runAfterMove, backAnimation, run)
+        return Actions.sequence(moveToCatchCookieAnimation, runAfterMove, run)
     }
 }

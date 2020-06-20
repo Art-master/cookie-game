@@ -59,7 +59,6 @@ class ComicsScreen(params: Array<out Any>) : Screen {
             addActor(shadow)
         }
 
-        var isComicsShowed = false
         shadow.animate(AnimationType.SHOW_ON_SCENE)
         frame1.animate(AnimationType.SHOW_ON_SCENE,
                 Runnable {
@@ -69,7 +68,6 @@ class ComicsScreen(params: Array<out Any>) : Screen {
                                         Runnable {
                                             frame4.animate(AnimationType.SHOW_ON_SCENE,
                                                     Runnable {
-                                                        isComicsShowed = true
                                                         arrowForward.animate(AnimationType.SHOW_ON_SCENE)
                                                     })
                                         })
@@ -79,7 +77,6 @@ class ComicsScreen(params: Array<out Any>) : Screen {
         AudioManager.play(AudioManager.MusicApp.MAIN_MENU_MUSIC)
 
         addClickListener(background) {
-            if (!isComicsShowed) return@addClickListener
             AudioManager.stopAll()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(ScreenManager.Screens.GAME_SCREEN, manager)

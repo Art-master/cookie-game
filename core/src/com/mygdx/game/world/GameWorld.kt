@@ -97,7 +97,7 @@ class GameWorld(private val manager : AssetManager) {
 
     private fun stopMoveAllActors(){
         for (actor in actors){
-            if(actor is Scrollable){
+            if(actor is Scrollable && actor !is Cookie){
                 actor.stopMove()
             }
         }
@@ -125,8 +125,10 @@ class GameWorld(private val manager : AssetManager) {
             touchable = false
             stopMoveAllActors()
             arm.actions.clear()
-            arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable{
-                ScreenManager.setScreen(GAME_OVER, manager, score.scoreNum)
+            arm.animate(AnimationType.COOKIE_CATCH, Runnable{
+                arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
+                    ScreenManager.setScreen(GAME_OVER, manager, score.scoreNum)
+                })
             })
 
             AudioManager.stopAll()

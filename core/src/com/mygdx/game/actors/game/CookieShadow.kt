@@ -21,6 +21,7 @@ class CookieShadow(manager : AssetManager, private val cookie: Cookie): GameActo
     override fun act(delta: Float) {
         super.act(delta)
         setShadow()
+        isVisible = cookie.isVisible
     }
 
     private fun setShadow(){
@@ -32,7 +33,6 @@ class CookieShadow(manager : AssetManager, private val cookie: Cookie): GameActo
         val maxSizePoint = 400
         val percent = 100 - ((cookie.y - cookie.startY ) / (maxSizePoint / 100))
         if(percent > 0 && percent <= 100){
-            println(percent)
             width = region.originalWidth / (100 / percent)
             height = region.originalHeight / (100 / percent)
         }
