@@ -6,119 +6,119 @@ filter: Nearest,Nearest
 repeat: none
 blackSquare
   rotate: false
-  xy: 465, 950
+  xy: 465, 592
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 blur
   rotate: false
-  xy: 1786, 1761
+  xy: 1786, 1347
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 buttonPlay
   rotate: false
-  xy: 1786, 1764
+  xy: 1170, 1106
   size: 201, 225
   orig: 201, 225
   offset: 0, 0
   index: -1
 circle
   rotate: false
-  xy: 2, 228
+  xy: 2, 261
   size: 328, 328
   orig: 328, 328
   offset: 0, 0
   index: -1
 cookieButton
   rotate: false
-  xy: 465, 953
+  xy: 465, 595
   size: 462, 491
   orig: 462, 491
   offset: 0, 0
   index: -1
 cookieButton2
   rotate: false
-  xy: 2, 949
+  xy: 2, 591
   size: 461, 495
   orig: 461, 495
   offset: 0, 0
   index: -1
 cookieButtonMini
   rotate: false
-  xy: 929, 1284
+  xy: 2, 99
   size: 170, 160
   orig: 170, 160
   offset: 0, 0
   index: -1
 cookieButtonMini2
   rotate: false
-  xy: 1170, 1529
+  xy: 929, 926
   size: 172, 160
   orig: 172, 160
   offset: 0, 0
   index: -1
 cookieButtonPlayMini
   rotate: false
-  xy: 330, 827
-  size: 107, 120
-  orig: 107, 120
+  xy: 2, 2
+  size: 84, 95
+  orig: 84, 95
   offset: 0, 0
   index: -1
 disableLine
   rotate: false
-  xy: 1344, 1602
+  xy: 929, 837
   size: 136, 87
   orig: 136, 87
   offset: 0, 0
   index: -1
 gameOverText
   rotate: false
-  xy: 2, 1446
+  xy: 2, 1088
   size: 1166, 243
   orig: 1166, 243
   offset: 0, 0
   index: -1
 mainMenuButton
   rotate: false
-  xy: 2, 87
+  xy: 1373, 1192
   size: 141, 139
   orig: 141, 139
   offset: 0, 0
   index: -1
 musicIcon
   rotate: false
-  xy: 2, 2
+  xy: 1373, 1107
   size: 74, 83
   orig: 74, 83
   offset: 0, 0
   index: -1
 replayButton
   rotate: false
-  xy: 2, 558
-  size: 326, 389
-  orig: 326, 389
+  xy: 1786, 1350
+  size: 235, 281
+  orig: 235, 281
   offset: 0, 0
   index: -1
 soundIcon
   rotate: false
-  xy: 929, 1200
+  xy: 174, 177
   size: 96, 82
   orig: 96, 82
   offset: 0, 0
   index: -1
 title
   rotate: false
-  xy: 2, 1691
+  xy: 2, 1333
   size: 1782, 298
   orig: 1782, 298
   offset: 0, 0
   index: -1
 vibrationIcon
   rotate: false
-  xy: 1170, 1448
+  xy: 332, 510
   size: 104, 79
   orig: 104, 79
   offset: 0, 0

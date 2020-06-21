@@ -33,10 +33,12 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
         param.shadowOffsetX = -offSetShadow
         param.shadowOffsetY = offSetShadow
         param.spaceX = 15
-        param.size = 140
+        param.size = 120
         score = generator.generateFont(param)
         initScoreNum()
         color.a = 0f
+
+        x = 30f
     }
 
     private fun initScoreNum(){
@@ -54,19 +56,15 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
     }
 
     private fun drawCurrentScore(batch: Batch){
-        val centerScreenX = Config.WIDTH_GAME / 2
-        val centerScreenY = 800f
-        val fontX = centerScreenX - (symbol * currentScoreNum.toString().length / 2) - 300
+        val centerScreenY = 550f
         score.color.a = color.a
-        score.draw(batch, "SCORE: $currentScoreNum", fontX, centerScreenY)
+        score.draw(batch, "SCORE: $currentScoreNum", x, centerScreenY)
     }
 
     private fun drawBestScore(batch: Batch){
-        val centerScreenX = Config.WIDTH_GAME / 2
-        val centerScreenY = 700f
-        val fontX = centerScreenX - (symbol * bestScoreNum.toString().length / 2) - 300
+        val centerScreenY = 450f
         score.color.a = color.a
-        score.draw(batch, "BEST: $bestScoreNum", fontX, centerScreenY - (symbol * 2))
+        score.draw(batch, "BEST: $bestScoreNum", x, centerScreenY - (symbol * 2))
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {

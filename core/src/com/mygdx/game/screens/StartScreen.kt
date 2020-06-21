@@ -38,6 +38,7 @@ class StartScreen : Screen {
 
     private fun loadResources(){
         manager.load(Descriptors.background)
+        manager.load(Descriptors.gameOverBackground)
         if(firstRun) manager.load(Descriptors.comics)
         manager.load(Descriptors.menu)
         manager.load(Descriptors.cookie)

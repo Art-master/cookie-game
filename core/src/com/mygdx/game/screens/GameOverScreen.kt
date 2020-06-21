@@ -12,12 +12,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
-import com.mygdx.game.actors.game_over_screen.GameOverTitle
-import com.mygdx.game.actors.game_over_screen.MainMenuIcon
-import com.mygdx.game.actors.game_over_screen.RestartIcon
 import com.mygdx.game.actors.Shadow
-import com.mygdx.game.actors.game_over_screen.Scores
-import com.mygdx.game.actors.main_menu_screen.*
+import com.mygdx.game.actors.game_over_screen.*
 import com.mygdx.game.api.AnimationType.*
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
@@ -49,40 +45,32 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
 
     private fun addActorsToStage(){
         val background = Background(manager)
-        val title = GameOverTitle(manager)
         val restartIcon = RestartIcon(manager)
-        val mainMenuIcon = MainMenuIcon(manager)
         val shadow = Shadow(manager)
         val scores = initScoreActor()
 
         stage.apply {
             addActor(background)
-            addActor(title)
             addActor(restartIcon)
-            addActor(mainMenuIcon)
             addActor(shadow)
             addActor(scores)
         }
 
-        title.animate(SHOW_ON_SCENE)
         restartIcon.animate(SHOW_ON_SCENE)
-        mainMenuIcon.animate(SHOW_ON_SCENE)
         shadow.animate(SHOW_ON_SCENE)
         scores.animate(SHOW_ON_SCENE)
         AudioManager.play(MAIN_MENU_MUSIC)
 
         addClickListener(restartIcon) {
             AudioManager.stopAll()
-            title.animate(HIDE_FROM_SCENE)
             restartIcon.animate(HIDE_FROM_SCENE)
-            mainMenuIcon.animate(HIDE_FROM_SCENE)
             scores.animate(HIDE_FROM_SCENE)
             shadow.animate(HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(GAME_SCREEN, manager)
             })
         }
 
-        addClickListener(mainMenuIcon) {
+/*        addClickListener(mainMenuIcon) {
             title.animate(HIDE_FROM_SCENE)
             restartIcon.animate(HIDE_FROM_SCENE)
             mainMenuIcon.animate(HIDE_FROM_SCENE)
@@ -90,7 +78,7 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
             shadow.animate(HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(START_SCREEN)
             })
-        }
+        }*/
     }
 
     private fun initScoreActor(): Scores{

@@ -1,14 +1,20 @@
 package com.mygdx.game.data
 
 class Assets {
-    class BackgroundTexture{
-        companion object{
+    class BackgroundTexture {
+        companion object {
             const val NAME = "background.jpg"
         }
     }
 
-    class ComicsAtlas{
-        companion object{
+    class GameOverBackground {
+        companion object {
+            const val NAME = "gameOverBackground.jpg"
+        }
+    }
+
+    class ComicsAtlas {
+        companion object {
             const val NAME = "comics.atlas"
             const val ARROW_RIGHT = "arrowRight"
             const val FRAME_1 = "frame1"
@@ -18,8 +24,8 @@ class Assets {
         }
     }
 
-    class CookieAtlas{
-        companion object{
+    class CookieAtlas {
+        companion object {
             const val NAME = "cookie.atlas"
             const val RUN = "run"
             const val JUMP_UP = "jump_up"
@@ -27,8 +33,8 @@ class Assets {
         }
     }
 
-    class EnvironmentAtlas{
-        companion object{
+    class EnvironmentAtlas {
+        companion object {
             const val NAME = "environment.atlas"
             const val WINDOW = "window"
             const val CURTAIN_RIGHT = "curtainRight"
@@ -73,8 +79,8 @@ class Assets {
         }
     }
 
-    class MainMenuAtlas{
-        companion object{
+    class MainMenuAtlas {
+        companion object {
             const val NAME = "mainMenu.atlas"
             const val SOUND_ICON = "soundIcon"
             const val VIBRATION_ICON = "vibrationIcon"
@@ -96,8 +102,8 @@ class Assets {
         }
     }
 
-    class Fonts{
-        companion object{
+    class Fonts {
+        companion object {
             const val SCORE_FONT = "fonts/Arkipelago.ttf"
         }
     }
