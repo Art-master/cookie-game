@@ -16,29 +16,44 @@ import com.mygdx.game.data.Assets
 
 class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
 
-    private val generator = FreeTypeFontGenerator(Gdx.files.internal(Assets.Fonts.SCORE_FONT))
+    private val generator = FreeTypeFontGenerator(Gdx.files.internal(Assets.Fonts.FONT))
 
-    private var score: BitmapFont
+    private lateinit var score: BitmapFont
+    private lateinit var scoreBest: BitmapFont
     private var bestScoreNum: Int = 0
 
     private val symbol = 50
+    private val offSetShadow = 5
 
     private val prefs = Gdx.app.getPreferences(Prefs.NAME)
 
     init {
-        val offSetShadow = 5
+        buildScoreFont()
+        buildBestScoreFont()
+        initScoreNum()
+        color.a = 0f
 
+        x = 30f
+    }
+
+    private fun buildScoreFont(){
         val param = FreeTypeFontGenerator.FreeTypeFontParameter()
-        param.color = Color.valueOf("#ff5742")
+        param.color = Color.valueOf("#FFCA28")
         param.shadowOffsetX = -offSetShadow
         param.shadowOffsetY = offSetShadow
         param.spaceX = 15
         param.size = 120
         score = generator.generateFont(param)
-        initScoreNum()
-        color.a = 0f
+    }
 
-        x = 30f
+    private fun buildBestScoreFont(){
+        val param = FreeTypeFontGenerator.FreeTypeFontParameter()
+        param.color = Color.valueOf("#4CAF50")
+        param.shadowOffsetX = -offSetShadow
+        param.shadowOffsetY = offSetShadow
+        param.spaceX = 15
+        param.size = 120
+        scoreBest = generator.generateFont(param)
     }
 
     private fun initScoreNum(){
@@ -56,15 +71,15 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
     }
 
     private fun drawCurrentScore(batch: Batch){
-        val centerScreenY = 550f
+        val centerScreenY = 480f
         score.color.a = color.a
         score.draw(batch, "SCORE: $currentScoreNum", x, centerScreenY)
     }
 
     private fun drawBestScore(batch: Batch){
-        val centerScreenY = 450f
-        score.color.a = color.a
-        score.draw(batch, "BEST: $bestScoreNum", x, centerScreenY - (symbol * 2))
+        val centerScreenY = 430f
+        scoreBest.color.a = color.a
+        scoreBest.draw(batch, "BEST: $bestScoreNum", x, centerScreenY - (symbol * 2))
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {

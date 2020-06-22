@@ -101,7 +101,7 @@ class StartScreen : Screen {
     }
 
     private fun setScreen(){
-        firstRun = true // TODO test
+        //firstRun = true // TODO test
         if(firstRun) ScreenManager.setScreen(COMICS_SCREEN, manager)
         else ScreenManager.setScreen(GAME_SCREEN, manager)
     }

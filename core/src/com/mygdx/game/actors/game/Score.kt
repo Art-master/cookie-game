@@ -11,7 +11,7 @@ import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 
 class Score(manager : AssetManager) : GameActor() {
-    private val generator = FreeTypeFontGenerator(Gdx.files.internal(Assets.Fonts.SCORE_FONT))
+    private val generator = FreeTypeFontGenerator(Gdx.files.internal(Assets.Fonts.FONT))
     private var score: BitmapFont
     var scoreNum = 0
     private val symbol = 50

@@ -104,7 +104,7 @@ class Assets {
 
     class Fonts {
         companion object {
-            const val SCORE_FONT = "fonts/Arkipelago.ttf"
+            const val FONT = "fonts/LuckiestGuy-Regular.ttf"
         }
     }
 }
