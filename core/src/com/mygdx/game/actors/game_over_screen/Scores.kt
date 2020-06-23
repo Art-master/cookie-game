@@ -31,12 +31,13 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
         buildScoreFont()
         buildBestScoreFont()
         initScoreNum()
+        buildBestScoreAnimation()
         color.a = 0f
 
         x = 30f
     }
 
-    private fun buildScoreFont(){
+    private fun buildScoreFont() {
         val param = FreeTypeFontGenerator.FreeTypeFontParameter()
         param.color = Color.valueOf("#FFCA28")
         param.shadowOffsetX = -offSetShadow
@@ -46,7 +47,7 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
         score = generator.generateFont(param)
     }
 
-    private fun buildBestScoreFont(){
+    private fun buildBestScoreFont() {
         val param = FreeTypeFontGenerator.FreeTypeFontParameter()
         param.color = Color.valueOf("#4CAF50")
         param.shadowOffsetX = -offSetShadow
@@ -56,10 +57,19 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
         scoreBest = generator.generateFont(param)
     }
 
-    private fun initScoreNum(){
+    private fun buildBestScoreAnimation() {
+        val count = bestScoreNum
+        bestScoreNum = 0
+        addAction(Actions.repeat(count,
+                Actions.delay(0.01f, Actions.run {
+                    bestScoreNum++
+                })))
+    }
+
+    private fun initScoreNum() {
         bestScoreNum = prefs.getInteger(Prefs.BEST_SCORE)
-        if(bestScoreNum == 0) bestScoreNum = currentScoreNum
-        if(currentScoreNum > bestScoreNum){
+        if (bestScoreNum == 0) bestScoreNum = currentScoreNum
+        if (currentScoreNum > bestScoreNum) {
             bestScoreNum = currentScoreNum
         }
         prefs.putInteger(Prefs.BEST_SCORE, bestScoreNum).flush()
@@ -70,13 +80,13 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
         drawBestScore(batch)
     }
 
-    private fun drawCurrentScore(batch: Batch){
+    private fun drawCurrentScore(batch: Batch) {
         val centerScreenY = 480f
         score.color.a = color.a
         score.draw(batch, "SCORE: $currentScoreNum", x, centerScreenY)
     }
 
-    private fun drawBestScore(batch: Batch){
+    private fun drawBestScore(batch: Batch) {
         val centerScreenY = 430f
         scoreBest.color.a = color.a
         scoreBest.draw(batch, "BEST: $bestScoreNum", x, centerScreenY - (symbol * 2))
@@ -84,7 +94,7 @@ class Scores(private val currentScoreNum: Int = 0) : GameActor(), Animated {
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
         val animDuration = Config.SHADOW_ANIMATION_TIME_S
-        val animation = when(type){
+        val animation = when (type) {
             AnimationType.HIDE_FROM_SCENE -> {
                 val invisible = 0f
                 Actions.alpha(invisible, animDuration, Interpolation.exp10)
