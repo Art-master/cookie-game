@@ -12,23 +12,26 @@ import com.mygdx.game.Config
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
+import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.Callback
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.ScreenManager.Params.*
 import com.mygdx.game.actors.Shadow as SceneShadow
 
 
-class GameWorld(private val manager : AssetManager) {
+class GameWorld(private val manager: AssetManager, controller: AdsController) {
 
     val stage = Stage(ScreenViewport())
+    val adsController = controller
 
     private val background = Background(manager)
     private val table = Table(manager, 240f)
     private val window = Window(manager, 270f)
     private val city = City(manager, window)
     private val flower = FlowerInPot(manager, window)
-    private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME/2)
+    private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME / 2)
     private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
@@ -36,7 +39,7 @@ class GameWorld(private val manager : AssetManager) {
     private val arm = Arm(manager, cookie)
     private val items = TableItems(manager, table, cookie)
     private val sceneShadow = SceneShadow(manager)
-    val actors : Array<Actor> = Array()
+    val actors: Array<Actor> = Array()
 
     private var touchable = true
     private var isGameOver = false
@@ -51,14 +54,14 @@ class GameWorld(private val manager : AssetManager) {
         startInitAnimation()
         cookie.runMove()
         changeScore()
-        stage.addListener(object : ClickListener(){
+        stage.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                if(touchable) cookie.startJumpForce()
+                if (touchable) cookie.startJumpForce()
                 return super.touchDown(event, x, y, pointer, button)
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                if(touchable) cookie.endJumpForce()
+                if (touchable) cookie.endJumpForce()
                 super.touchUp(event, x, y, pointer, button)
             }
         }
@@ -66,12 +69,13 @@ class GameWorld(private val manager : AssetManager) {
         Gdx.input.inputProcessor = stage
     }
 
-    private fun addActorsToStage(){
-        for(actor in actors){
+    private fun addActorsToStage() {
+        for (actor in actors) {
             stage.addActor(actor)
         }
     }
-    private fun startInitAnimation(){
+
+    private fun startInitAnimation() {
         sceneShadow.animate(AnimationType.SHOW_ON_SCENE, Runnable {
             cookie.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 startMoveAllActors()
@@ -82,11 +86,11 @@ class GameWorld(private val manager : AssetManager) {
         })
     }
 
-    private fun changeScore(){
-        items.getActors().forEach{controlScore(it)}
+    private fun changeScore() {
+        items.getActors().forEach { controlScore(it) }
     }
 
-    private fun controlScore(actor: RandomTableItem){
+    private fun controlScore(actor: RandomTableItem) {
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
@@ -95,39 +99,43 @@ class GameWorld(private val manager : AssetManager) {
     }
 
 
-    private fun stopMoveAllActors(){
-        for (actor in actors){
-            if(actor is Scrollable && actor !is Cookie){
+    private fun stopMoveAllActors() {
+        for (actor in actors) {
+            if (actor is Scrollable && actor !is Cookie) {
                 actor.stopMove()
             }
         }
     }
 
-    private fun startMoveAllActors(){
-        foreEachActor{
-            if(it is Scrollable) it.runMove()
+    private fun startMoveAllActors() {
+        foreEachActor {
+            if (it is Scrollable) it.runMove()
         }
     }
 
-    private fun foreEachActor(callbackData: (Actor) -> Unit){
-        for (actor in actors){
-                callbackData.invoke(actor)
+    private fun foreEachActor(callbackData: (Actor) -> Unit) {
+        for (actor in actors) {
+            callbackData.invoke(actor)
         }
     }
-    fun update(delta: Float){
+
+    fun update(delta: Float) {
         stage.act(delta)
         checkContactCookieAndHand()
     }
 
-    private fun checkContactCookieAndHand(){
-        if(arm.x + arm.width >= cookie.x && isGameOver.not()){
+    private fun checkContactCookieAndHand() {
+        if (arm.x + arm.width >= cookie.x && isGameOver.not()) {
             isGameOver = true
             touchable = false
             stopMoveAllActors()
             arm.actions.clear()
-            arm.animate(AnimationType.COOKIE_CATCH, Runnable{
+            arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                    ScreenManager.setScreen(GAME_OVER, manager, score.scoreNum)
+                    ScreenManager.setScreen(GAME_OVER,
+                            Pair(ASSET_MANAGER, manager),
+                            Pair(SCORE, score.scoreNum),
+                            Pair(ADS_CONTROLLER, adsController))
                 })
             })
 

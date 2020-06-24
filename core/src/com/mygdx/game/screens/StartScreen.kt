@@ -15,14 +15,19 @@ import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
+import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.AudioManager.Sound
+import com.mygdx.game.managers.ScreenManager.Params.*
 
-class StartScreen : Screen {
+class StartScreen(params: Map<ScreenManager.Params, Any>) : Screen {
+
     private val manager = AssetManager()
+    private var adsController = params[ADS_CONTROLLER] as AdsController
+
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
     var firstRun = false
@@ -102,8 +107,12 @@ class StartScreen : Screen {
 
     private fun setScreen(){
         //firstRun = true // TODO test
-        if(firstRun) ScreenManager.setScreen(COMICS_SCREEN, manager)
-        else ScreenManager.setScreen(GAME_SCREEN, manager)
+        val params = arrayOf(
+                Pair(ASSET_MANAGER, manager),
+                Pair(ADS_CONTROLLER, adsController))
+
+        if(firstRun) ScreenManager.setScreen(COMICS_SCREEN, *params)
+        else ScreenManager.setScreen(GAME_SCREEN, *params)
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){

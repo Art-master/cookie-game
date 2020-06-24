@@ -14,19 +14,25 @@ import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.game_over_screen.*
+import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType.*
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
 import com.mygdx.game.managers.AudioManager.Sound.*
+import com.mygdx.game.managers.ScreenManager.Params.*
+import com.mygdx.game.managers.ScreenManager.Params.SCORE
 
-class GameOverScreen(private val params: Array<out Any>) : Screen {
+class GameOverScreen(params: Map<ScreenManager.Params, Any>) : Screen {
 
-    private val manager: AssetManager = params.first { it is AssetManager } as AssetManager
+    private var manager = params[ASSET_MANAGER] as AssetManager
+    private var adsController = params[ADS_CONTROLLER] as AdsController
+    private var score = params[SCORE] as Int
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
     init {
         Gdx.input.inputProcessor = stage
+        adsController.showInterstitialAd()
     }
 
     override fun hide() {
@@ -47,7 +53,7 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
         val background = Background(manager)
         val restartIcon = RestartIcon(manager)
         val shadow = Shadow(manager)
-        val scores = initScoreActor()
+        val scores = Scores(score)
 
         stage.apply {
             addActor(background)
@@ -62,11 +68,12 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
         AudioManager.play(MAIN_MENU_MUSIC)
 
         addClickListener(restartIcon) {
+            adsController.hideBannerAd()
             AudioManager.stopAll()
             restartIcon.animate(HIDE_FROM_SCENE)
             scores.animate(HIDE_FROM_SCENE)
             shadow.animate(HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(GAME_SCREEN, manager)
+                ScreenManager.setScreen(GAME_SCREEN, Pair(ASSET_MANAGER, manager))
             })
         }
 
@@ -81,16 +88,6 @@ class GameOverScreen(private val params: Array<out Any>) : Screen {
         }*/
     }
 
-    private fun initScoreActor(): Scores{
-        var score = 0
-        if(params.isEmpty().not()){
-            val scoreRaw = params[1]
-            score =if(scoreRaw is Int){
-               scoreRaw
-            } else 0
-        }
-        return Scores(score)
-    }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){
         actor.addListener(object: ClickListener(){
