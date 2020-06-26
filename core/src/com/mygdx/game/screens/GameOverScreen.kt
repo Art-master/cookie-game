@@ -53,7 +53,7 @@ class GameOverScreen(params: Map<ScreenManager.Params, Any>) : Screen {
         val background = Background(manager)
         val restartIcon = RestartIcon(manager)
         val shadow = Shadow(manager)
-        val scores = Scores(score)
+        val scores = Scores(manager, score)
 
         stage.apply {
             addActor(background)
@@ -73,7 +73,9 @@ class GameOverScreen(params: Map<ScreenManager.Params, Any>) : Screen {
             restartIcon.animate(HIDE_FROM_SCENE)
             scores.animate(HIDE_FROM_SCENE)
             shadow.animate(HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(GAME_SCREEN, Pair(ASSET_MANAGER, manager))
+                ScreenManager.setScreen(GAME_SCREEN,
+                        Pair(ASSET_MANAGER, manager),
+                        Pair(ADS_CONTROLLER, adsController))
             })
         }
 

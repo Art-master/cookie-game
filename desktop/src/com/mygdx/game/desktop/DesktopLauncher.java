@@ -13,6 +13,7 @@ public class DesktopLauncher{
 		config.title = "Run Cookie run";
 		config.width = 1920;
 		config.height = 1080;
+
 		AdsController controller = new AdsController() {
 			@Override
 			public boolean isWifiConnected() {

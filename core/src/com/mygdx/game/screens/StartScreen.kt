@@ -3,7 +3,13 @@ package com.mygdx.game.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.assets.loaders.FileHandleResolver
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -11,17 +17,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.Prefs
-import com.mygdx.game.managers.ScreenManager
-import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.data.FontParam
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.AudioManager.Sound
-import com.mygdx.game.managers.ScreenManager.Params.*
+import com.mygdx.game.managers.ScreenManager
+import com.mygdx.game.managers.ScreenManager.Params.ADS_CONTROLLER
+import com.mygdx.game.managers.ScreenManager.Params.ASSET_MANAGER
+import com.mygdx.game.managers.ScreenManager.Screens.COMICS_SCREEN
+import com.mygdx.game.managers.ScreenManager.Screens.GAME_SCREEN
+
 
 class StartScreen(params: Map<ScreenManager.Params, Any>) : Screen {
 
@@ -48,7 +58,17 @@ class StartScreen(params: Map<ScreenManager.Params, Any>) : Screen {
         manager.load(Descriptors.menu)
         manager.load(Descriptors.cookie)
         manager.load(Descriptors.environment)
+        loadFonts()
         manager.finishLoading()
+    }
+
+    private fun loadFonts(){
+        val resolver: FileHandleResolver = InternalFileHandleResolver()
+        manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
+        manager.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
+        manager.load(Descriptors.scoreFont)
+        manager.load(Descriptors.currentScoreFont)
+        manager.load(Descriptors.bestScoreFont)
     }
 
     override fun hide() {
