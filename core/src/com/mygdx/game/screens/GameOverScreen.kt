@@ -19,10 +19,10 @@ import com.mygdx.game.api.AnimationType.*
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
 import com.mygdx.game.managers.AudioManager.Sound.*
-import com.mygdx.game.managers.ScreenManager.Params.*
-import com.mygdx.game.managers.ScreenManager.Params.SCORE
+import com.mygdx.game.managers.ScreenManager.Param.*
+import com.mygdx.game.managers.ScreenManager.Param.SCORE
 
-class GameOverScreen(params: Map<ScreenManager.Params, Any>) : Screen {
+class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private var manager = params[ASSET_MANAGER] as AssetManager
     private var adsController = params[ADS_CONTROLLER] as AdsController
@@ -73,9 +73,7 @@ class GameOverScreen(params: Map<ScreenManager.Params, Any>) : Screen {
             restartIcon.animate(HIDE_FROM_SCENE)
             scores.animate(HIDE_FROM_SCENE)
             shadow.animate(HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(GAME_SCREEN,
-                        Pair(ASSET_MANAGER, manager),
-                        Pair(ADS_CONTROLLER, adsController))
+                ScreenManager.setScreen(GAME_SCREEN)
             })
         }
 

@@ -12,19 +12,17 @@ import com.mygdx.game.Config
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
-import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.Callback
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.managers.AudioManager
-import com.mygdx.game.managers.ScreenManager.Params.*
+import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.actors.Shadow as SceneShadow
 
 
-class GameWorld(private val manager: AssetManager, controller: AdsController) {
+class GameWorld(manager: AssetManager) {
 
     val stage = Stage(ScreenViewport())
-    val adsController = controller
 
     private val background = Background(manager)
     private val table = Table(manager, 240f)
@@ -132,10 +130,7 @@ class GameWorld(private val manager: AssetManager, controller: AdsController) {
             arm.actions.clear()
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                    ScreenManager.setScreen(GAME_OVER,
-                            Pair(ASSET_MANAGER, manager),
-                            Pair(SCORE, score.scoreNum),
-                            Pair(ADS_CONTROLLER, adsController))
+                    ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
                 })
             })
 

@@ -12,19 +12,16 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.comics.*
-import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager
-import com.mygdx.game.managers.ScreenManager.Params
-import com.mygdx.game.managers.ScreenManager.Params.ADS_CONTROLLER
-import com.mygdx.game.managers.ScreenManager.Params.ASSET_MANAGER
+import com.mygdx.game.managers.ScreenManager.Param
+import com.mygdx.game.managers.ScreenManager.Param.ASSET_MANAGER
 import com.mygdx.game.managers.ScreenManager.Screens.*
 
-class ComicsScreen(params: Map<Params, Any>) : Screen {
+class ComicsScreen(params: Map<Param, Any>) : Screen {
 
     private var manager = params[ASSET_MANAGER] as AssetManager
-    private var adsController = params[ADS_CONTROLLER] as AdsController
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
@@ -85,9 +82,7 @@ class ComicsScreen(params: Map<Params, Any>) : Screen {
         addClickListener(background) {
             AudioManager.stopAll()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(GAME_SCREEN,
-                        Pair(ASSET_MANAGER, manager),
-                        Pair(ADS_CONTROLLER, adsController))
+                ScreenManager.setScreen(GAME_SCREEN)
             })
         }
     }

@@ -14,7 +14,7 @@ enum class FontParam(val fontName: String, private val apply: FreetypeFontLoader
     }),
     CURRENT_SCORE("currentScoreFont.ttf", FreetypeFontLoader.FreeTypeFontLoaderParameter().apply {
         fontFileName = Assets.Fonts.FONT
-        fontParameters.color = Color.valueOf("#FFCA28")
+        fontParameters.color = Color.valueOf("#FFCA28")//yellow
         fontParameters.shadowOffsetX = -5
         fontParameters.shadowOffsetY = 5
         fontParameters.spaceX = 15

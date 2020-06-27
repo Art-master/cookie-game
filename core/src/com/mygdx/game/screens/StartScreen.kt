@@ -3,72 +3,38 @@ package com.mygdx.game.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.assets.loaders.FileHandleResolver
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
-import com.mygdx.game.Prefs
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
 import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType
-import com.mygdx.game.data.Descriptors
-import com.mygdx.game.data.FontParam
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.AudioManager.Sound
 import com.mygdx.game.managers.ScreenManager
-import com.mygdx.game.managers.ScreenManager.Params.ADS_CONTROLLER
-import com.mygdx.game.managers.ScreenManager.Params.ASSET_MANAGER
+import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.managers.ScreenManager.Screens.COMICS_SCREEN
 import com.mygdx.game.managers.ScreenManager.Screens.GAME_SCREEN
 
 
-class StartScreen(params: Map<ScreenManager.Params, Any>) : Screen {
+class StartScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
-    private val manager = AssetManager()
+    private var manager = params[ASSET_MANAGER] as AssetManager
+    private var firstAppRun = params[FIRST_APP_RUN] as Boolean
+
     private var adsController = params[ADS_CONTROLLER] as AdsController
 
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
-    var firstRun = false
 
     init {
-        val prefs = Gdx.app.getPreferences(Prefs.NAME)
-        firstRun = prefs.getBoolean(Prefs.FIRST_RUN, true)
-        prefs.putBoolean(Prefs.FIRST_RUN, true)
-
-        loadResources()
         Gdx.input.inputProcessor = stage
-    }
-
-    private fun loadResources(){
-        manager.load(Descriptors.background)
-        manager.load(Descriptors.gameOverBackground)
-        if(firstRun) manager.load(Descriptors.comics)
-        manager.load(Descriptors.menu)
-        manager.load(Descriptors.cookie)
-        manager.load(Descriptors.environment)
-        loadFonts()
-        manager.finishLoading()
-    }
-
-    private fun loadFonts(){
-        val resolver: FileHandleResolver = InternalFileHandleResolver()
-        manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
-        manager.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
-        manager.load(Descriptors.scoreFont)
-        manager.load(Descriptors.currentScoreFont)
-        manager.load(Descriptors.bestScoreFont)
     }
 
     override fun hide() {
@@ -127,12 +93,8 @@ class StartScreen(params: Map<ScreenManager.Params, Any>) : Screen {
 
     private fun setScreen(){
         //firstRun = true // TODO test
-        val params = arrayOf(
-                Pair(ASSET_MANAGER, manager),
-                Pair(ADS_CONTROLLER, adsController))
-
-        if(firstRun) ScreenManager.setScreen(COMICS_SCREEN, *params)
-        else ScreenManager.setScreen(GAME_SCREEN, *params)
+        if(firstAppRun) ScreenManager.setScreen(COMICS_SCREEN)
+        else ScreenManager.setScreen(GAME_SCREEN)
     }
 
     private fun addClickListener(actor: Actor, function: () -> Unit){
