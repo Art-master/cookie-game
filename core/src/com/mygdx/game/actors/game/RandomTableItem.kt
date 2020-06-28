@@ -12,7 +12,7 @@ import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
-import com.mygdx.game.managers.AudioManager.Sound
+import com.mygdx.game.managers.AudioManager.SoundApp
 import java.util.*
 
 class RandomTableItem(private val manager : AssetManager,
@@ -30,7 +30,7 @@ class RandomTableItem(private val manager : AssetManager,
 
     private lateinit var scroller: Scrolled
 
-    private var jumpOnSound = Sound.NONE
+    private var jumpOnSound: AudioManager.Audio? = null
     var startAct = false
     var distanceUntil = 100
     var prevActor: RandomTableItem? = null
@@ -100,7 +100,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 100 - 92
                 startBound = Rectangle(92f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 45f
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             2 -> {
@@ -109,7 +109,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 90 - 32
                 startBound = Rectangle(32f, 25f, boundWidth, boundHeight)
                 y = table.worktopY - 35f
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             3 -> {
@@ -118,7 +118,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 35 - 70
                 startBound = Rectangle(70f, 70f, boundWidth, boundHeight)
                 y = table.worktopY - 70
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             4 -> {
@@ -127,7 +127,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 10 - 50
                 startBound = Rectangle(50f, 0f, boundWidth, boundHeight)
                 y = table.worktopY - 30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             5 -> {
@@ -136,7 +136,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 95
                 startBound = Rectangle(95f, 0f, boundWidth, boundHeight)
                 y = table.worktopY - 30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             6 -> {
@@ -145,7 +145,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 95
                 startBound = Rectangle(95f, 0f, boundWidth, boundHeight)
                 y = table.worktopY - 30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             7 -> {
@@ -154,7 +154,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() -50
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             8 -> {
@@ -163,7 +163,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() -80
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             9 -> {
@@ -172,7 +172,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() -80
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             10 -> {
@@ -181,7 +181,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() -80
                 startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
                 y = table.worktopY -30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
             11-> {
@@ -189,7 +189,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat()
                 startBound = Rectangle(0f, 0f, boundWidth, 21f)
                 y = table.worktopY -20
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.STICKY
             }
             12-> {
@@ -197,7 +197,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat()
                 startBound = Rectangle(0f, 0f, boundWidth, 21f)
                 y = table.worktopY -20
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.STICKY
             }
             13-> {
@@ -222,7 +222,7 @@ class RandomTableItem(private val manager : AssetManager,
                 val boundWidth = region.originalWidth.toFloat() - 10 - 50
                 startBound = Rectangle(50f, 0f, boundWidth, boundHeight)
                 y = table.worktopY - 30
-                jumpOnSound = Sound.JUMP_ON_BOX
+                jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
         }
@@ -261,8 +261,8 @@ class RandomTableItem(private val manager : AssetManager,
     }
 
     fun jumpedOn(){
-        if(jumpOnSound == Sound.NONE) return
-        AudioManager.play(jumpOnSound)
+        if(jumpOnSound == null) return
+        AudioManager.play(jumpOnSound!!)
     }
 
     override fun getBoundsRect() = bound

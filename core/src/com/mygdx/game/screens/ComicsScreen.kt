@@ -90,7 +90,7 @@ class ComicsScreen(params: Map<Param, Any>) : Screen {
     private fun addClickListener(actor: Actor, function: () -> Unit) {
         actor.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                AudioManager.play(AudioManager.Sound.CLICK_SOUND)
+                AudioManager.play(AudioManager.SoundApp.CLICK_SOUND)
                 function()
                 return super.touchDown(event, x, y, pointer, button)
             }

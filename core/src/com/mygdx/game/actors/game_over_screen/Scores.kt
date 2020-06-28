@@ -35,7 +35,7 @@ class Scores(manager: AssetManager, private val currentScoreNum: Int = 0) : Game
         val count = bestScoreNum
         bestScoreNum = 0
         addAction(Actions.repeat(count,
-                Actions.delay(0.01f, Actions.run {
+                Actions.delay(0.001f, Actions.run {
                     bestScoreNum++
                 })))
     }
@@ -56,14 +56,12 @@ class Scores(manager: AssetManager, private val currentScoreNum: Int = 0) : Game
 
     private fun drawCurrentScore(batch: Batch) {
         val centerScreenY = 480f
-        //score.color = Color.valueOf("#FFCA28")
         score.color.a = color.a
         score.draw(batch, "SCORE: $currentScoreNum", x, centerScreenY)
     }
 
     private fun drawBestScore(batch: Batch) {
         val centerScreenY = 430f
-        //score.color = Color.valueOf("#4CAF50")
         scoreBest.color.a = color.a
         scoreBest.draw(batch, "BEST: $bestScoreNum", x, centerScreenY - (symbol * 2))
     }

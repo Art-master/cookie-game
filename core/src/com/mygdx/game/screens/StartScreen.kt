@@ -16,7 +16,7 @@ import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
-import com.mygdx.game.managers.AudioManager.Sound
+import com.mygdx.game.managers.AudioManager.SoundApp
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.managers.ScreenManager.Screens.COMICS_SCREEN
@@ -101,7 +101,7 @@ class StartScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         actor.addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 function()
-                AudioManager.play(Sound.CRUNCH)
+                AudioManager.play(SoundApp.CRUNCH)
                 return super.touchDown(event, x, y, pointer, button)
             }
         })

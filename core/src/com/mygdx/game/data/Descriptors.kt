@@ -14,6 +14,7 @@ class Descriptors {
         val environment = AssetDescriptor(Assets.EnvironmentAtlas.NAME, TextureAtlas::class.java)
         val menu = AssetDescriptor(Assets.MainMenuAtlas.NAME, TextureAtlas::class.java)
         val progressBar = AssetDescriptor(Assets.ProgressAtlas.NAME, TextureAtlas::class.java)
+
         val scoreFont = AssetDescriptor(FontParam.SCORE.fontName, BitmapFont::class.java, FontParam.SCORE.get())
         val currentScoreFont = AssetDescriptor(FontParam.CURRENT_SCORE.fontName, BitmapFont::class.java, FontParam.CURRENT_SCORE.get())
         val bestScoreFont = AssetDescriptor(FontParam.BEST_SCORE.fontName, BitmapFont::class.java, FontParam.BEST_SCORE.get())

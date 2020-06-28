@@ -132,7 +132,7 @@ class Cookie(private val manager : AssetManager,
 
     fun startJumpForce() {
         if(state == State.RUN && isStartingAnimation.not()){
-            AudioManager.play(AudioManager.Sound.JUMP)
+            AudioManager.play(AudioManager.SoundApp.JUMP)
             initJump()
             fastMove()
         }

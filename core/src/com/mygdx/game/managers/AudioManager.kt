@@ -1,27 +1,32 @@
 package com.mygdx.game.managers
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetDescriptor
+import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.assets.loaders.FileHandleResolver
+import com.badlogic.gdx.assets.loaders.MusicLoader
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.utils.GdxRuntimeException
-import com.mygdx.game.Config
 import com.mygdx.game.Prefs
-import com.badlogic.gdx.audio.Sound as SoundGdx
+import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.utils.Array
+import com.mygdx.game.Config
 
 object AudioManager {
 
     interface Audio
-    enum class Sound(val fileName: String, val volume: Float = 1f) : Audio {
-        NONE("", 0f),
-        CLICK_SOUND("click.mp3", 0.3f),
-        CRUNCH("crunch.mp3", 0.3f),
-        JUMP_ON_BOX("jump_on_box.wav"),
-        JUMP("jump.wav"),
-        SCORE("score.wav", 0.3f)
+
+    enum class SoundApp(val descriptor: AssetDescriptor<Sound>, val volume: Float = 1f) : Audio {
+        CLICK_SOUND(AssetDescriptor("${Config.SOUNDS_FOLDER}/click.mp3", Sound::class.java), 0.3f),
+        CRUNCH(AssetDescriptor("${Config.SOUNDS_FOLDER}/crunch.mp3", Sound::class.java), 0.3f),
+        JUMP_ON_BOX( AssetDescriptor("${Config.SOUNDS_FOLDER}/jump_on_box.wav", Sound::class.java)),
+        JUMP(AssetDescriptor("${Config.SOUNDS_FOLDER}/jump.wav", Sound::class.java)),
+        SCORE(AssetDescriptor("${Config.SOUNDS_FOLDER}/score.wav", Sound::class.java),0.3f)
     }
 
-    enum class MusicApp(val fileName: String, val volume: Float = 1f) : Audio {
-        GAME_MUSIC("gameMusic.mp3", 0.3f),
-        MAIN_MENU_MUSIC("mainMenuMusic.mp3"),
+    enum class MusicApp(val descriptor: AssetDescriptor<Music>, val volume: Float = 1f) : Audio {
+        GAME_MUSIC(AssetDescriptor("${Config.SOUNDS_FOLDER}/gameMusic.mp3", Music::class.java),0.3f),
+        MAIN_MENU_MUSIC(AssetDescriptor("${Config.SOUNDS_FOLDER}/mainMenuMusic.mp3", Music::class.java)),
     }
 
     private val prefs = Gdx.app.getPreferences(Prefs.NAME)
@@ -40,59 +45,25 @@ object AudioManager {
             prefs.flush()
         }
 
-    private val sounds = HashMap<String, SoundGdx?>()
-    private val music = HashMap<String, Music?>()
-
-    init {
-        for(sound in Sound.values()){
-            sounds[sound.name] = getSound(sound)
-        }
-
-        for(music in MusicApp.values()){
-            this.music[music.name] = getMusic(music)
-        }
-    }
-
-    private fun getSound(sound: Sound): SoundGdx? {
-        if(sound.fileName.isEmpty() || sound == Sound.NONE) return null
-        var audio: SoundGdx? = null
-        try {
-            val file = Gdx.files.internal("${Config.SOUNDS_FOLDER}/${sound.fileName}")
-            audio = Gdx.audio.newSound(file)
-        } catch (e: GdxRuntimeException){
-            Gdx.app.log("Sound file load error", e.message)
-        }
-        return audio
-    }
-
-    private fun getMusic(music: MusicApp): Music? {
-        var audio: Music? = null
-        try {
-            val file = Gdx.files.internal("${Config.SOUNDS_FOLDER}/${music.fileName}")
-            audio = Gdx.audio.newMusic(file)
-        } catch (e: GdxRuntimeException){
-            Gdx.app.log("Music file load error", e.message)
-        }
-        return audio
-    }
-
     fun switchSoundSetting() {
         isSoundEnable = isSoundEnable.not()
-        if(isSoundEnable.not()) stopAll()
+        if (isSoundEnable.not()) stopAll()
     }
 
     fun switchMusicSetting() {
         isMusicEnable = isMusicEnable.not()
-        if(isMusicEnable.not()) stopAll()
+        if (isMusicEnable.not()) stopAll()
     }
 
     fun play(audio: Audio, isLooping: Boolean = false) {
-        if(audio is Sound){
-            if(isSoundEnable.not()) return
-            sounds[audio.name]?.play(audio.volume)
-        }else if(audio is MusicApp){
-            if(isMusicEnable.not()) return
-            music[audio.name]?.apply {
+        val manager = ScreenManager.globalParameters[ScreenManager.Param.ASSET_MANAGER] as AssetManager
+        if (audio is SoundApp) {
+            if (isSoundEnable.not()) return
+            manager.get(audio.descriptor)?.play(audio.volume)
+
+        } else if (audio is MusicApp) {
+            if (isMusicEnable.not()) return
+            manager.get(audio.descriptor)?.apply {
                 play()
                 this.isLooping = isLooping
                 volume = audio.volume
@@ -101,22 +72,44 @@ object AudioManager {
     }
 
     fun stop(audio: Audio) {
-        if(audio is Sound){
-            sounds[audio.name]?.stop()
-        }else if(audio is MusicApp){
-            music[audio.name]?.stop()
+        val manager = ScreenManager.globalParameters[ScreenManager.Param.ASSET_MANAGER] as AssetManager
+        if (audio is SoundApp) {
+            manager.get(audio.descriptor)?.stop()
+        } else if (audio is MusicApp) {
+            manager.get(audio.descriptor)?.stop()
         }
     }
 
     fun stopAll() {
-        for(sound in sounds.values){
+        val manager = ScreenManager.globalParameters[ScreenManager.Param.ASSET_MANAGER] as AssetManager
+        for (sound in manager.getAll(Sound::class.java, Array())) {
             sound?.stop()
         }
-        for(music in music.values){
+        for (music in manager.getAll(Music::class.java, Array())) {
             music?.apply {
                 stop()
                 isLooping = false
             }
+        }
+    }
+
+    fun loadSounds(manager: AssetManager) {
+        val resolver: FileHandleResolver = InternalFileHandleResolver()
+        val soundLoader = MusicLoader(resolver)
+        manager.setLoader(Music::class.java, soundLoader)
+
+        for (sound in SoundApp.values()) {
+            manager.load(sound.descriptor)
+        }
+    }
+
+    fun loadMusic(manager: AssetManager) {
+        val resolver: FileHandleResolver = InternalFileHandleResolver()
+        val musicLoader = MusicLoader(resolver)
+        manager.setLoader(Music::class.java, musicLoader)
+
+        for (music in MusicApp.values()) {
+            manager.load(music.descriptor)
         }
     }
 }

@@ -19,6 +19,7 @@ import com.mygdx.game.actors.loading_progress.Background
 import com.mygdx.game.actors.loading_progress.ProgressBar
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param.ASSET_MANAGER
 import com.mygdx.game.managers.ScreenManager.Param.FIRST_APP_RUN
@@ -93,6 +94,8 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         manager.load(Descriptors.cookie)
         manager.load(Descriptors.environment)
         loadFonts()
+        AudioManager.loadMusic(manager)
+        AudioManager.loadSounds(manager)
     }
 
     private fun loadFonts(){

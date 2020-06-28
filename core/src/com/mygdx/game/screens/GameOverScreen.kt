@@ -18,7 +18,7 @@ import com.mygdx.game.ads.AdsController
 import com.mygdx.game.api.AnimationType.*
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
-import com.mygdx.game.managers.AudioManager.Sound.*
+import com.mygdx.game.managers.AudioManager.SoundApp.*
 import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.managers.ScreenManager.Param.SCORE
 
