@@ -32,11 +32,14 @@ class Scores(manager: AssetManager, private val currentScoreNum: Int = 0) : Game
     }
 
     private fun buildBestScoreAnimation() {
-        val count = bestScoreNum
+        val step = 5
+        val count = (bestScoreNum / step) + 1
+        val startValue = bestScoreNum
         bestScoreNum = 0
         addAction(Actions.repeat(count,
-                Actions.delay(0.001f, Actions.run {
-                    bestScoreNum++
+                Actions.delay(0.05f, Actions.run {
+                    bestScoreNum += if(bestScoreNum + step <= startValue) step
+                    else startValue % step
                 })))
     }
 

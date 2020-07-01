@@ -6,4 +6,5 @@ interface AdsController {
     fun showBannerAd()
     fun hideBannerAd()
     fun showInterstitialAd(then: Runnable? = null)
+    fun showVideoAd(then: Runnable? = null)
 }

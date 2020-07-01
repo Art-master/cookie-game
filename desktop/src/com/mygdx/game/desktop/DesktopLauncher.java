@@ -16,6 +16,11 @@ public class DesktopLauncher{
 
 		AdsController controller = new AdsController() {
 			@Override
+			public void showVideoAd(@Nullable Runnable then) {
+
+			}
+
+			@Override
 			public boolean isWifiConnected() {
 				return false;
 			}

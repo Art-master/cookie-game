@@ -32,7 +32,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     init {
         Gdx.input.inputProcessor = stage
-        adsController.showInterstitialAd()
+        //adsController.showInterstitialAd()
+        adsController.showVideoAd()
     }
 
     override fun hide() {
