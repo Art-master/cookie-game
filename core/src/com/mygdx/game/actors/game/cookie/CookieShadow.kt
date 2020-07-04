@@ -1,7 +1,8 @@
-package com.mygdx.game.actors.game
+package com.mygdx.game.actors.game.cookie
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.mygdx.game.actors.game.cookie.Cookie
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.mygdx.game.actors.game.cookie.Cookie
 import com.mygdx.game.api.Animated
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor

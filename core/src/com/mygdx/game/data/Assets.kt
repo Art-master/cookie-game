@@ -39,6 +39,10 @@ class Assets {
             const val RUN = "run"
             const val JUMP_UP = "jump_up"
             const val JUMP_DOWN = "jump_down"
+            const val SUNGLASSES = "sunglasses"
+            const val RUN_SUNGLASSES = "run_sunglasses"
+            const val JUMP_UP_SUNGLASSES = "jump_up_sunglasses"
+            const val JUMP_DOWN_SUNGLASSES = "jump_down_sunglasses"
         }
     }
 

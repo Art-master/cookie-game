@@ -1,4 +1,4 @@
-package com.mygdx.game.actors.game
+package com.mygdx.game.actors.game.cookie
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.mygdx.game.actors.game.RandomTableItem
 import com.mygdx.game.actors.game.RandomTableItem.Structure
 import com.mygdx.game.api.*
 import com.mygdx.game.api.Scrolled.ScrollSpeed
@@ -32,7 +33,8 @@ class Cookie(private val manager : AssetManager,
 
     private var currentFrame = runAnimation.getKeyFrame(0f)
 
-    private var runTime = 0f
+    var runTime = 0f
+    private set
 
     private var isStopAnimation = false
 
@@ -224,12 +226,16 @@ class Cookie(private val manager : AssetManager,
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
-        if(type == AnimationType.SHOW_ON_SCENE){
-            val animDuration = 3f
-            val move = Actions.moveTo(startX, startY, animDuration)
-            val run = Actions.run { isStartingAnimation = false }
-            val run2 = Actions.run(runAfter)
-            addAction(Actions.sequence(move, run, run2))
+        val anim = when (type) {
+            AnimationType.SHOW_ON_SCENE -> {
+                val animDuration = 3f
+                Actions.sequence(
+                        Actions.moveTo(startX, startY, animDuration),
+                        Actions.run { isStartingAnimation = false })
+            }
+            else -> null
         }
+        val run = Actions.run(runAfter)
+        addAction(Actions.sequence(anim, run))
     }
 }

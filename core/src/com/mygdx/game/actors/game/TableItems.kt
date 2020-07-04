@@ -2,6 +2,7 @@ package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.utils.Array
+import com.mygdx.game.actors.game.cookie.Cookie
 import com.mygdx.game.api.Callback
 import kotlin.random.Random
 
