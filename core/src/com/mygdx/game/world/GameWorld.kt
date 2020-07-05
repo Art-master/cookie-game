@@ -14,6 +14,7 @@ import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
 import com.mygdx.game.actors.game.cookie.Cookie
 import com.mygdx.game.actors.game.cookie.CookieShadow
+import com.mygdx.game.actors.game.cookie.Hat
 import com.mygdx.game.actors.game.cookie.Sunglasses
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.Callback
@@ -34,6 +35,7 @@ class GameWorld(manager: AssetManager) {
     private val flower = FlowerInPot(manager, window)
     private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME / 2)
     private val sunglasses = Sunglasses(manager, cookie)
+    private val hat = Hat(manager, cookie)
     private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
@@ -49,7 +51,7 @@ class GameWorld(manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, sunglasses, arm, score, sceneShadow)
+        actors.addAll(cookieShadow, cookie, sunglasses, hat, arm, score, sceneShadow)
 
         addActorsToStage()
         stopMoveAllActors()
@@ -96,9 +98,10 @@ class GameWorld(manager: AssetManager) {
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
-
                 if(score.scoreNum == 1){
                     sunglasses.animate(AnimationType.SHOW_ON_SCENE)
+                } else if (score.scoreNum == 3){
+                    hat.animate(AnimationType.SHOW_ON_SCENE)
                 }
             }
         }
@@ -138,6 +141,7 @@ class GameWorld(manager: AssetManager) {
             arm.actions.clear()
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 sunglasses.animate(AnimationType.HIDE_FROM_SCENE)
+                hat.animate(AnimationType.HIDE_FROM_SCENE)
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                     ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
                 })
