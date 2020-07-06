@@ -18,7 +18,11 @@ open class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: Strin
     private var runRegions = texture.findRegions("run_$itemName")
     private var itemRegion = texture.findRegion(itemName)
     private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP_PINGPONG)
+
     private var currentFrame = runAnimation.keyFrames.first()
+    private val frameHeight = currentFrame.originalHeight.toFloat()
+    private val frameWidth = currentFrame.originalWidth.toFloat()
+
     private var isInvolvedInGame = false
     private var isGameOver = false
 
@@ -51,7 +55,7 @@ open class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: Strin
         if (isInvolvedInGame) {
             val x = if (isGameOver) x else cookie.x
             val y = if (isGameOver) y else cookie.y
-            batch.draw(currentFrame, x, y, cookie.width, cookie.height)
+            batch.draw(currentFrame, x, y, frameWidth, frameHeight)
         }
     }
 
