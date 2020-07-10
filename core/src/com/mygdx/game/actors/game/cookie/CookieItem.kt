@@ -10,7 +10,7 @@ import com.mygdx.game.Config
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Descriptors
 
-open class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : GameActor(), Animated {
+class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : GameActor(), Animated {
 
     private val texture = manager.get(Descriptors.cookie)
     private var jumpUpRegion = texture.findRegion("jump_up_$itemName")

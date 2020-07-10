@@ -4,226 +4,303 @@ size: 2048,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+boots
+  rotate: false
+  xy: 2, 285
+  size: 438, 217
+  orig: 438, 217
+  offset: 0, 0
+  index: -1
 hat
   rotate: false
-  xy: 2, 145
+  xy: 2, 58
   size: 391, 225
   orig: 391, 225
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 1790, 217
+  xy: 1416, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: -1
+jump_down_boots
+  rotate: false
+  xy: 1166, 157
+  size: 151, 190
+  orig: 151, 190
+  offset: 0, 0
+  index: -1
 jump_down_sunglasses
   rotate: false
-  xy: 1635, 217
+  xy: 1261, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: -1
 jump_up
   rotate: false
-  xy: 547, 25
+  xy: 1775, 157
   size: 149, 153
   orig: 149, 153
   offset: 0, 0
   index: -1
+jump_up_boots
+  rotate: false
+  xy: 1012, 157
+  size: 152, 190
+  orig: 152, 190
+  offset: 0, 0
+  index: -1
 run
   rotate: false
-  xy: 1325, 62
+  xy: 703, 2
   size: 150, 153
   orig: 150, 153
   offset: 0, 0
   index: 4
 run
   rotate: false
-  xy: 1325, 62
+  xy: 703, 2
   size: 150, 153
   orig: 150, 153
   offset: 0, 0
   index: 6
 run
   rotate: false
-  xy: 1477, 62
+  xy: 855, 2
   size: 150, 153
   orig: 150, 153
   offset: 0, 0
   index: 5
 run
   rotate: false
-  xy: 1629, 62
-  size: 150, 153
-  orig: 150, 153
-  offset: 0, 0
-  index: 7
-run
-  rotate: false
-  xy: 1629, 62
-  size: 150, 153
-  orig: 150, 153
-  offset: 0, 0
-  index: 3
-run
-  rotate: false
-  xy: 1781, 62
+  xy: 1007, 2
   size: 150, 153
   orig: 150, 153
   offset: 0, 0
   index: 8
 run
   rotate: false
-  xy: 1781, 62
+  xy: 1007, 2
   size: 150, 153
   orig: 150, 153
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 395, 25
+  xy: 1159, 2
+  size: 150, 153
+  orig: 150, 153
+  offset: 0, 0
+  index: 7
+run
+  rotate: false
+  xy: 1159, 2
+  size: 150, 153
+  orig: 150, 153
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 1311, 2
   size: 150, 153
   orig: 150, 153
   offset: 0, 0
   index: 2
+run_boots
+  rotate: false
+  xy: 395, 93
+  size: 151, 190
+  orig: 151, 190
+  offset: 0, 0
+  index: 5
+run_boots
+  rotate: false
+  xy: 858, 157
+  size: 152, 190
+  orig: 152, 190
+  offset: 0, 0
+  index: 6
+run_boots
+  rotate: false
+  xy: 858, 157
+  size: 152, 190
+  orig: 152, 190
+  offset: 0, 0
+  index: 4
+run_boots
+  rotate: false
+  xy: 1319, 157
+  size: 151, 190
+  orig: 151, 190
+  offset: 0, 0
+  index: 7
+run_boots
+  rotate: false
+  xy: 1319, 157
+  size: 151, 190
+  orig: 151, 190
+  offset: 0, 0
+  index: 3
+run_boots
+  rotate: false
+  xy: 1472, 120
+  size: 150, 190
+  orig: 150, 190
+  offset: 0, 0
+  index: 8
+run_boots
+  rotate: false
+  xy: 1472, 120
+  size: 150, 190
+  orig: 150, 190
+  offset: 0, 0
+  index: 2
+run_boots
+  rotate: false
+  xy: 1624, 120
+  size: 149, 190
+  orig: 149, 190
+  offset: 0, 0
+  index: 1
 run_hat
   rotate: false
-  xy: 395, 180
+  xy: 1571, 312
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 7
 run_hat
   rotate: false
-  xy: 395, 180
+  xy: 1571, 312
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 3
 run_hat
   rotate: false
-  xy: 550, 180
+  xy: 1726, 312
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 1
 jump_down_hat
   rotate: false
-  xy: 550, 180
+  xy: 1726, 312
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: -1
 jump_up_hat
   rotate: false
-  xy: 550, 180
+  xy: 1726, 312
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: -1
 run_hat
   rotate: false
-  xy: 705, 180
+  xy: 1881, 312
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 2
 run_hat
   rotate: false
-  xy: 705, 180
+  xy: 1881, 312
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 8
 run_hat
   rotate: false
-  xy: 860, 180
+  xy: 548, 169
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 4
 run_hat
   rotate: false
-  xy: 860, 180
+  xy: 548, 169
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 6
 run_hat
   rotate: false
-  xy: 1015, 180
+  xy: 703, 157
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 5
 run_sunglasses
   rotate: false
-  xy: 1170, 217
+  xy: 796, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 2
 run_sunglasses
   rotate: false
-  xy: 1170, 217
+  xy: 796, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 8
 run_sunglasses
   rotate: false
-  xy: 1325, 217
+  xy: 951, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 3
 run_sunglasses
   rotate: false
-  xy: 1325, 217
+  xy: 951, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 7
 run_sunglasses
   rotate: false
-  xy: 1480, 217
+  xy: 1106, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 4
 run_sunglasses
   rotate: false
-  xy: 1480, 217
-  size: 153, 153
-  orig: 153, 153
-  offset: 0, 0
-  index: 6
-run_sunglasses
-  rotate: false
-  xy: 1480, 217
+  xy: 1106, 349
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 5
 run_sunglasses
   rotate: false
-  xy: 1170, 62
+  xy: 1106, 349
+  size: 153, 153
+  orig: 153, 153
+  offset: 0, 0
+  index: 6
+run_sunglasses
+  rotate: false
+  xy: 548, 14
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 1
 jump_up_sunglasses
   rotate: false
-  xy: 1170, 62
+  xy: 548, 14
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: -1
 sunglasses
   rotate: false
-  xy: 2, 2
+  xy: 442, 361
   size: 352, 141
   orig: 352, 141
   offset: 0, 0

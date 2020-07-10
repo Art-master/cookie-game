@@ -12,13 +12,11 @@ import com.mygdx.game.Config
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
-import com.mygdx.game.actors.game.cookie.Cookie
-import com.mygdx.game.actors.game.cookie.CookieShadow
-import com.mygdx.game.actors.game.cookie.Hat
-import com.mygdx.game.actors.game.cookie.Sunglasses
+import com.mygdx.game.actors.game.cookie.*
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.Callback
 import com.mygdx.game.api.Scrollable
+import com.mygdx.game.data.Assets
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.actors.Shadow as SceneShadow
@@ -34,8 +32,9 @@ class GameWorld(manager: AssetManager) {
     private val city = City(manager, window)
     private val flower = FlowerInPot(manager, window)
     private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME / 2)
-    private val sunglasses = Sunglasses(manager, cookie)
-    private val hat = Hat(manager, cookie)
+    private val sunglasses = CookieItem(manager, cookie, Assets.CookieAtlas.SUNGLASSES)
+    private val hat = CookieItem(manager, cookie, Assets.CookieAtlas.HAT)
+    private val boots = CookieItem(manager, cookie, Assets.CookieAtlas.BOOTS)
     private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
@@ -51,7 +50,7 @@ class GameWorld(manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, sunglasses, hat, arm, score, sceneShadow)
+        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, arm, score, sceneShadow)
 
         addActorsToStage()
         stopMoveAllActors()
@@ -102,6 +101,8 @@ class GameWorld(manager: AssetManager) {
                     sunglasses.animate(AnimationType.SHOW_ON_SCENE)
                 } else if (score.scoreNum == 3){
                     hat.animate(AnimationType.SHOW_ON_SCENE)
+                } else if (score.scoreNum == 5){
+                    boots.animate(AnimationType.SHOW_ON_SCENE)
                 }
             }
         }
@@ -142,6 +143,7 @@ class GameWorld(manager: AssetManager) {
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 sunglasses.animate(AnimationType.HIDE_FROM_SCENE)
                 hat.animate(AnimationType.HIDE_FROM_SCENE)
+                boots.animate(AnimationType.HIDE_FROM_SCENE)
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                     ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
                 })
