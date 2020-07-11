@@ -48,6 +48,8 @@ class Assets {
             const val JUMP_UP_HAT = "jump_up_hat"
             const val JUMP_DOWN_HAT = "jump_down_hat"
             const val BOOTS = "boots"
+            const val BELT = "belt"
+            const val GUN = "gun"
         }
     }
 

@@ -35,6 +35,8 @@ class GameWorld(manager: AssetManager) {
     private val sunglasses = CookieItem(manager, cookie, Assets.CookieAtlas.SUNGLASSES)
     private val hat = CookieItem(manager, cookie, Assets.CookieAtlas.HAT)
     private val boots = CookieItem(manager, cookie, Assets.CookieAtlas.BOOTS)
+    private val belt = CookieItem(manager, cookie, Assets.CookieAtlas.BELT)
+    private val gun = CookieItem(manager, cookie, Assets.CookieAtlas.GUN)
     private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
@@ -50,7 +52,7 @@ class GameWorld(manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, arm, score, sceneShadow)
+        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, belt, gun, arm, score, sceneShadow)
 
         addActorsToStage()
         stopMoveAllActors()
@@ -103,6 +105,10 @@ class GameWorld(manager: AssetManager) {
                     hat.animate(AnimationType.SHOW_ON_SCENE)
                 } else if (score.scoreNum == 5){
                     boots.animate(AnimationType.SHOW_ON_SCENE)
+                } else if (score.scoreNum == 7){
+                    belt.animate(AnimationType.SHOW_ON_SCENE)
+                } else if (score.scoreNum == 9){
+                    gun.animate(AnimationType.SHOW_ON_SCENE)
                 }
             }
         }
@@ -141,9 +147,9 @@ class GameWorld(manager: AssetManager) {
             stopMoveAllActors()
             arm.actions.clear()
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
-                sunglasses.animate(AnimationType.HIDE_FROM_SCENE)
-                hat.animate(AnimationType.HIDE_FROM_SCENE)
-                boots.animate(AnimationType.HIDE_FROM_SCENE)
+                actors.filterIsInstance<CookieItem>().forEach{
+                    it.animate(AnimationType.HIDE_FROM_SCENE)
+                }
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                     ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
                 })
