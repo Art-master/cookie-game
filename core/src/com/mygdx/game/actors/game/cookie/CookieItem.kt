@@ -19,9 +19,9 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
     private var itemRegion = texture.findRegion(itemName)
     private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP_PINGPONG)
 
-    private var currentFrame = runAnimation.keyFrames.first()
-    private val frameHeight = currentFrame.originalHeight.toFloat()
-    private val frameWidth = currentFrame.originalWidth.toFloat()
+    private var currentFrame = if(runAnimation.keyFrames.isNotEmpty()) runAnimation.keyFrames.first() else null
+    private val frameHeight = currentFrame?.originalHeight?.toFloat()
+    private val frameWidth = currentFrame?.originalWidth?.toFloat()
 
     private var isInvolvedInGame = false
     private var isGameOver = false
@@ -39,6 +39,7 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
         currentFrame = when {
+            currentFrame == null -> null
             cookie.isRun() -> runAnimation.getKeyFrame(cookie.runTime)
             cookie.isJump() -> jumpUpRegion
             cookie.isFalling() -> jumpDownRegion
@@ -52,10 +53,10 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
         }
 
         batch.setColor(color.r, color.g, color.b, 1f)
-        if (isInvolvedInGame) {
+        if (isInvolvedInGame && currentFrame !== null) {
             val x = if (isGameOver) x else cookie.x
             val y = if (isGameOver) y else cookie.y
-            batch.draw(currentFrame, x, y, frameWidth, frameHeight)
+            batch.draw(currentFrame, x, y, frameWidth!!, frameHeight!!)
         }
     }
 

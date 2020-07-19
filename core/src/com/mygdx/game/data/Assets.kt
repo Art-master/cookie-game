@@ -40,16 +40,11 @@ class Assets {
             const val JUMP_UP = "jump_up"
             const val JUMP_DOWN = "jump_down"
             const val SUNGLASSES = "sunglasses"
-            const val RUN_SUNGLASSES = "run_sunglasses"
-            const val JUMP_UP_SUNGLASSES = "jump_up_sunglasses"
-            const val JUMP_DOWN_SUNGLASSES = "jump_down_sunglasses"
             const val HAT = "hat"
-            const val RUN_HAT = "run_hat"
-            const val JUMP_UP_HAT = "jump_up_hat"
-            const val JUMP_DOWN_HAT = "jump_down_hat"
             const val BOOTS = "boots"
             const val BELT = "belt"
             const val GUN = "gun"
+            const val BULLETS = "bullets"
         }
     }
 
@@ -114,7 +109,6 @@ class Assets {
             const val COOKIE_BUTTON_MINI_2 = "cookieButtonMini2"
             const val COOKIE_BUTTON = "cookieButton"
             const val COOKIE_BUTTON_2 = "cookieButton2"
-            const val GAME_OVER_TEXT = "gameOverText"
             const val MAIN_MENU_BUTTON = "mainMenuButton"
             const val REPLAY_BUTTON = "replayButton"
             const val TITLE = "title"

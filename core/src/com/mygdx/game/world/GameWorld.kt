@@ -37,6 +37,7 @@ class GameWorld(manager: AssetManager) {
     private val boots = CookieItem(manager, cookie, Assets.CookieAtlas.BOOTS)
     private val belt = CookieItem(manager, cookie, Assets.CookieAtlas.BELT)
     private val gun = CookieItem(manager, cookie, Assets.CookieAtlas.GUN)
+    private val bullets = CookieItem(manager, cookie, Assets.CookieAtlas.BULLETS)
     private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
@@ -52,7 +53,7 @@ class GameWorld(manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, belt, gun, arm, score, sceneShadow)
+        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, belt, gun, bullets, arm, score, sceneShadow)
 
         addActorsToStage()
         stopMoveAllActors()
@@ -109,6 +110,8 @@ class GameWorld(manager: AssetManager) {
                     belt.animate(AnimationType.SHOW_ON_SCENE)
                 } else if (score.scoreNum == 9){
                     gun.animate(AnimationType.SHOW_ON_SCENE)
+                } else if (score.scoreNum == 11){
+                    bullets.animate(AnimationType.SHOW_ON_SCENE)
                 }
             }
         }
