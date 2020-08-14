@@ -26,6 +26,7 @@ class Cookie(private val manager : AssetManager,
     private val texture = manager.get(Descriptors.cookie)
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
     private val jumpDownAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_DOWN)
+    private val winnerRegion = texture.findRegion(Assets.CookieAtlas.WINNER)
     private val runRegions = texture.findRegions(Assets.CookieAtlas.RUN)
     private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP_PINGPONG)
 
@@ -54,6 +55,7 @@ class Cookie(private val manager : AssetManager,
     private set
 
     private var isStartingAnimation = true
+    var isWinningAnimation = false
 
     private var move = Scrolled(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
 
@@ -72,13 +74,16 @@ class Cookie(private val manager : AssetManager,
     override fun act(delta: Float) {
         super.act(delta)
         runTime += delta
-        if(isStartingAnimation.not()){
+        if(isStartingAnimation.not() && isWinningAnimation.not()){
             updateGravity()
             updateActorState()
             position.add(velocity.cpy().scl(delta))
             updateCoordinates()
             move.update(delta)
             controlCookieVelocity()
+        } else if(isWinningAnimation){
+            width = winnerRegion.originalWidth.toFloat()
+            height = winnerRegion.originalHeight.toFloat()
         }
     }
 
@@ -116,10 +121,9 @@ class Cookie(private val manager : AssetManager,
         currentFrame = when {
             isJump() -> jumpUpAnimation
             isFalling() -> jumpDownAnimation
+            isWinningAnimation -> winnerRegion
+            isStopAnimation -> runRegions.first()
             else -> runAnimation.getKeyFrame(runTime)
-        }
-        if(isStopAnimation) {
-            currentFrame = runRegions[0]
         }
 
         if(isHide.not()) {
@@ -133,7 +137,8 @@ class Cookie(private val manager : AssetManager,
     fun isJump() = state == State.JUMP
 
     fun startJumpForce() {
-        if(state == State.RUN && isStartingAnimation.not()){
+        if(isWinningAnimation || isStartingAnimation) return
+        if(state == State.RUN){
             AudioManager.play(AudioManager.SoundApp.JUMP)
             initJump()
             fastMove()

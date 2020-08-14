@@ -15,6 +15,11 @@ class TableItems(private val manager : AssetManager,
     private val randomItemNum = 5
     private val limitDistance = minDistance + 50
     private val actionItems = Array<RandomTableItem>(randomItemNum)
+    var isStopRandom = false
+    set(value) {
+        field = value
+        if(value) getActors().forEach{ it.isStopGeneration = true }
+    }
 
     init {
         initTableItems()
@@ -28,6 +33,7 @@ class TableItems(private val manager : AssetManager,
             if(i > 0)actor.prevActor = actionItems.get(i - 1)
             actor.callback = object : Callback{
                 override fun call() {
+                    if(isStopRandom) return
                     actor.distanceUntil = random.nextInt(minDistance, limitDistance)
                 }
 
@@ -43,8 +49,11 @@ class TableItems(private val manager : AssetManager,
         actionItems[0].startAct = true
     }
 
-    fun act(delta: Float){
-
+    fun isAllObjectLeft(): Boolean {
+        getActors().forEach{
+            if(it.isItemLeft().not()) return false
+        }
+        return true
     }
 
     fun getActors() = actionItems

@@ -42,8 +42,9 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     private var moveToCatchCookieAnimation: MoveToAction? = null
     private var currentFrame: TextureRegion = handRegion
 
-    private var isFinalAnimation = false
-    private var isFinalHandBackAnimation = false
+    private var isGameOverAnimation = false
+    private var isGameOverHandBackAnimation = false
+    var isWinningAnimation = false
 
     init {
         width = handRegion.originalWidth.toFloat()
@@ -97,7 +98,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if (isFinalAnimation.not()) {
+        if (isGameOverAnimation.not()) {
             currentFrame = handAnim.getKeyFrame(runTime)
         }
         drawProlongationHand(batch!!)
@@ -114,7 +115,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
         val region = prolongationArmRegion
         val width = region.originalWidth.toFloat()
         val height = region.originalHeight.toFloat()
-        val y = if (isFinalHandBackAnimation) {
+        val y = if (isGameOverHandBackAnimation) {
             y + 23 // fit to hand
         } else y
         batch.draw(region, x - region.originalWidth, y + 73, width, height)
@@ -127,14 +128,14 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     override fun animate(type: AnimationType, runAfter: Runnable) {
         val sequence = when (type) {
             AnimationType.HIDE_FROM_SCENE -> {
-                isFinalAnimation = true
+                isGameOverAnimation = true
                 val animDuration = 0.5f
                 val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
                 val run = Actions.run(runAfter)
                 Actions.sequence(backAnimation, run)
             }
             AnimationType.COOKIE_CATCH -> {
-                isFinalAnimation = true
+                isGameOverAnimation = true
                 catchCookieAnimation(runAfter)
             }
             AnimationType.SHOW_ON_SCENE -> showArmAnimation(runAfter)
@@ -164,7 +165,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
         val runAfterMove = Actions.run {
             cookie.isVisible = false
             currentFrame = catchCookieRegion
-            isFinalHandBackAnimation = true
+            isGameOverHandBackAnimation = true
         }
         val run = Actions.run(runAfter)
         return Actions.sequence(moveToCatchCookieAnimation, runAfterMove, run)

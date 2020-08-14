@@ -51,7 +51,7 @@ class CookieShadow(manager : AssetManager, private val cookie: Cookie): GameActo
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        val x = cookie.x
+        val x = if(cookie.isWinningAnimation) cookie.x + 50 else cookie.x
         val y = cookie.startY - 20
         batch!!.color = color
         batch.draw(region, x, y, 0f, 0f,  width, height, scaleX, scaleY, rotation)

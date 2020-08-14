@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
+import com.mygdx.game.Config.AchievementScore.*
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
@@ -100,18 +101,14 @@ class GameWorld(manager: AssetManager) {
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
-                if(score.scoreNum == 1){
-                    sunglasses.animate(AnimationType.SHOW_ON_SCENE)
-                } else if (score.scoreNum == 3){
-                    hat.animate(AnimationType.SHOW_ON_SCENE)
-                } else if (score.scoreNum == 5){
-                    boots.animate(AnimationType.SHOW_ON_SCENE)
-                } else if (score.scoreNum == 7){
-                    belt.animate(AnimationType.SHOW_ON_SCENE)
-                } else if (score.scoreNum == 9){
-                    gun.animate(AnimationType.SHOW_ON_SCENE)
-                } else if (score.scoreNum == 11){
-                    bullets.animate(AnimationType.SHOW_ON_SCENE)
+                when (score.scoreNum) {
+                    SUNGLASSES.score -> sunglasses.animate(AnimationType.SHOW_ON_SCENE)
+                    HAT.score -> hat.animate(AnimationType.SHOW_ON_SCENE)
+                    BOOTS.score -> boots.animate(AnimationType.SHOW_ON_SCENE)
+                    BELT.score -> belt.animate(AnimationType.SHOW_ON_SCENE)
+                    GUN.score -> gun.animate(AnimationType.SHOW_ON_SCENE)
+                    BULLETS.score -> bullets.animate(AnimationType.SHOW_ON_SCENE)
+                    FINISH_GAME.score -> items.isStopRandom = true
                 }
             }
         }
@@ -141,6 +138,19 @@ class GameWorld(manager: AssetManager) {
     fun update(delta: Float) {
         stage.act(delta)
         checkContactCookieAndHand()
+        controlWinning()
+
+    }
+
+    private fun controlWinning(){
+        if(items.isAllObjectLeft()){
+            cookie.isWinningAnimation = true
+            arm.isWinningAnimation = true
+            stopMoveAllActors()
+            actors.filterIsInstance<CookieItem>().forEach{
+                (it as Actor).remove()
+            }
+        }
     }
 
     private fun checkContactCookieAndHand() {

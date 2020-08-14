@@ -11,6 +11,16 @@ object Config {
     const val VIBRATION_TIME_MS = 100
     const val SOUNDS_FOLDER = "sounds/"
 
+    enum class AchievementScore(val score: Int) {
+        SUNGLASSES(1),
+        HAT(3),
+        BOOTS(5),
+        BELT(7),
+        GUN(9),
+        BULLETS(11),
+        FINISH_GAME(13)
+    }
+
     private val heightDevise = Gdx.graphics.height.toFloat()
     private val widthDevise = Gdx.graphics.width.toFloat()
 

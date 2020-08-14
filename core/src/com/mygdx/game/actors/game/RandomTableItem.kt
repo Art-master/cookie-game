@@ -43,6 +43,8 @@ class RandomTableItem(private val manager : AssetManager,
     var structure = Structure.NORMAL
     private set
 
+    var isStopGeneration = false
+
     enum class Structure{
         NORMAL, STICKY, JELLY
     }
@@ -54,11 +56,13 @@ class RandomTableItem(private val manager : AssetManager,
         updateBound()
     }
 
+    fun isItemLeft() = scroller.isScrolledLeft
+
     override fun act(delta: Float) {
         super.act(delta)
         checkDistance()
         if(startAct){
-            if(scroller.isScrolledLeft){
+            if(scroller.isScrolledLeft && isStopGeneration.not()){
                 startAct = false
                 isScored = false
                 setRandomItem()
@@ -94,7 +98,7 @@ class RandomTableItem(private val manager : AssetManager,
     }
 
     private fun setRandomItem(){
-        when(11){//rand.nextInt(14)
+        when(rand.nextInt(14)){
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
