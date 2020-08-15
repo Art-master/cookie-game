@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.mygdx.game.Config
 import com.mygdx.game.actors.game.RandomTableItem
 import com.mygdx.game.actors.game.RandomTableItem.Structure
 import com.mygdx.game.api.*
@@ -17,11 +18,13 @@ import com.mygdx.game.managers.AudioManager
 
 class Cookie(private val manager : AssetManager,
              val startY: Float,
-             private val startX: Float): GameActor(), Scrollable, Physical, Animated{
+             var startX: Float): GameActor(), Scrollable, Physical, Animated{
 
     private val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
     private val velocityJump = 50f
+    private val maxJumpHeight = 200
+    private val gravity = -50f
 
     private val texture = manager.get(Descriptors.cookie)
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
@@ -29,8 +32,6 @@ class Cookie(private val manager : AssetManager,
     private val winnerRegion = texture.findRegion(Assets.CookieAtlas.WINNER)
     private val runRegions = texture.findRegions(Assets.CookieAtlas.RUN)
     private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP_PINGPONG)
-
-    private val maxJumpHeight = 200
 
     private var currentFrame = runAnimation.getKeyFrame(0f)
 
@@ -43,8 +44,6 @@ class Cookie(private val manager : AssetManager,
 
     enum class State{ RUN, JUMP, FALL}
 
-    private val gravity = -50f
-
     var state = State.RUN
 
     private var jumpFlag = false
@@ -56,6 +55,11 @@ class Cookie(private val manager : AssetManager,
 
     private var isStartingAnimation = true
     var isWinningAnimation = false
+        set(value) {
+            startX = Config.WIDTH_GAME / 1.5f
+            move.update(speed = ScrollSpeed.VERY_FAST_MOVE)
+            field = value
+        }
 
     private var move = Scrolled(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
 
@@ -82,8 +86,13 @@ class Cookie(private val manager : AssetManager,
             move.update(delta)
             controlCookieVelocity()
         } else if(isWinningAnimation){
-            width = winnerRegion.originalWidth.toFloat()
-            height = winnerRegion.originalHeight.toFloat()
+            move.update(delta)
+            updateCoordinates()
+            if(x >= startX){
+                width = winnerRegion.originalWidth.toFloat()
+                height = winnerRegion.originalHeight.toFloat()
+            }
+            controlCookieVelocity()
         }
     }
 
@@ -121,7 +130,7 @@ class Cookie(private val manager : AssetManager,
         currentFrame = when {
             isJump() -> jumpUpAnimation
             isFalling() -> jumpDownAnimation
-            isWinningAnimation -> winnerRegion
+            isWinningAnimation && x >= startX -> winnerRegion
             isStopAnimation -> runRegions.first()
             else -> runAnimation.getKeyFrame(runTime)
         }
@@ -168,6 +177,7 @@ class Cookie(private val manager : AssetManager,
     }
 
     fun checkCollides(obj : RandomTableItem){
+        if(isWinningAnimation) return
         if(collides(obj)){
              if(isHigherThen(obj)){
                  setOnTop(obj)

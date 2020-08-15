@@ -46,6 +46,7 @@ class Assets {
             const val GUN = "gun"
             const val BULLETS = "bullets"
             const val WINNER = "winner"
+            const val BOOM = "boom"
         }
     }
 

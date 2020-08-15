@@ -42,7 +42,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     private var moveToCatchCookieAnimation: MoveToAction? = null
     private var currentFrame: TextureRegion = handRegion
 
-    private var isGameOverAnimation = false
+    var isGameOverAnimation = false
     private var isGameOverHandBackAnimation = false
     var isWinningAnimation = false
 
@@ -128,14 +128,12 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     override fun animate(type: AnimationType, runAfter: Runnable) {
         val sequence = when (type) {
             AnimationType.HIDE_FROM_SCENE -> {
-                isGameOverAnimation = true
                 val animDuration = 0.5f
                 val backAnimation = Actions.moveTo(-currentFrame.regionWidth.toFloat(), y, animDuration)
                 val run = Actions.run(runAfter)
                 Actions.sequence(backAnimation, run)
             }
             AnimationType.COOKIE_CATCH -> {
-                isGameOverAnimation = true
                 catchCookieAnimation(runAfter)
             }
             AnimationType.SHOW_ON_SCENE -> showArmAnimation(runAfter)

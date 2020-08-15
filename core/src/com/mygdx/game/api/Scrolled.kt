@@ -1,6 +1,7 @@
 package com.mygdx.game.api
 
 import com.badlogic.gdx.math.Vector2
+import kotlin.math.abs
 
 open class Scrolled(val originX: Float,
                     val originY: Float,
@@ -42,9 +43,10 @@ open class Scrolled(val originX: Float,
 
     enum class ScrollSpeed(val value: Float) {
         NONE(0f),
-        LEVEL_1(-200f),//50
+        LEVEL_1(-200f),
         LEVEL_2(LEVEL_1.value * 3),
         SLOW_MOVE(LEVEL_1.value / 1.1f),
-        FAST_MOVE(30f)
+        FAST_MOVE(abs(LEVEL_1.value) / 6.6f),
+        VERY_FAST_MOVE(FAST_MOVE.value * 10)
     }
 }

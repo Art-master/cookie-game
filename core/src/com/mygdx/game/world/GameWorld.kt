@@ -39,6 +39,7 @@ class GameWorld(manager: AssetManager) {
     private val belt = CookieItem(manager, cookie, Assets.CookieAtlas.BELT)
     private val gun = CookieItem(manager, cookie, Assets.CookieAtlas.GUN)
     private val bullets = CookieItem(manager, cookie, Assets.CookieAtlas.BULLETS)
+    private val shot = Shot(manager, cookie)
     private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
     private val cupboard = Cupboard(manager, window)
@@ -54,7 +55,7 @@ class GameWorld(manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, belt, gun, bullets, arm, score, sceneShadow)
+        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, belt, gun, bullets, arm, score, shot, sceneShadow)
 
         addActorsToStage()
         stopMoveAllActors()
@@ -147,9 +148,18 @@ class GameWorld(manager: AssetManager) {
             cookie.isWinningAnimation = true
             arm.isWinningAnimation = true
             stopMoveAllActors()
+
+            if(cookie.x < cookie.startX) return
             actors.filterIsInstance<CookieItem>().forEach{
                 (it as Actor).remove()
             }
+            shot.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                sceneShadow.invertColor()
+                sceneShadow.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                    ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
+                })
+                arm.animate(AnimationType.HIDE_FROM_SCENE)
+            })
         }
     }
 
@@ -159,6 +169,7 @@ class GameWorld(manager: AssetManager) {
             touchable = false
             stopMoveAllActors()
             arm.actions.clear()
+            arm.isGameOverAnimation = true
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 actors.filterIsInstance<CookieItem>().forEach{
                     it.animate(AnimationType.HIDE_FROM_SCENE)
@@ -167,7 +178,6 @@ class GameWorld(manager: AssetManager) {
                     ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
                 })
             })
-
             AudioManager.stopAll()
         }
     }

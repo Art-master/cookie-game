@@ -13,9 +13,9 @@ import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Animated
 import com.mygdx.game.api.AnimationType
 
-class Shadow(manager : AssetManager) : Actor(), Animated {
+class Shadow(val manager : AssetManager) : Actor(), Animated {
     private val texture = manager.get(Descriptors.menu)
-    private val region = texture.findRegion(Assets.MainMenuAtlas.BLACK_SQUARE)
+    private var region = texture.findRegion(Assets.MainMenuAtlas.BLACK_SQUARE)
 
     init {
         x = 0f
@@ -34,6 +34,10 @@ class Shadow(manager : AssetManager) : Actor(), Animated {
         batch.color = color
         batch.draw(region, x, y, width, height)
         batch.setColor(color.r, color.g, color.b, 1f)
+    }
+
+    fun invertColor(){
+        region = manager.get(Descriptors.environment).findRegion(Assets.EnvironmentAtlas.WHITE)
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
