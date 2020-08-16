@@ -64,12 +64,16 @@ class GameWorld(manager: AssetManager) {
         changeScore()
         stage.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                if (touchable) cookie.startJumpForce()
+                if (touchable && items.isAllObjectLeft().not()) {
+                    cookie.startJumpForce()
+                }
                 return super.touchDown(event, x, y, pointer, button)
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                if (touchable) cookie.endJumpForce()
+                if (touchable && items.isAllObjectLeft().not()) {
+                    cookie.endJumpForce()
+                }
                 super.touchUp(event, x, y, pointer, button)
             }
         }

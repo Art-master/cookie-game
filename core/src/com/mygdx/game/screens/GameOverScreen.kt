@@ -51,13 +51,16 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     private fun addActorsToStage(){
+        val isWinning = score >= Config.AchievementScore.FINISH_GAME.score
         val background = Background(manager)
+        val finalAction = if(isWinning.not()) CookieRests(manager) else Together(manager)
         val restartIcon = RestartIcon(manager)
         val shadow = Shadow(manager)
         val scores = Scores(manager, score)
 
         stage.apply {
             addActor(background)
+            addActor(finalAction)
             addActor(restartIcon)
             addActor(shadow)
             addActor(scores)

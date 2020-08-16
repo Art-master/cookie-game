@@ -47,6 +47,9 @@ class Assets {
             const val BULLETS = "bullets"
             const val WINNER = "winner"
             const val BOOM = "boom"
+            const val LOADING_CIRCLE = "loading_circle"
+            const val TOGETHER = "together"
+            const val COOKIE_RESTS = "cookie_rests"
         }
     }
 
