@@ -15,7 +15,7 @@ class TableItems(private val manager : AssetManager,
     private val randomItemNum = 5
     private val limitDistance = minDistance + 50
     private val actionItems = Array<RandomTableItem>(randomItemNum)
-    var isStopRandom = false
+    var isStopGenerate = false
     set(value) {
         field = value
         if(value) getActors().forEach{ it.isStopGeneration = true }
@@ -33,7 +33,7 @@ class TableItems(private val manager : AssetManager,
             if(i > 0)actor.prevActor = actionItems.get(i - 1)
             actor.callback = object : Callback{
                 override fun call() {
-                    if(isStopRandom) return
+                    if(isStopGenerate) return
                     actor.distanceUntil = random.nextInt(minDistance, limitDistance)
                 }
 

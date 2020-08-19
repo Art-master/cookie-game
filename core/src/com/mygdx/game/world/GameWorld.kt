@@ -106,6 +106,7 @@ class GameWorld(manager: AssetManager) {
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
+                score.animate(AnimationType.SCORE_INCREASE)
                 when (score.scoreNum) {
                     SUNGLASSES.score -> sunglasses.animate(AnimationType.SHOW_ON_SCENE)
                     HAT.score -> hat.animate(AnimationType.SHOW_ON_SCENE)
@@ -113,7 +114,7 @@ class GameWorld(manager: AssetManager) {
                     BELT.score -> belt.animate(AnimationType.SHOW_ON_SCENE)
                     GUN.score -> gun.animate(AnimationType.SHOW_ON_SCENE)
                     BULLETS.score -> bullets.animate(AnimationType.SHOW_ON_SCENE)
-                    FINISH_GAME.score -> items.isStopRandom = true
+                    FINISH_GAME.score -> items.isStopGenerate = true
                 }
             }
         }

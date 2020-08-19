@@ -28,10 +28,9 @@ class RestartIcon(manager : AssetManager) : GameActor(), Animated {
         centerX = x + (width / 2)
         centerY = y + (height / 2)
         setOrigin(width / 2f, height / 2f)
-        addRotateAnimation()
     }
 
-    private  fun addRotateAnimation(){
+    private fun addRotateAnimation(){
         addAction(Actions.parallel(Actions.repeat(RepeatAction.FOREVER,
                 Actions.sequence(
                         Actions.rotateBy(-360f, 10f),
@@ -58,5 +57,8 @@ class RestartIcon(manager : AssetManager) : GameActor(), Animated {
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
+        if(type == AnimationType.SHOW_ON_SCENE){
+            addRotateAnimation()
+        }
     }
 }
