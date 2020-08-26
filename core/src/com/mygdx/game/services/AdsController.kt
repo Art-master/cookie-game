@@ -1,4 +1,4 @@
-package com.mygdx.game.ads
+package com.mygdx.game.services
 
 interface AdsController {
     fun isWifiConnected(): Boolean

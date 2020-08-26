@@ -1,7 +1,7 @@
 package com.mygdx.game
 
 import com.badlogic.gdx.Game
-import com.mygdx.game.ads.AdsController
+import com.mygdx.game.services.AdsController
 import com.mygdx.game.api.GameSettings
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param.ADS_CONTROLLER

@@ -14,7 +14,7 @@ import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.game_over_screen.*
-import com.mygdx.game.ads.AdsController
+import com.mygdx.game.services.AdsController
 import com.mygdx.game.api.AnimationType.*
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*

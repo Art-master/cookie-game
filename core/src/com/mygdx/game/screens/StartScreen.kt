@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.main_menu_screen.*
-import com.mygdx.game.ads.AdsController
+import com.mygdx.game.services.AdsController
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp

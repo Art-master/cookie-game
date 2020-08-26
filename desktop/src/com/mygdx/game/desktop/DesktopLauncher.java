@@ -3,7 +3,7 @@ package com.mygdx.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.GdxGame;
-import com.mygdx.game.ads.AdsController;
+import com.mygdx.game.services.AdsController;
 
 import org.jetbrains.annotations.Nullable;
 
