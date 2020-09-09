@@ -1,6 +1,6 @@
 package com.mygdx.game.services
 
-interface AdsController {
+interface AdsController: ServicesController {
     fun isWifiConnected(): Boolean
     fun isInterstitialLoaded(): Boolean
     fun showBannerAd()

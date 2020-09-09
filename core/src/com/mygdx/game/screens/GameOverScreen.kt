@@ -25,7 +25,7 @@ import com.mygdx.game.managers.ScreenManager.Param.SCORE
 class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private var manager = params[ASSET_MANAGER] as AssetManager
-    private var adsController = params[ADS_CONTROLLER] as AdsController
+    private var adsController = params[SERVICES_CONTROLLER] as AdsController
     private var score = params[SCORE] as Int
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
@@ -33,7 +33,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     init {
         Gdx.input.inputProcessor = stage
         //adsController.showInterstitialAd()
-        adsController.showVideoAd()
+        adsController.showBannerAd()
+        //adsController.showVideoAd()
     }
 
     override fun hide() {
@@ -43,17 +44,17 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun render(delta: Float) {
-        if(manager.isFinished && stage.actors.isEmpty){
+        if (manager.isFinished && stage.actors.isEmpty) {
             addActorsToStage()
         }
         stage.act(delta)
         stage.draw()
     }
 
-    private fun addActorsToStage(){
+    private fun addActorsToStage() {
         val isWinning = score >= Config.AchievementScore.FINISH_GAME.score
         val background = Background(manager)
-        val finalAction = if(isWinning.not()) CookieRests(manager) else Together(manager)
+        val finalAction = if (isWinning.not()) CookieRests(manager) else Together(manager)
         val restartIcon = RestartIcon(manager)
         val shadow = Shadow(manager)
         val scores = Scores(manager, score)
@@ -93,8 +94,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
 
-    private fun addClickListener(actor: Actor, function: () -> Unit){
-        actor.addListener(object: ClickListener(){
+    private fun addClickListener(actor: Actor, function: () -> Unit) {
+        actor.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 AudioManager.play(CLICK_SOUND)
                 function()

@@ -2,7 +2,7 @@ package com.mygdx.game.services
 
 import java.lang.Exception
 
-interface LeaderboardController {
+interface LeaderboardController: ServicesController {
     fun signIn()
     fun signOut()
     fun submitScore(highScore: Long)

@@ -23,12 +23,12 @@ import com.mygdx.game.managers.ScreenManager.Screens.COMICS_SCREEN
 import com.mygdx.game.managers.ScreenManager.Screens.GAME_SCREEN
 
 
-class StartScreen(params: Map<ScreenManager.Param, Any>) : Screen {
+class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private var manager = params[ASSET_MANAGER] as AssetManager
     private var firstAppRun = params[FIRST_APP_RUN] as Boolean
 
-    private var adsController = params[ADS_CONTROLLER] as AdsController
+    private var adsController = params[SERVICES_CONTROLLER] as AdsController
 
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
@@ -44,14 +44,14 @@ class StartScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun render(delta: Float) {
-        if(manager.isFinished && stage.actors.isEmpty){
+        if (manager.isFinished && stage.actors.isEmpty) {
             addActorsToStage()
         }
         stage.act(delta)
         stage.draw()
     }
 
-    private fun addActorsToStage(){
+    private fun addActorsToStage() {
         val background = Background(manager)
         val title = MainTitle(manager)
         val soundIcon = MusicIcon(manager)
@@ -91,14 +91,14 @@ class StartScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         AudioManager.play(MusicApp.MAIN_MENU_MUSIC, true)
     }
 
-    private fun setScreen(){
+    private fun setScreen() {
         //firstRun = true // TODO test
-        if(firstAppRun) ScreenManager.setScreen(COMICS_SCREEN)
+        if (firstAppRun) ScreenManager.setScreen(COMICS_SCREEN)
         else ScreenManager.setScreen(GAME_SCREEN)
     }
 
-    private fun addClickListener(actor: Actor, function: () -> Unit){
-        actor.addListener(object: ClickListener(){
+    private fun addClickListener(actor: Actor, function: () -> Unit) {
+        actor.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 function()
                 AudioManager.play(SoundApp.CRUNCH)

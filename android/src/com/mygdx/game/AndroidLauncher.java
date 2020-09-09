@@ -3,10 +3,12 @@ package com.mygdx.game;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
@@ -51,22 +54,25 @@ import com.mygdx.game.services.LeaderboardController;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIRED;
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.COLLECTION_PUBLIC;
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_SPAN_ALL_TIME;
-import static com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_SPAN_DAILY;
-import static com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_SPAN_WEEKLY;
 
 public class AndroidLauncher extends AndroidApplication implements AdsController, LeaderboardController {
 
-    private static final String BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
-    private static final String INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
-    static final String REWARDED_VIDEO_ID = "YOUR_ADMOB_ADD_ID";
+    private String bannerAdUnitId = "";
+    private String interstitialAdUnitId = "";
+    private static String interstitialVideoId = "";
+
     private int RC_SIGN_IN = 1;
     // -- Leaderboard variables
     private static final int RC_LEADERBOARD_UI = 9004;
     private static final String LEADERBOARD = "CgkIyYyG7qMKEAIQAQ";
+    private static final String LOG_TAG = "ANDROID_V";
 
     private AdView bannerAd;
     private InterstitialAd interstitialAd;
@@ -77,6 +83,8 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initAdsIdentifier();
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -105,20 +113,37 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build());
     }
 
+    private void initAdsIdentifier() {
+        boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
+        if (isDebuggable) {
+            List<String> testDeviceIds = Collections.singletonList(getString(R.string.test_device_id));
+            RequestConfiguration configuration =
+                    new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+            MobileAds.setRequestConfiguration(configuration);
+            bannerAdUnitId = getString(R.string.test_ad_banner_id);
+            interstitialAdUnitId = getString(R.string.test_ad_interstitial_id);
+            interstitialVideoId = getString(R.string.test_ad_interstitial_video_id);
+        } else {
+            bannerAdUnitId = getString(R.string.ad_banner_id);
+            interstitialAdUnitId = getString(R.string.ad_interstitial_id);
+            interstitialVideoId = getString(R.string.ad_interstitial_video_id);
+        }
+    }
+
     public void setupAds() {
         bannerAd = new AdView(this);
         bannerAd.setVisibility(View.INVISIBLE);
         bannerAd.setBackgroundColor(0xff000000); // black
-        bannerAd.setAdUnitId(BANNER_AD_UNIT_ID);
-        bannerAd.setAdSize(AdSize.SMART_BANNER);
+        bannerAd.setAdUnitId(bannerAdUnitId);
+        bannerAd.setAdSize(AdSize.BANNER);
         interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(INTERSTITIAL_AD_UNIT_ID);
+        interstitialAd.setAdUnitId(interstitialAdUnitId);
         interstitialAd.loadAd(new AdRequest.Builder().build());
 
         //AdMob Rewarded Video
         rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         setRewardVideoListener();
-        rewardedVideoAd.loadAd(REWARDED_VIDEO_ID, new AdRequest.Builder().build());
+        rewardedVideoAd.loadAd(interstitialVideoId, new AdRequest.Builder().build());
     }
 
     @Override
@@ -178,7 +203,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                     AdRequest.Builder builder = new AdRequest.Builder();
                     AdRequest ad = builder.build();
                     interstitialAd.loadAd(ad);
-                    Gdx.app.postRunnable(then);
+                    if (then != null) Gdx.app.postRunnable(then);
                 }
 
             }
@@ -214,7 +239,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 if (rewardedVideoAd.isLoaded()) {
                     rewardedVideoAd.show();
                 } else {
-                    rewardedVideoAd.loadAd(REWARDED_VIDEO_ID, new AdRequest.Builder().build());
+                    rewardedVideoAd.loadAd(interstitialVideoId, new AdRequest.Builder().build());
                 }
             }
         });
@@ -270,14 +295,14 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     private void signInSilently() {
-        //GoogleSignInClient signInClient = GoogleSignIn.getClient(this,
-        // GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
+        Log.d(LOG_TAG, "signInSilently()");
+        //GoogleSignInClient signInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
         mGoogleSignInClient.silentSignIn().addOnCompleteListener(this,
                 new OnCompleteListener<GoogleSignInAccount>() {
                     @Override
                     public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
                         if (task.isSuccessful()) {
-                            // The signed in account is stored in the task's result.
+                            Log.d(LOG_TAG, "signInSilently(): success");
                             signedInAccount = task.getResult();
                             if (signedInAccount != null) {
                                 GamesClient gamesClient = Games.getGamesClient(AndroidLauncher.this, signedInAccount);
@@ -285,10 +310,11 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                                 gamesClient.setViewForPopups(((AndroidGraphics) AndroidLauncher.this.getGraphics()).getView());
                             }
                         } else {
+                            Log.d(LOG_TAG, "signInSilently(): failure", task.getException());
                             // Player will need to sign-in explicitly using via UI if the silent sign-in fails
                             // with exception code of SIGN_IN_REQUIRED
                             ApiException signInFailException = (ApiException) task.getException();
-                            if(signInFailException != null){
+                            if (signInFailException != null) {
                                 int exceptionStatusCode = signInFailException.getStatusCode();
                                 if (exceptionStatusCode == SIGN_IN_REQUIRED) {
                                     startSignInIntent();
@@ -308,12 +334,19 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
     @Override
     public void signOut() {
+        Log.d(LOG_TAG, "signOut()");
+
+        if (!isSignedIn()) {
+            Log.w(LOG_TAG, "signOut() called, but was not signed in!");
+            return;
+        }
         //Figure out when/if you need to allow the user to sign out
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // at this point, the user is signed out.
+                        boolean successful = task.isSuccessful();
+                        Log.d(LOG_TAG, "signOut(): " + (successful ? "success" : "failed"));
                     }
                 });
     }
@@ -323,7 +356,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         //Ensure user is signed in so game doesn't crash
         if (GoogleSignIn.getLastSignedInAccount(this) != null) {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            if(account == null) return;
+            if (account == null) return;
             Games.getLeaderboardsClient(this, account)
                     .submitScore((LEADERBOARD), highScore);
         }
@@ -334,7 +367,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         //Ensure user is signed in so game doesn't crash
         if (GoogleSignIn.getLastSignedInAccount(this) != null) {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            if(account == null) return;
+            if (account == null) return;
             Games.getLeaderboardsClient(this, account)
                     .getLeaderboardIntent(LEADERBOARD)
                     .addOnSuccessListener(new OnSuccessListener<Intent>() {
@@ -363,7 +396,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 public void onSuccess(AnnotatedData<LeaderboardsClient.LeaderboardScores> leaderboardScoresAnnotatedData) {
 
                     LeaderboardsClient.LeaderboardScores leaderboardScores = leaderboardScoresAnnotatedData.get();
-                    if(leaderboardScores == null) return;
+                    if (leaderboardScores == null) return;
                     LeaderboardScoreBuffer leaderboardScoreBuffer = leaderboardScores.getScores();
                     int count = leaderboardScoreBuffer.getCount();
                     ArrayList<String> playerCenteredHighScores = new ArrayList<>();
@@ -389,7 +422,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
     @Override
     public void getTopScores(int scoreType, final CallBack callBack) {
-   //Get a list of top high scores and return it in ArrayList<String> format
+        //Get a list of top high scores and return it in ArrayList<String> format
 
         int timeSpan;
 
@@ -423,7 +456,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 public void onSuccess(AnnotatedData<LeaderboardsClient.LeaderboardScores> leaderboardScoresAnnotatedData) {
 
                     LeaderboardsClient.LeaderboardScores leaderboardScores = leaderboardScoresAnnotatedData.get();
-                    if(leaderboardScores == null) return;
+                    if (leaderboardScores == null) return;
                     LeaderboardScoreBuffer leaderboardScoreBuffer = leaderboardScores.getScores();
                     int count = leaderboardScoreBuffer.getCount();
                     ArrayList<String> topHighScores = new ArrayList<>();
