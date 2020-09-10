@@ -39,7 +39,7 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     init {
         val prefs = Gdx.app.getPreferences(Prefs.NAME)
         firstRun = prefs.getBoolean(Prefs.FIRST_RUN, true)
-        if(firstRun) prefs.putBoolean(Prefs.FIRST_RUN, false)
+        if(firstRun) prefs.putBoolean(Prefs.FIRST_RUN, false).flush()
         ScreenManager.setGlobalParameter(FIRST_APP_RUN, firstRun)
 
         manager.load(Descriptors.progressBar)

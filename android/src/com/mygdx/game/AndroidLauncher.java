@@ -47,14 +47,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.mygdx.game.services.AchievementsController;
 import com.mygdx.game.services.AdsController;
 import com.mygdx.game.services.CallBack;
 import com.mygdx.game.services.LeaderboardController;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,7 +63,7 @@ import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIR
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.COLLECTION_PUBLIC;
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_SPAN_ALL_TIME;
 
-public class AndroidLauncher extends AndroidApplication implements AdsController, LeaderboardController {
+public class AndroidLauncher extends AndroidApplication implements AdsController, LeaderboardController, AchievementsController {
 
     private String bannerAdUnitId = "";
     private String interstitialAdUnitId = "";
@@ -484,5 +485,49 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     public boolean isSignedIn() {
         return GoogleSignIn.getLastSignedInAccount(this) != null;
+    }
+
+    @Override
+    public void unlockAchievement(@NotNull Config.Achievement achievement) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        String id = getId(achievement);
+        if (id != null && account != null) {
+            Games.getAchievementsClient(this, account).unlock(id);
+        }
+    }
+
+    private String getId(@NotNull Config.Achievement achievement) {
+        Context context = getApplicationContext();
+        int identifier = context.getResources().getIdentifier(achievement.name(),
+                "string", context.getPackageName());
+        if (identifier == 0) {
+            Log.w(LOG_TAG, "Achievement id not found in string resources");
+            return null;
+        }
+        return context.getResources().getString(identifier);
+    }
+
+    @Override
+    public void incrementAchievement(@NotNull Config.Achievement achievement, int value) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        String id = getId(achievement);
+        if (id != null && account != null) {
+            Games.getAchievementsClient(this, account).increment(id, value);
+        }
+    }
+
+    @Override
+    public void showAllAchievements() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account == null) return;
+        final int RC_ACHIEVEMENT_UI = 9003;
+        Games.getAchievementsClient(this, account)
+                .getAchievementsIntent()
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_ACHIEVEMENT_UI);
+                    }
+                });
     }
 }

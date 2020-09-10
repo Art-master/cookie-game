@@ -11,7 +11,7 @@ object Config {
     const val VIBRATION_TIME_MS = 100
     const val SOUNDS_FOLDER = "sounds/"
 
-    enum class AchievementScore(val score: Int) {
+    enum class Achievement(val score: Int) {
         SUNGLASSES(1),
         HAT(3),
         BOOTS(5),

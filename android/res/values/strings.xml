@@ -15,4 +15,13 @@
     <string name="ad_interstitial_id">ca-app-pub-9088635744980430/8464829755</string>
     <string name="ad_interstitial_video_id">ca-app-pub-3940256099942544/8691691433</string>
 
+    //Achievements ids
+    <string name="SUNGLASSES">ca-app-pub-9088635744980430/9702083320</string>
+    <string name="HAT">ca-app-pub-9088635744980430/9702083320</string>
+    <string name="BOOTS">ca-app-pub-9088635744980430/9702083320</string>
+    <string name="BELT">ca-app-pub-9088635744980430/9702083320</string>
+    <string name="GUN">ca-app-pub-9088635744980430/9702083320</string>
+    <string name="BULLETS">ca-app-pub-9088635744980430/9702083320</string>
+    <string name="FINISH_GAME">ca-app-pub-9088635744980430/9702083320</string>
+
 </resources>

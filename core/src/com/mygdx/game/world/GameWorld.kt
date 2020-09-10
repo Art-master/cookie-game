@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
-import com.mygdx.game.Config.AchievementScore.*
+import com.mygdx.game.Config.Achievement.*
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
@@ -20,6 +20,8 @@ import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager.Param.*
+import com.mygdx.game.services.AchievementsController
+import com.mygdx.game.services.ServicesController
 import com.mygdx.game.actors.Shadow as SceneShadow
 
 
@@ -103,18 +105,46 @@ class GameWorld(manager: AssetManager) {
     }
 
     private fun controlScore(actor: RandomTableItem) {
+        val controller= ScreenManager.globalParameters[SERVICES_CONTROLLER] as ServicesController
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
                 score.animate(AnimationType.SCORE_INCREASE)
                 when (score.scoreNum) {
-                    SUNGLASSES.score -> sunglasses.animate(AnimationType.SHOW_ON_SCENE)
-                    HAT.score -> hat.animate(AnimationType.SHOW_ON_SCENE)
-                    BOOTS.score -> boots.animate(AnimationType.SHOW_ON_SCENE)
-                    BELT.score -> belt.animate(AnimationType.SHOW_ON_SCENE)
-                    GUN.score -> gun.animate(AnimationType.SHOW_ON_SCENE)
-                    BULLETS.score -> bullets.animate(AnimationType.SHOW_ON_SCENE)
-                    FINISH_GAME.score -> items.isStopGenerate = true
+                    SUNGLASSES.score -> {
+                        sunglasses.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                            (controller as AchievementsController).unlockAchievement(SUNGLASSES)
+                        })
+                    }
+                    HAT.score -> {
+                        hat.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                            (controller as AchievementsController).unlockAchievement(HAT)
+                        })
+                    }
+                    BOOTS.score -> {
+                        boots.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                            (controller as AchievementsController).unlockAchievement(BOOTS)
+                        })
+                    }
+                    BELT.score -> {
+                        belt.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                            (controller as AchievementsController).unlockAchievement(BELT)
+                        })
+                    }
+                    GUN.score -> {
+                        gun.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                            (controller as AchievementsController).unlockAchievement(GUN)
+                        })
+                    }
+                    BULLETS.score -> {
+                        bullets.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+                            (controller as AchievementsController).unlockAchievement(BULLETS)
+                        })
+                    }
+                    FINISH_GAME.score -> {
+                        items.isStopGenerate = true
+                        (controller as AchievementsController).unlockAchievement(FINISH_GAME)
+                    }
                 }
             }
         }
