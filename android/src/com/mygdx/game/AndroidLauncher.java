@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -32,10 +33,12 @@ import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.games.AnnotatedData;
 import com.google.android.gms.games.Games;
@@ -67,12 +70,11 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
     private String bannerAdUnitId = "";
     private String interstitialAdUnitId = "";
-    private static String interstitialVideoId = "";
+    private String interstitialVideoId = "";
 
     private int RC_SIGN_IN = 1;
     // -- Leaderboard variables
     private static final int RC_LEADERBOARD_UI = 9004;
-    private static final String LEADERBOARD = "CgkIyYyG7qMKEAIQAQ";
     private static final String LOG_TAG = "ANDROID_V";
 
     private AdView bannerAd;
@@ -334,6 +336,39 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Activity result for startSignInIntent method
+        //If signed in successfully, get signed in account, otherwise log result fail code
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if(result == null) return;
+            if (result.isSuccess()) {
+                // The signed in account is stored in the result.
+                // Set pop up notification for signed in account to display when user is signed in
+                signedInAccount = result.getSignInAccount();
+                if (signedInAccount != null) {
+                    GamesClient gamesClient = Games.getGamesClient(AndroidLauncher.this, signedInAccount);
+                    gamesClient.setGravityForPopups(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+                    gamesClient.setViewForPopups(((AndroidGraphics) AndroidLauncher.this.getGraphics()).getView());
+                }
+            } else {
+                int failCode = result.getStatus().getStatusCode();
+                Log.d(LOG_TAG, "" + failCode);
+                Log.d(LOG_TAG, "" + result.getStatus());
+                String message = result.getStatus().getStatusMessage();
+                if (message == null || message.isEmpty()) {
+                    message = getString(R.string.sign_in_exception_msg);
+                }
+                Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.TOP, 0,160);
+                toast.show();
+            }
+
+        }
+    }
+
+    @Override
     public void signOut() {
         Log.d(LOG_TAG, "signOut()");
 
@@ -358,8 +393,8 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         if (GoogleSignIn.getLastSignedInAccount(this) != null) {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             if (account == null) return;
-            Games.getLeaderboardsClient(this, account)
-                    .submitScore((LEADERBOARD), highScore);
+            String id = getString(R.string.leaderboard);
+            Games.getLeaderboardsClient(this, account).submitScore(id, highScore);
         }
     }
 
@@ -369,8 +404,9 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         if (GoogleSignIn.getLastSignedInAccount(this) != null) {
             GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
             if (account == null) return;
+            String id = getString(R.string.leaderboard);
             Games.getLeaderboardsClient(this, account)
-                    .getLeaderboardIntent(LEADERBOARD)
+                    .getLeaderboardIntent(id)
                     .addOnSuccessListener(new OnSuccessListener<Intent>() {
                         @Override
                         public void onSuccess(Intent intent) {
@@ -388,9 +424,10 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         //Ensure user is signed in so game doesn't crash
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
+            String id = getString(R.string.leaderboard);
             Task<AnnotatedData<LeaderboardsClient.LeaderboardScores>> playerCenteredScoresTask =
                     Games.getLeaderboardsClient(this, account)
-                            .loadPlayerCenteredScores(LEADERBOARD, TIME_SPAN_ALL_TIME, COLLECTION_PUBLIC, 10, false);
+                            .loadPlayerCenteredScores(id, TIME_SPAN_ALL_TIME, COLLECTION_PUBLIC, 10, false);
 
             playerCenteredScoresTask.addOnSuccessListener(new OnSuccessListener<AnnotatedData<LeaderboardsClient.LeaderboardScores>>() {
                 @Override
@@ -447,10 +484,10 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         //Ensure user is signed in so game doesn't crash
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
-
+            String id = getString(R.string.leaderboard);
             Task<AnnotatedData<LeaderboardsClient.LeaderboardScores>> topScoresTask =
                     Games.getLeaderboardsClient(this, account)
-                            .loadTopScores(LEADERBOARD, timeSpan, COLLECTION_PUBLIC, 20, false);
+                            .loadTopScores(id, timeSpan, COLLECTION_PUBLIC, 20, false);
 
             topScoresTask.addOnSuccessListener(new OnSuccessListener<AnnotatedData<LeaderboardsClient.LeaderboardScores>>() {
                 @Override

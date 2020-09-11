@@ -1,6 +1,6 @@
 android {
     buildToolsVersion "28.0.3"
-    compileSdkVersion 28
+    compileSdkVersion 29
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -17,9 +17,9 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "com.mygdx.game"
+        applicationId "com.run.cookie.run.game"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
