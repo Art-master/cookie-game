@@ -28,7 +28,7 @@ class GdxGame(private val controller: ServicesController) : Game() {
                 ScreenManager.game = this
                 ScreenManager.globalParameters[SERVICES_CONTROLLER] = controller
                 ScreenManager.setScreen(LOADING_SCREEN)
-                GameSettings.DEBUG.state = false
+                GameSettings.DEBUG.state = Config.DEBUG_COLLISIONS
                 controller.signIn()
             }
         }

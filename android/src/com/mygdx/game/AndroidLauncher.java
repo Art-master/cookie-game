@@ -75,7 +75,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     private int RC_SIGN_IN = 1;
     // -- Leaderboard variables
     private static final int RC_LEADERBOARD_UI = 9004;
-    private static final String LOG_TAG = "ANDROID_V";
+    private static final String LOG_TAG = "ANDROID_APP";
 
     private AdView bannerAd;
     private InterstitialAd interstitialAd;
@@ -152,6 +152,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     public boolean isWifiConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(cm == null) return false;
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return (ni != null && ni.isConnected());
     }
@@ -417,7 +418,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     @Override
-    public void getPlayerCenteredScores(final CallBack callBack) {
+    public void getPlayerCenteredScores(@NotNull final CallBack callBack) {
 
         //Get a list of player centered high scores and return it in ArrayList<String> format
 
@@ -459,27 +460,8 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     @Override
-    public void getTopScores(int scoreType, final CallBack callBack) {
+    public void getTopScores(int scoreType, @NotNull final CallBack callBack) {
         //Get a list of top high scores and return it in ArrayList<String> format
-
-        int timeSpan;
-
-        //Determine time span to look up scores based on score type selected by user
-        switch (scoreType) {
-/*            case HighScoreScreen.GLOBAL_BUTTON_TOP_DAY:
-                timeSpan = TIME_SPAN_DAILY;
-                break;
-            case HighScoreScreen.GLOBAL_BUTTON_TOP_WEEK:
-                timeSpan = TIME_SPAN_WEEKLY;
-                break;
-            case HighScoreScreen.GLOBAL_BUTTON_TOP_ALLTIME:
-                timeSpan = TIME_SPAN_ALL_TIME;
-                break;*/
-            default:
-                timeSpan = TIME_SPAN_ALL_TIME;
-                break;
-        }
-
 
         //Ensure user is signed in so game doesn't crash
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -487,7 +469,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
             String id = getString(R.string.leaderboard);
             Task<AnnotatedData<LeaderboardsClient.LeaderboardScores>> topScoresTask =
                     Games.getLeaderboardsClient(this, account)
-                            .loadTopScores(id, timeSpan, COLLECTION_PUBLIC, 20, false);
+                            .loadTopScores(id, TIME_SPAN_ALL_TIME, COLLECTION_PUBLIC, 20, false);
 
             topScoresTask.addOnSuccessListener(new OnSuccessListener<AnnotatedData<LeaderboardsClient.LeaderboardScores>>() {
                 @Override

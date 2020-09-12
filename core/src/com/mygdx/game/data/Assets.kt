@@ -94,8 +94,13 @@ class Assets {
             const val BOX4 = "box4"
             const val JAM = "jam"
             const val JAM2 = "jam2"
+            const val JAM3 = "jam3"
+            const val JAM4 = "jam4"
+            const val JAM5 = "jam5"
             const val JELLY = "jelly"
             const val OPEN_BOX = "open_box"
+            const val JAR_WITH_JAM = "jar_with_jam"
+            const val JAR_WITH_JAM_2 = "jar_with_jam2"
         }
     }
 
