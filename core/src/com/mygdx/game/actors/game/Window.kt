@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
@@ -27,7 +28,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
             Gdx.graphics.width.toFloat(), startY,
             region.originalWidth,
             region.originalHeight,
-            Scrolled.ScrollSpeed.LEVEL_1)
+            Config.ItemScrollSpeed.LEVEL_1)
 
     private val listeners = ArrayList<Listener>()
 
@@ -102,5 +103,9 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
 
     override fun runMove() {
         scroll.isStopMove = false
+    }
+
+    override fun updateSpeed() {
+        scroll.update()
     }
 }

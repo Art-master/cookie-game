@@ -1,5 +1,7 @@
 package com.mygdx.game
 
+import kotlin.math.abs
+
 object Config {
 
     //DEBUG
@@ -20,5 +22,18 @@ object Config {
         GUN(25),
         BULLETS(30),
         FINISH_GAME(31)
+    }
+
+    const val DEFAULT_SCROLL_SPEED = -200f
+    var currentScrollSpeed = DEFAULT_SCROLL_SPEED
+    const val SPEED_INCREASE_STEP = -100f
+
+    enum class ItemScrollSpeed(var calc: () -> Float) {
+        NONE({ 0f }),
+        LEVEL_1({ currentScrollSpeed }),
+        LEVEL_2({ LEVEL_1.calc() * 3f }),
+        SLOW_MOVE({ LEVEL_1.calc() / 1.1f }),
+        FAST_MOVE({ abs(LEVEL_1.calc()) / 6.6f }),
+        VERY_FAST_MOVE({ FAST_MOVE.calc() * 10f })
     }
 }

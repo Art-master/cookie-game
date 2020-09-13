@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.GL20
+import com.mygdx.game.Config
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.ScreenManager
@@ -43,6 +44,7 @@ class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun dispose() {
+        Config.currentScrollSpeed = Config.DEFAULT_SCROLL_SPEED
         gameWorld?.stage?.dispose()
     }
 }

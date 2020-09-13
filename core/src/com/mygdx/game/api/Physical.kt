@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.mygdx.game.actors.game.RandomTableItem
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
@@ -21,7 +20,7 @@ interface Physical{
     }
 
     fun debugCollidesIfEnable(batch: Batch?, manager: AssetManager){
-        if(!GameSettings.DEBUG.state) return
+        if(!Debug.COLLISIONS.state) return
         val texture = manager.get(Descriptors.environment)
         val bound = getBoundsRect()
         val region = texture.findRegion(Assets.EnvironmentAtlas.SHADOW)

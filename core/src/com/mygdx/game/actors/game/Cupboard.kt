@@ -37,7 +37,7 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
             startY,
             cupBoardRegion.originalWidth + leftDoorRegion.originalWidth,
             cupBoardRegion.originalHeight,
-            Scrolled.ScrollSpeed.LEVEL_1)
+            Config.ItemScrollSpeed.LEVEL_1)
 
     private val randPositionX = Random(startX.toLong())
 
@@ -161,6 +161,10 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
 
     override fun runMove() {
         scroll.isStopMove = false
+    }
+
+    override fun updateSpeed() {
+        scroll.update()
     }
 
 }

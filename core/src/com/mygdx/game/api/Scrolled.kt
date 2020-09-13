@@ -1,16 +1,16 @@
 package com.mygdx.game.api
 
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.abs
+import com.mygdx.game.Config
 
 open class Scrolled(val originX: Float,
                     val originY: Float,
                     var width: Int,
                     var height: Int,
-                    var scrollSpeed: ScrollSpeed = ScrollSpeed.NONE) {
+                    var scrollSpeed: Config.ItemScrollSpeed = Config.ItemScrollSpeed.NONE) {
 
     private val position = Vector2(originX, originY)
-    private val velocity = Vector2(scrollSpeed.value, 0f)
+    private val velocity = Vector2(scrollSpeed.calc(), 0f)
     var isScrolledLeft = false
     var isStopMove = false
 
@@ -32,21 +32,13 @@ open class Scrolled(val originX: Float,
     open fun getY() = position.y
 
     open fun update(x: Float = position.x, y: Float = position.y, width: Int = this.width,
-                    height: Int = this.height, speed: ScrollSpeed = ScrollSpeed.NONE){
+                    height: Int = this.height, speed: Config.ItemScrollSpeed = scrollSpeed){
         position.x = x
         position.y = y
         this.width = width
         this.height = height
         scrollSpeed = speed
-        velocity.x = scrollSpeed.value
+        velocity.x = scrollSpeed.calc()
     }
 
-    enum class ScrollSpeed(val value: Float) {
-        NONE(0f),
-        LEVEL_1(-200f),
-        LEVEL_2(LEVEL_1.value * 3),
-        SLOW_MOVE(LEVEL_1.value / 1.1f),
-        FAST_MOVE(abs(LEVEL_1.value) / 6.6f),
-        VERY_FAST_MOVE(FAST_MOVE.value * 10)
-    }
 }

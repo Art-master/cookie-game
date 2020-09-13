@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.mygdx.game.Config
 import com.mygdx.game.actors.game.cookie.Cookie
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
@@ -87,7 +88,7 @@ class RandomTableItem(private val manager: AssetManager,
 
     private fun resetScroller() {
         scroller = Scrolled(screenWidth, y,
-                region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2)
+                region.originalWidth, region.originalHeight, Config.ItemScrollSpeed.LEVEL_2)
     }
 
     private fun updateBound() {
@@ -305,6 +306,10 @@ class RandomTableItem(private val manager: AssetManager,
 
     override fun runMove() {
         scroller.isStopMove = false
+    }
+
+    override fun updateSpeed() {
+        scroller.update()
     }
 
     fun jumpedOn() {

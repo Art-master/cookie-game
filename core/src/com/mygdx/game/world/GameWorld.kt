@@ -105,11 +105,12 @@ class GameWorld(manager: AssetManager) {
     }
 
     private fun controlScore(actor: RandomTableItem) {
-        val controller= ScreenManager.globalParameters[SERVICES_CONTROLLER] as ServicesController
+        val controller = ScreenManager.globalParameters[SERVICES_CONTROLLER] as ServicesController
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
                 score.animate(AnimationType.SCORE_INCREASE)
+                controlItemsScrollSpeed()
                 when (score.scoreNum) {
                     SUNGLASSES.score -> {
                         sunglasses.animate(AnimationType.SHOW_ON_SCENE, Runnable {
@@ -150,6 +151,15 @@ class GameWorld(manager: AssetManager) {
         }
     }
 
+    private fun controlItemsScrollSpeed() {
+        if (score.scoreNum % 10 == 0) {
+            Config.currentScrollSpeed = Config.currentScrollSpeed + Config.SPEED_INCREASE_STEP
+            foreEachActor {
+                if (it is Scrollable) it.updateSpeed()
+            }
+        }
+    }
+
 
     private fun stopMoveAllActors() {
         for (actor in actors) {
@@ -178,14 +188,14 @@ class GameWorld(manager: AssetManager) {
 
     }
 
-    private fun controlWinning(){
-        if(items.isAllObjectLeft()){
+    private fun controlWinning() {
+        if (items.isAllObjectLeft()) {
             cookie.isWinningAnimation = true
             arm.isWinningAnimation = true
             stopMoveAllActors()
 
-            if(cookie.x < cookie.startX) return
-            actors.filterIsInstance<CookieItem>().forEach{
+            if (cookie.x < cookie.startX) return
+            actors.filterIsInstance<CookieItem>().forEach {
                 (it as Actor).remove()
             }
             shot.animate(AnimationType.SHOW_ON_SCENE, Runnable {
@@ -206,7 +216,7 @@ class GameWorld(manager: AssetManager) {
             arm.actions.clear()
             arm.isGameOverAnimation = true
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
-                actors.filterIsInstance<CookieItem>().forEach{
+                actors.filterIsInstance<CookieItem>().forEach {
                     it.animate(AnimationType.HIDE_FROM_SCENE)
                 }
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {

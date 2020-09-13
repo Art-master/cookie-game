@@ -11,7 +11,7 @@ import com.mygdx.game.Config
 import com.mygdx.game.actors.game.RandomTableItem
 import com.mygdx.game.actors.game.RandomTableItem.Structure
 import com.mygdx.game.api.*
-import com.mygdx.game.api.Scrolled.ScrollSpeed
+import com.mygdx.game.Config.ItemScrollSpeed
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
@@ -57,7 +57,7 @@ class Cookie(private val manager : AssetManager,
     var isWinningAnimation = false
         set(value) {
             startX = Config.WIDTH_GAME / 1.5f
-            move.update(speed = ScrollSpeed.VERY_FAST_MOVE)
+            move.update(speed = ItemScrollSpeed.VERY_FAST_MOVE)
             field = value
         }
 
@@ -176,6 +176,10 @@ class Cookie(private val manager : AssetManager,
         isStopAnimation = false
     }
 
+    override fun updateSpeed() {
+        move.update()
+    }
+
     fun checkCollides(obj : RandomTableItem){
         if(isWinningAnimation) return
         if(collides(obj)){
@@ -213,22 +217,22 @@ class Cookie(private val manager : AssetManager,
     }
 
     private fun controlCookieVelocity(){
-        if(move.scrollSpeed != ScrollSpeed.NONE && x > startX) {
+        if(move.scrollSpeed != ItemScrollSpeed.NONE && x > startX) {
             x = startX
-            if(move.scrollSpeed == ScrollSpeed.FAST_MOVE) normalMove()
+            if(move.scrollSpeed == ItemScrollSpeed.FAST_MOVE) normalMove()
         }
     }
 
     private fun normalMove(){
-        move.update(speed = ScrollSpeed.NONE)
+        move.update(speed = ItemScrollSpeed.NONE)
     }
 
     private fun fastMove(){
-        move.update(speed = ScrollSpeed.FAST_MOVE)
+        move.update(speed = ItemScrollSpeed.FAST_MOVE)
     }
 
     private fun slowMove(){
-        move.update(speed = ScrollSpeed.SLOW_MOVE)
+        move.update(speed = ItemScrollSpeed.SLOW_MOVE)
     }
 
     private fun setAgainstTheObject(obj : RandomTableItem) {

@@ -3,6 +3,7 @@ package com.mygdx.game.actors.game
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
@@ -16,10 +17,10 @@ class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
     val worktopY = yWorktop
 
     private var scrollerBack = Scrolled(0f, 0f,
-            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2)
+            region.originalWidth, region.originalHeight, Config.ItemScrollSpeed.LEVEL_2)
 
     private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
-            region.originalWidth, region.originalHeight, Scrolled.ScrollSpeed.LEVEL_2)
+            region.originalWidth, region.originalHeight, Config.ItemScrollSpeed.LEVEL_2)
 
     override fun act(delta: Float) {
         super.act(delta)
@@ -57,5 +58,10 @@ class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
     override fun runMove() {
         scrollerBack.isStopMove = false
         scrollerFront.isStopMove = false
+    }
+
+    override fun updateSpeed() {
+        scrollerBack.update()
+        scrollerFront.update()
     }
 }

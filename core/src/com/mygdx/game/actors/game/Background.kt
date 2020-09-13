@@ -2,6 +2,7 @@ package com.mygdx.game.actors.game
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Descriptors
@@ -12,10 +13,10 @@ class Background(manager : AssetManager) : GameActor(), Scrollable{
     private val texture = manager.get(Descriptors.background)
 
     private var scrollerBack = Scrolled(0f, 0f,
-            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1)
+            texture.width, texture.height, Config.ItemScrollSpeed.LEVEL_1)
 
     private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
-            texture.width, texture.height, Scrolled.ScrollSpeed.LEVEL_1)
+            texture.width, texture.height, Config.ItemScrollSpeed.LEVEL_1)
 
 
     override fun act(delta: Float) {
@@ -54,5 +55,10 @@ class Background(manager : AssetManager) : GameActor(), Scrollable{
     override fun runMove() {
         scrollerFront.isStopMove = false
         scrollerBack.isStopMove = false
+    }
+
+    override fun updateSpeed() {
+        scrollerBack.update()
+        scrollerFront.update()
     }
 }
