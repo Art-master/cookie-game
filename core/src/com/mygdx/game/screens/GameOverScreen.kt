@@ -27,6 +27,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     private var manager = params[ASSET_MANAGER] as AssetManager
     private var adsController = params[SERVICES_CONTROLLER] as AdsController
     private var score = params[SCORE] as Int
+    private var wasWinGame = params[WAS_WIN_GAME] as Boolean?
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
@@ -52,9 +53,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     private fun addActorsToStage() {
-        val isWinning = score >= Config.Achievement.FINISH_GAME.score
         val background = Background(manager)
-        val finalAction = if (isWinning.not()) CookieRests(manager) else Together(manager)
+        val finalAction = if (wasWinGame == true) Together(manager) else CookieRests(manager)
         val restartIcon = RestartIcon(manager)
         val shadow = Shadow(manager)
         val scores = Scores(manager, score)

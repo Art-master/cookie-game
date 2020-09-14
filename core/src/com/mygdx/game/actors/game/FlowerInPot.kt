@@ -36,14 +36,13 @@ class FlowerInPot(manager : AssetManager, private val window: Window) : GameActo
             else -> texture.findRegion(Assets.EnvironmentAtlas.FLOWER_IN_POT)
         }
     }
-    override fun act(delta: Float) {
-        super.act(delta)
-    }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         if(isShowFlower){
-            batch!!.draw(flowerTexture, window.getWindowsillX() + tab, window.getWindowsillY(),
-                    flowerTexture.originalWidth.toFloat(), flowerTexture.originalHeight.toFloat())
+            val padding = window.getWindowsillX() + tab
+            val width = flowerTexture.originalWidth.toFloat()
+            val height = flowerTexture.originalHeight.toFloat()
+            batch!!.draw(flowerTexture, padding, window.getWindowsillY(), width, height)
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.mygdx.game.screens
 
-import com.badlogic.gdx.Screen
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.GL20
 import com.mygdx.game.Config
@@ -22,7 +22,9 @@ class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun render(delta: Float) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        val bufferBitMv = if (Gdx.graphics.bufferFormat.coverageSampling) GL20.GL_COVERAGE_BUFFER_BIT_NV else 0
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT or bufferBitMv)
 
         if(manager.isFinished && gameWorld == null){
             gameWorld = GameWorld(manager)

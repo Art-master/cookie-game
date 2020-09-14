@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.mygdx.game.Config.Debug
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 

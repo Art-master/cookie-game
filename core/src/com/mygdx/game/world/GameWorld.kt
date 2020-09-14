@@ -25,7 +25,7 @@ import com.mygdx.game.services.ServicesController
 import com.mygdx.game.actors.Shadow as SceneShadow
 
 
-class GameWorld(manager: AssetManager) {
+class GameWorld(private val manager: AssetManager) {
 
     val stage = Stage(ScreenViewport())
 
@@ -144,7 +144,6 @@ class GameWorld(manager: AssetManager) {
                     }
                     FINISH_GAME.score -> {
                         items.isStopGenerate = true
-                        (controller as AchievementsController).unlockAchievement(FINISH_GAME)
                     }
                 }
             }
@@ -200,10 +199,13 @@ class GameWorld(manager: AssetManager) {
             }
             shot.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 sceneShadow.invertColor()
-                sceneShadow.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                    ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
-                })
+                sceneShadow.animate(AnimationType.SHOW_ON_SCENE)
                 arm.animate(AnimationType.HIDE_FROM_SCENE)
+                val shadow = SceneShadow(manager)
+                stage.addActor(shadow)
+                shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
+                    ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum), Pair(WAS_WIN_GAME, true))
+                })
             })
         }
     }

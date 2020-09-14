@@ -83,7 +83,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
     override fun getX() = scroll.getX()
     override fun getY() = scroll.getY()
     fun getWindowsillY() = scroll.getY() + 90
-    fun getWindowsillX() = scroll.getX() + 280
+    fun getWindowsillX() = scroll.getX() + 70
 
     fun addResetListener(listener: Listener){
         listeners.add(listener)

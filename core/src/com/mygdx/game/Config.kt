@@ -3,16 +3,16 @@ package com.mygdx.game
 import kotlin.math.abs
 
 object Config {
-
-    //DEBUG
-    const val DEBUG_COLLISIONS = false
-
     const val WIDTH_GAME = 1920f
     const val HEIGHT_GAME = 1080f
     const val SHADOW_ANIMATION_TIME_S = 1f
     const val BUTTONS_ANIMATION_TIME_S = 1f
     const val VIBRATION_TIME_MS = 100
     const val SOUNDS_FOLDER = "sounds/"
+
+    enum class Debug(var state: Boolean) {
+        COLLISIONS(false)
+    }
 
     enum class Achievement(val score: Int) {
         SUNGLASSES(5),
@@ -26,7 +26,7 @@ object Config {
 
     const val DEFAULT_SCROLL_SPEED = -200f
     var currentScrollSpeed = DEFAULT_SCROLL_SPEED
-    const val SPEED_INCREASE_STEP = -100f
+    const val SPEED_INCREASE_STEP = -20f
 
     enum class ItemScrollSpeed(var calc: () -> Float) {
         NONE({ 0f }),

@@ -13,7 +13,7 @@ object ScreenManager {
     }
 
     enum class Param{
-        SCORE, SERVICES_CONTROLLER, ASSET_MANAGER, FIRST_APP_RUN
+        SCORE, SERVICES_CONTROLLER, ASSET_MANAGER, FIRST_APP_RUN, WAS_WIN_GAME
     }
 
     fun setScreen(screen: Screens = Screens.START_SCREEN, params: Map<Param, Any> = EnumMap(Param::class.java)) {
