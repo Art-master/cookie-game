@@ -200,11 +200,12 @@ class GameWorld(private val manager: AssetManager) {
             shot.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 sceneShadow.invertColor()
                 sceneShadow.animate(AnimationType.SHOW_ON_SCENE)
-                arm.animate(AnimationType.HIDE_FROM_SCENE)
-                val shadow = SceneShadow(manager)
-                stage.addActor(shadow)
-                shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                    ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum), Pair(WAS_WIN_GAME, true))
+                arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
+                    val shadow = SceneShadow(manager)
+                    stage.addActor(shadow)
+                    shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
+                        ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum), Pair(WAS_WIN_GAME, true))
+                    })
                 })
             })
         }

@@ -90,7 +90,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
         moveToAction.setPosition(initPosition.x + limitX, initPosition.y + limitY)
         moveToAction.duration = 2f
         moveToAction.interpolation = Interpolation.smooth
-        this.addAction(moveToAction)
+        addAction(Actions.sequence(moveToAction, Actions.run {setMoveAction()}))
     }
 
     private fun getLimit(max: Int = 50): Float {
