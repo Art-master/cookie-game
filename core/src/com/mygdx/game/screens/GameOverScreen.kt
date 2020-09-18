@@ -16,16 +16,20 @@ import com.mygdx.game.actors.Shadow
 import com.mygdx.game.actors.game_over_screen.*
 import com.mygdx.game.services.AdsController
 import com.mygdx.game.api.AnimationType.*
+import com.mygdx.game.data.Assets
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.MusicApp.*
 import com.mygdx.game.managers.AudioManager.SoundApp.*
 import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.managers.ScreenManager.Param.SCORE
+import com.mygdx.game.managers.VibrationManager
+import com.mygdx.game.services.LeaderboardController
 
 class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private var manager = params[ASSET_MANAGER] as AssetManager
     private var adsController = params[SERVICES_CONTROLLER] as AdsController
+    private var leaderboardController = params[SERVICES_CONTROLLER] as LeaderboardController
     private var score = params[SCORE] as Int
     private var wasWinGame = params[WAS_WIN_GAME] as Boolean?
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
@@ -58,6 +62,10 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         val restartIcon = RestartIcon(manager)
         val shadow = Shadow(manager)
         val scores = Scores(manager, score)
+        val topScores = GameOverMenuIcon(manager, 40f, 780f, Assets.MainMenuAtlas.TOP_SCORES)
+        val awards = GameOverMenuIcon(manager, 70f, 580f, Assets.MainMenuAtlas.AWARDS)
+        val share = GameOverMenuIcon(manager, 1777f, 780f, Assets.MainMenuAtlas.SHARE, false)
+        val mainMenu = GameOverMenuIcon(manager, 1777f, 580f, Assets.MainMenuAtlas.MAIN_MENU, false)
 
         stage.apply {
             addActor(background)
@@ -65,11 +73,21 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             addActor(restartIcon)
             addActor(shadow)
             addActor(scores)
+            if(!leaderboardController.isSignedIn()){ //TODO after tests delete inversion
+                addActor(topScores)
+                addActor(awards)
+            }
+            addActor(share)
+            addActor(mainMenu)
         }
 
         restartIcon.animate(SHOW_ON_SCENE)
         shadow.animate(SHOW_ON_SCENE)
         scores.animate(SHOW_ON_SCENE)
+        topScores.animate(SHOW_ON_SCENE)
+        awards.animate(SHOW_ON_SCENE)
+        share.animate(SHOW_ON_SCENE)
+        mainMenu.animate(SHOW_ON_SCENE)
         AudioManager.play(MAIN_MENU_MUSIC)
 
         addClickListener(restartIcon) {
@@ -77,20 +95,32 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             AudioManager.stopAll()
             restartIcon.animate(HIDE_FROM_SCENE)
             scores.animate(HIDE_FROM_SCENE)
+            topScores.animate(HIDE_FROM_SCENE)
+            awards.animate(HIDE_FROM_SCENE)
+            share.animate(HIDE_FROM_SCENE)
+            mainMenu.animate(HIDE_FROM_SCENE)
             shadow.animate(HIDE_FROM_SCENE, Runnable {
                 ScreenManager.setScreen(GAME_SCREEN)
             })
         }
 
-/*        addClickListener(mainMenuIcon) {
-            title.animate(HIDE_FROM_SCENE)
-            restartIcon.animate(HIDE_FROM_SCENE)
-            mainMenuIcon.animate(HIDE_FROM_SCENE)
-            scores.animate(HIDE_FROM_SCENE)
-            shadow.animate(HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(START_SCREEN)
-            })
-        }*/
+        addClickListener(topScores) {
+            topScores.animate(CLICK)
+            VibrationManager.vibrate()
+        }
+        addClickListener(awards) {
+            awards.animate(CLICK)
+            VibrationManager.vibrate()
+        }
+        addClickListener(share) {
+            share.animate(CLICK)
+            VibrationManager.vibrate()
+        }
+        addClickListener(mainMenu) {
+            mainMenu.animate(CLICK)
+            VibrationManager.vibrate()
+            ScreenManager.setScreen(MAIN_MENU_SCREEN)
+        }
     }
 
 

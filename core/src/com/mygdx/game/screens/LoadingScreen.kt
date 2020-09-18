@@ -21,14 +21,14 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager
-import com.mygdx.game.managers.ScreenManager.Param.ASSET_MANAGER
-import com.mygdx.game.managers.ScreenManager.Param.FIRST_APP_RUN
-import com.mygdx.game.managers.ScreenManager.Screens.START_SCREEN
+import com.mygdx.game.managers.ScreenManager.Param.*
+import com.mygdx.game.managers.ScreenManager.Screens.MAIN_MENU_SCREEN
+import com.mygdx.game.services.AdsController
 
 class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private val manager = AssetManager()
-
+    private val adsManager = params[SERVICES_CONTROLLER] as AdsController
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ScreenViewport(camera))
 
@@ -44,6 +44,7 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
         manager.load(Descriptors.progressBar)
         manager.finishLoadingAsset(Descriptors.progressBar)
+        if(firstRun.not()) adsManager.showBannerAd()
 
         Gdx.input.inputProcessor = stage
     }
@@ -65,8 +66,9 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
             Timer.schedule(object : Timer.Task() {
                 override fun run() {
+                    adsManager.hideBannerAd()
                     ScreenManager.setGlobalParameter(ASSET_MANAGER, manager)
-                    ScreenManager.setScreen(START_SCREEN)
+                    ScreenManager.setScreen(MAIN_MENU_SCREEN)
                 }
             }, 0.2f)
 

@@ -9,19 +9,19 @@ object ScreenManager {
     val globalParameters = EnumMap<Param, Any>(Param::class.java)
 
     enum class Screens{
-        LOADING_SCREEN, START_SCREEN, GAME_SCREEN, GAME_OVER, COMICS_SCREEN
+        LOADING_SCREEN, MAIN_MENU_SCREEN, GAME_SCREEN, GAME_OVER, COMICS_SCREEN
     }
 
     enum class Param{
         SCORE, SERVICES_CONTROLLER, ASSET_MANAGER, FIRST_APP_RUN, WAS_WIN_GAME
     }
 
-    fun setScreen(screen: Screens = Screens.START_SCREEN, params: Map<Param, Any> = EnumMap(Param::class.java)) {
+    fun setScreen(screen: Screens = Screens.MAIN_MENU_SCREEN, params: Map<Param, Any> = EnumMap(Param::class.java)) {
         val allParams = params.plus(globalParameters)
         val currentScreen = game?.screen
         val nextScreen= when(screen){
             Screens.LOADING_SCREEN -> LoadingScreen(allParams)
-            Screens.START_SCREEN -> MainMenuScreen(allParams)
+            Screens.MAIN_MENU_SCREEN -> MainMenuScreen(allParams)
             Screens.GAME_SCREEN -> GameScreen(allParams)
             Screens.GAME_OVER -> GameOverScreen(allParams)
             Screens.COMICS_SCREEN -> ComicsScreen(allParams)
@@ -30,7 +30,7 @@ object ScreenManager {
         currentScreen?.dispose()
     }
 
-    fun setScreen(screen: Screens = Screens.START_SCREEN, vararg params: Pair<Param, Any>){
+    fun setScreen(screen: Screens = Screens.MAIN_MENU_SCREEN, vararg params: Pair<Param, Any>){
         setScreen(screen, params.toMap())
     }
 

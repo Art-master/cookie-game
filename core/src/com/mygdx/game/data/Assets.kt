@@ -123,6 +123,10 @@ class Assets {
             const val REPLAY_BUTTON = "replayButton"
             const val TITLE = "title"
             const val BLACK_SQUARE = "blackSquare"
+            const val MAIN_MENU = "mainMenu"
+            const val TOP_SCORES = "topScores"
+            const val AWARDS = "awards"
+            const val SHARE = "share"
         }
     }
 
