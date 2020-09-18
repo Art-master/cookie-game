@@ -50,10 +50,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.mygdx.game.services.AchievementsController;
 import com.mygdx.game.services.AdsController;
 import com.mygdx.game.services.CallBack;
-import com.mygdx.game.services.LeaderboardController;
+import com.mygdx.game.services.ServicesController;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,7 +65,7 @@ import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIR
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.COLLECTION_PUBLIC;
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_SPAN_ALL_TIME;
 
-public class AndroidLauncher extends AndroidApplication implements AdsController, LeaderboardController, AchievementsController {
+public class AndroidLauncher extends AndroidApplication implements AdsController, ServicesController {
 
     private String bannerAdUnitId = "";
     private String interstitialAdUnitId = "";

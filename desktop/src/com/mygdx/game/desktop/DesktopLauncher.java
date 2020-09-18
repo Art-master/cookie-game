@@ -4,10 +4,9 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.Config;
 import com.mygdx.game.GdxGame;
-import com.mygdx.game.services.AchievementsController;
 import com.mygdx.game.services.AdsController;
 import com.mygdx.game.services.CallBack;
-import com.mygdx.game.services.LeaderboardController;
+import com.mygdx.game.services.ServicesController;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +22,7 @@ public class DesktopLauncher {
         new LwjglApplication(new GdxGame(controller), config);
     }
 
-    static class Controller implements AdsController, LeaderboardController, AchievementsController {
+    static class Controller implements AdsController, ServicesController {
 
         @Override
         public void unlockAchievement(@NotNull Config.Achievement achievement) {

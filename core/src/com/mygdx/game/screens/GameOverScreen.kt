@@ -23,13 +23,13 @@ import com.mygdx.game.managers.AudioManager.SoundApp.*
 import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.managers.ScreenManager.Param.SCORE
 import com.mygdx.game.managers.VibrationManager
-import com.mygdx.game.services.LeaderboardController
+import com.mygdx.game.services.ServicesController
 
 class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private var manager = params[ASSET_MANAGER] as AssetManager
     private var adsController = params[SERVICES_CONTROLLER] as AdsController
-    private var leaderboardController = params[SERVICES_CONTROLLER] as LeaderboardController
+    private var controller = params[SERVICES_CONTROLLER] as ServicesController
     private var score = params[SCORE] as Int
     private var wasWinGame = params[WAS_WIN_GAME] as Boolean?
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
@@ -73,7 +73,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             addActor(restartIcon)
             addActor(shadow)
             addActor(scores)
-            if(!leaderboardController.isSignedIn()){ //TODO after tests delete inversion
+            if(!controller.isSignedIn()){ //TODO after tests delete inversion
                 addActor(topScores)
                 addActor(awards)
             }
@@ -104,22 +104,21 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             })
         }
 
-        addClickListener(topScores) {
-            topScores.animate(CLICK)
-            VibrationManager.vibrate()
-        }
-        addClickListener(awards) {
-            awards.animate(CLICK)
-            VibrationManager.vibrate()
-        }
-        addClickListener(share) {
-            share.animate(CLICK)
-            VibrationManager.vibrate()
-        }
+        addClickListener(topScores) { topScores.animate(CLICK) }
+        addClickListener(awards) { awards.animate(CLICK) }
+        addClickListener(share) { share.animate(CLICK) }
         addClickListener(mainMenu) {
-            mainMenu.animate(CLICK)
-            VibrationManager.vibrate()
-            ScreenManager.setScreen(MAIN_MENU_SCREEN)
+            adsController.hideBannerAd()
+            AudioManager.stopAll()
+            restartIcon.animate(HIDE_FROM_SCENE)
+            scores.animate(HIDE_FROM_SCENE)
+            topScores.animate(HIDE_FROM_SCENE)
+            awards.animate(HIDE_FROM_SCENE)
+            share.animate(HIDE_FROM_SCENE)
+            mainMenu.animate(HIDE_FROM_SCENE)
+            shadow.animate(HIDE_FROM_SCENE, Runnable {
+                ScreenManager.setScreen(MAIN_MENU_SCREEN)
+            })
         }
     }
 
@@ -128,6 +127,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         actor.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 AudioManager.play(CLICK_SOUND)
+                VibrationManager.vibrate()
                 function()
                 return super.touchDown(event, x, y, pointer, button)
             }

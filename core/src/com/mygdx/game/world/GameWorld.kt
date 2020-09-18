@@ -20,7 +20,6 @@ import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager.Param.*
-import com.mygdx.game.services.AchievementsController
 import com.mygdx.game.services.ServicesController
 import com.mygdx.game.actors.Shadow as SceneShadow
 
@@ -114,32 +113,32 @@ class GameWorld(private val manager: AssetManager) {
                 when (score.scoreNum) {
                     SUNGLASSES.score -> {
                         sunglasses.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            (controller as AchievementsController).unlockAchievement(SUNGLASSES)
+                            controller.unlockAchievement(SUNGLASSES)
                         })
                     }
                     HAT.score -> {
                         hat.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            (controller as AchievementsController).unlockAchievement(HAT)
+                            controller.unlockAchievement(HAT)
                         })
                     }
                     BOOTS.score -> {
                         boots.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            (controller as AchievementsController).unlockAchievement(BOOTS)
+                            controller.unlockAchievement(BOOTS)
                         })
                     }
                     BELT.score -> {
                         belt.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            (controller as AchievementsController).unlockAchievement(BELT)
+                            controller.unlockAchievement(BELT)
                         })
                     }
                     GUN.score -> {
                         gun.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            (controller as AchievementsController).unlockAchievement(GUN)
+                            controller.unlockAchievement(GUN)
                         })
                     }
                     BULLETS.score -> {
                         bullets.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            (controller as AchievementsController).unlockAchievement(BULLETS)
+                            controller.unlockAchievement(BULLETS)
                         })
                     }
                     FINISH_GAME.score -> {
