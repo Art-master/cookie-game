@@ -14,6 +14,7 @@ interface ServicesController{
     fun unlockAchievement(achievement: Config.Achievement)
     fun incrementAchievement(achievement: Config.Achievement, value: Int)
     fun showAllAchievements()
+    fun share(score: Int)
 }
 
 interface CallBack{

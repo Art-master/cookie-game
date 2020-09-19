@@ -106,7 +106,10 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
         addClickListener(topScores) { topScores.animate(CLICK) }
         addClickListener(awards) { awards.animate(CLICK) }
-        addClickListener(share) { share.animate(CLICK) }
+        addClickListener(share) {
+            share.animate(CLICK)
+            controller.share(score)
+        }
         addClickListener(mainMenu) {
             adsController.hideBannerAd()
             AudioManager.stopAll()

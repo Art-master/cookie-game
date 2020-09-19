@@ -27,4 +27,8 @@
 
     <string name="leaderboard">CgkI5uqQg4oREAIQBw</string>
 
+    <string name="share_msg">Я набрал %1$d очков в игре "Run Cookie Run "</string>
+    <string name="share_window_header">Поделиться</string>
+    <string name="app_link">https://stackoverflow.com/questions/3656371/is-it-possible-dynamically-to-add-string-to-string-xml-in-android</string>
+
 </resources>

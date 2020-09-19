@@ -103,5 +103,10 @@ public class DesktopLauncher {
         public boolean isSignedIn() {
             return false;
         }
+
+        @Override
+        public void share(int score) {
+
+        }
     }
 }

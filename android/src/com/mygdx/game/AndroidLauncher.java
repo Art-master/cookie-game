@@ -548,4 +548,14 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                     }
                 });
     }
+
+    @Override
+    public void share(int score) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        String msg = getString(R.string.share_msg, score) + getString(R.string.app_link); //TODO replace link after publishing
+        sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent,getString(R.string.share_window_header)));
+    }
 }
