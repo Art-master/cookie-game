@@ -8,7 +8,7 @@ import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Scrolled
+import com.mygdx.game.api.HorizontalScroll
 
 class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
@@ -16,10 +16,10 @@ class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
 
     val worktopY = yWorktop
 
-    private var scrollerBack = Scrolled(0f, 0f,
+    private var scrollerBack = HorizontalScroll(0f, 0f,
             region.originalWidth, region.originalHeight, Config.ItemScrollSpeed.LEVEL_2)
 
-    private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
+    private var scrollerFront = HorizontalScroll(scrollerBack.getTailX(), 0f,
             region.originalWidth, region.originalHeight, Config.ItemScrollSpeed.LEVEL_2)
 
     override fun act(delta: Float) {

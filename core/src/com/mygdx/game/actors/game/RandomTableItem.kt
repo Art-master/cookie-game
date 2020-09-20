@@ -30,7 +30,7 @@ class RandomTableItem(private val manager: AssetManager,
 
     private val screenWidth = Gdx.graphics.width.toFloat()
 
-    private lateinit var scroller: Scrolled
+    private lateinit var scroller: HorizontalScroll
 
     private var jumpOnSound: AudioManager.Audio? = null
     var startAct = false
@@ -87,7 +87,7 @@ class RandomTableItem(private val manager: AssetManager,
     }
 
     private fun resetScroller() {
-        scroller = Scrolled(screenWidth, y,
+        scroller = HorizontalScroll(screenWidth, y,
                 region.originalWidth, region.originalHeight, Config.ItemScrollSpeed.LEVEL_2)
     }
 

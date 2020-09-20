@@ -10,7 +10,7 @@ import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.api.Listener
-import com.mygdx.game.api.Scrolled
+import com.mygdx.game.api.HorizontalScroll
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,7 +24,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
     private val curtainRight = texture.findRegion(Assets.EnvironmentAtlas.CURTAIN_RIGHT)
     private var curtainColor = getRandomColor()
 
-    var scroll = Scrolled(
+    var scroll = HorizontalScroll(
             Gdx.graphics.width.toFloat(), startY,
             region.originalWidth,
             region.originalHeight,
@@ -37,7 +37,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
         scroll.update(delta)
         if(scroll.isScrolledLeft){
             scroll.reset(scroll.originX)
-            curtainColor = getRandomColor()
+            curtainColor = getRandomColor().lerp(Color.GRAY, 0.5f)
             callListeners()
         }
     }
@@ -47,7 +47,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
         batch.draw(region, scroll.getX(), scroll.getY(),
                 scroll.width.toFloat(), scroll.height.toFloat())
 
-        //batch.color = curtainColor
+        batch.color = curtainColor
         batch.draw(curtainLeft, scroll.getX() - 80, scroll.getY() - 60,
                 curtainLeft.originalWidth.toFloat(), curtainLeft.originalHeight.toFloat())
 

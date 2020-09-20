@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.Array
 import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
+import com.mygdx.game.api.HorizontalScroll
+import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Scrollable
-import com.mygdx.game.api.Scrolled
 import java.util.*
 
-class Cupboard(manager : AssetManager, private val window : Window) : GameActor(), Scrollable {
+class Cupboard(manager: AssetManager, private val window: Window) : GameActor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val cupBoardRegion = texture.findRegion(Assets.EnvironmentAtlas.CUPBOARD)
     private val openDoorRegion = texture.findRegion(Assets.EnvironmentAtlas.OPEN_DOOR)
@@ -29,17 +29,17 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
     private var rightDoorRegion = getDoorRegion()
 
     private val startY = window.getWindowsillY() + 150f
-    private val startX =  200
-    private val windowX2 = window.scroll.getX() + window.scroll.width
+    private val startPaddingX = 200
+    private val windowTailX = window.scroll.getTailX()
 
-    var scroll = Scrolled(
-            windowX2 + startX + leftDoorRegion.originalWidth,
+    var scroll = HorizontalScroll(
+            windowTailX + startPaddingX + leftDoorRegion.originalWidth,
             startY,
             cupBoardRegion.originalWidth + leftDoorRegion.originalWidth,
             cupBoardRegion.originalHeight,
             Config.ItemScrollSpeed.LEVEL_1)
 
-    private val randPositionX = Random(startX.toLong())
+    private val randPositionX = Random(startPaddingX.toLong())
 
     private var upperThinksTextures = getTexturesArray()
     private var downThinksTextures = getTexturesArray()
@@ -47,10 +47,9 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
     override fun act(delta: Float) {
         super.act(delta)
         scroll.update(delta)
-        if(scroll.isScrolledLeft){
-            val position = window.scroll.getX() + window.scroll.width + leftDoorRegion.originalWidth+ startX
+        if (scroll.isScrolledLeft) {
+            val position = window.scroll.getTailX() + leftDoorRegion.originalWidth + startPaddingX
             scroll.reset(position)
-            leftDoorRegion = getDoorRegion()
             rightDoorRegion = getDoorRegion()
             upperThinksTextures = getTexturesArray()
             downThinksTextures = getTexturesArray()
@@ -59,8 +58,8 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
 
     private fun calculatePosition(): Float {
         var position: Float
-        do{
-            position = windowX2 + leftDoorRegion.originalWidth + randPositionX.nextInt(600)
+        do {
+            position = windowTailX + leftDoorRegion.originalWidth + randPositionX.nextInt(600)
         } while (position < (Config.WIDTH_GAME + leftDoorRegion.originalWidth))
         return position
     }
@@ -74,17 +73,17 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
         drawRightDoor(batch)
     }
 
-    private fun drawUtensil(batch: Batch){
+    private fun drawUtensil(batch: Batch) {
         val shellX = scroll.getX() + 25
         val shellDownY = scroll.getY() + 25
-        for(element in upperThinksTextures){
+        for (element in upperThinksTextures) {
             batch.draw(element.region, shellX + element.randX, shellDownY,
                     element.region.originalWidth.toFloat(),
                     element.region.originalHeight.toFloat())
         }
 
         val shellUpY = scroll.getY() + 225
-        for(element in downThinksTextures){
+        for (element in downThinksTextures) {
             batch.draw(element.region, shellX + element.randX, shellUpY,
                     element.region.originalWidth.toFloat(),
                     element.region.originalHeight.toFloat())
@@ -92,10 +91,10 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
 
     }
 
-    private fun drawLeftDoor(batch: Batch?){
+    private fun drawLeftDoor(batch: Batch?) {
         var x = scroll.getX()
         var y = scroll.getY()
-        if(leftDoorRegion == openDoorRegion){
+        if (leftDoorRegion == openDoorRegion) {
             x -= leftDoorRegion.originalWidth - 20
             y -= 42
         }
@@ -104,14 +103,14 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
                 leftDoorRegion.originalHeight.toFloat())
     }
 
-    private fun drawRightDoor(batch: Batch?){
+    private fun drawRightDoor(batch: Batch?) {
         var x = scroll.getX() + cupBoardRegion.originalWidth
         var y = scroll.getY()
         val width = -rightDoorRegion.originalWidth.toFloat()
         val height = rightDoorRegion.originalHeight.toFloat()
-        if(rightDoorRegion == closeDoorRegion){
+        if (rightDoorRegion == closeDoorRegion) {
             x -= 21
-        }else {
+        } else {
             y -= 40
             x += rightDoorRegion.originalWidth - 40
         }
@@ -119,25 +118,25 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
         batch!!.draw(rightDoorRegion, x, y, width, height)
     }
 
-    private fun getDoorRegion(): TextureAtlas.AtlasRegion{
-        return when(rand.nextInt(3)){
+    private fun getDoorRegion(): TextureAtlas.AtlasRegion {
+        return when (rand.nextInt(3)) {
             1 -> openDoorRegion
             2 -> closeDoorRegion
             else -> openDoorRegion
         }
     }
 
-    private fun getTexturesArray() : Array<Utensil>{
+    private fun getTexturesArray(): Array<Utensil> {
         val array = Array<Utensil>()
-        for(i in 1..rand.nextInt(8)){
+        for (i in 1..rand.nextInt(5)) {
             val utensil = Utensil(getUtensilRegion(rand.nextInt(5)), rand.nextInt(500))
             array.add(utensil)
         }
         return array
     }
 
-    private fun getUtensilRegion(num : Int): TextureAtlas.AtlasRegion {
-        return when(num){
+    private fun getUtensilRegion(num: Int): TextureAtlas.AtlasRegion {
+        return when (num) {
             0 -> jar1Region
             1 -> jar2Region
             2 -> jar3Region
@@ -150,7 +149,6 @@ class Cupboard(manager : AssetManager, private val window : Window) : GameActor(
 
     override fun getX() = scroll.getX()
     override fun getY() = scroll.getY()
-
 
 
     data class Utensil(val region: TextureAtlas.AtlasRegion, val randX: Int)

@@ -61,7 +61,7 @@ class Cookie(private val manager : AssetManager,
             field = value
         }
 
-    private var move = Scrolled(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
+    private var move = HorizontalScroll(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
 
     init {
         width = runRegions[0].originalWidth.toFloat()

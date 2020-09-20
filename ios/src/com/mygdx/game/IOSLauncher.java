@@ -7,12 +7,11 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.mygdx.game.services.AchievementsController;
 import com.mygdx.game.services.AdsController;
 import com.mygdx.game.services.CallBack;
-import com.mygdx.game.services.LeaderboardController;
+import com.mygdx.game.services.ServicesController;
 
-public class IOSLauncher extends IOSApplication.Delegate implements AdsController, AchievementsController, LeaderboardController {
+public class IOSLauncher extends IOSApplication.Delegate implements AdsController, ServicesController {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
@@ -103,5 +102,10 @@ public class IOSLauncher extends IOSApplication.Delegate implements AdsControlle
     @Override
     public boolean isSignedIn() {
         return false;
+    }
+
+    @Override
+    public void share(int score) {
+
     }
 }

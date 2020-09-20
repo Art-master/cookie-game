@@ -15,9 +15,9 @@ import com.mygdx.game.actors.game.cookie.Cookie
 import com.mygdx.game.api.Animated
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.GameActor
+import com.mygdx.game.api.Physical
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Physical
 import java.util.*
 import kotlin.random.Random as RandomK
 
@@ -90,7 +90,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
         moveToAction.setPosition(initPosition.x + limitX, initPosition.y + limitY)
         moveToAction.duration = 2f
         moveToAction.interpolation = Interpolation.smooth
-        addAction(Actions.sequence(moveToAction, Actions.run {setMoveAction()}))
+        addAction(Actions.sequence(moveToAction, Actions.run { setMoveAction() }))
     }
 
     private fun getLimit(max: Int = 50): Float {
@@ -148,7 +148,6 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     private fun showArmAnimation(runAfter: Runnable): SequenceAction? {
-        setMoveAction()
         val animDuration = 3f
         val move = Actions.moveTo(initPosition.x, initPosition.y, animDuration)
         val run = Actions.run(runAfter)

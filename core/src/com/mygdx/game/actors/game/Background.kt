@@ -6,16 +6,16 @@ import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Scrolled
+import com.mygdx.game.api.HorizontalScroll
 
 class Background(manager : AssetManager) : GameActor(), Scrollable{
 
     private val texture = manager.get(Descriptors.background)
 
-    private var scrollerBack = Scrolled(0f, 0f,
+    private var scrollerBack = HorizontalScroll(0f, 0f,
             texture.width, texture.height, Config.ItemScrollSpeed.LEVEL_1)
 
-    private var scrollerFront = Scrolled(scrollerBack.getTailX(), 0f,
+    private var scrollerFront = HorizontalScroll(scrollerBack.getTailX(), 0f,
             texture.width, texture.height, Config.ItemScrollSpeed.LEVEL_1)
 
 

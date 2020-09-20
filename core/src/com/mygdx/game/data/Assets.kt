@@ -101,6 +101,8 @@ class Assets {
             const val OPEN_BOX = "open_box"
             const val JAR_WITH_JAM = "jar_with_jam"
             const val JAR_WITH_JAM_2 = "jar_with_jam2"
+            const val ICE_PUDDLE = "ice_puddle"
+            const val PUSHPIN = "pushpin"
         }
     }
 

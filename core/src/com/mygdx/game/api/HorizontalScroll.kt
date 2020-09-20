@@ -3,11 +3,11 @@ package com.mygdx.game.api
 import com.badlogic.gdx.math.Vector2
 import com.mygdx.game.Config
 
-open class Scrolled(val originX: Float,
-                    val originY: Float,
-                    var width: Int,
-                    var height: Int,
-                    var scrollSpeed: Config.ItemScrollSpeed = Config.ItemScrollSpeed.NONE) {
+open class HorizontalScroll(val originX: Float,
+                            val originY: Float,
+                            var width: Int,
+                            var height: Int,
+                            var scrollSpeed: Config.ItemScrollSpeed = Config.ItemScrollSpeed.NONE) {
 
     private val position = Vector2(originX, originY)
     private val velocity = Vector2(scrollSpeed.calc(), 0f)
