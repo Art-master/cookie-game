@@ -4,21 +4,22 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Config
+import com.mygdx.game.Config.ItemScrollSpeed
 import com.mygdx.game.actors.game.RandomTableItem
 import com.mygdx.game.actors.game.RandomTableItem.Structure
 import com.mygdx.game.api.*
-import com.mygdx.game.Config.ItemScrollSpeed
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 
-class Cookie(private val manager : AssetManager,
+class Cookie(private val manager: AssetManager,
              val startY: Float,
-             var startX: Float): GameActor(), Scrollable, Physical, Animated{
+             var startX: Float) : GameActor(), Scrollable, Physical, Animated {
 
     private val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
@@ -36,13 +37,13 @@ class Cookie(private val manager : AssetManager,
     private var currentFrame = runAnimation.getKeyFrame(0f)
 
     var runTime = 0f
-    private set
+        private set
 
     private var isStopAnimation = false
 
-    private val rectangle : Rectangle = Rectangle()
+    private val rectangle: Rectangle = Rectangle()
 
-    enum class State{ RUN, JUMP, FALL}
+    enum class State { RUN, JUMP, FALL, STUMBLE }
 
     var state = State.RUN
 
@@ -51,7 +52,7 @@ class Cookie(private val manager : AssetManager,
     private var startJumpY = 0f
 
     var ground = startY
-    private set
+        private set
 
     private var isStartingAnimation = true
     var isWinningAnimation = false
@@ -70,7 +71,7 @@ class Cookie(private val manager : AssetManager,
         y = startY
     }
 
-    private fun updateCoordinates(){
+    private fun updateCoordinates() {
         x = move.getX()
         y = position.y
     }
@@ -78,17 +79,17 @@ class Cookie(private val manager : AssetManager,
     override fun act(delta: Float) {
         super.act(delta)
         runTime += delta
-        if(isStartingAnimation.not() && isWinningAnimation.not()){
+        if (isStartingAnimation.not() && isWinningAnimation.not()) {
             updateGravity()
             updateActorState()
             position.add(velocity.cpy().scl(delta))
             updateCoordinates()
             move.update(delta)
             controlCookieVelocity()
-        } else if(isWinningAnimation){
+        } else if (isWinningAnimation) {
             move.update(delta)
             updateCoordinates()
-            if(x >= startX){
+            if (x >= startX) {
                 width = winnerRegion.originalWidth.toFloat()
                 height = winnerRegion.originalHeight.toFloat()
             }
@@ -96,25 +97,27 @@ class Cookie(private val manager : AssetManager,
         }
     }
 
-    private fun updateGravity(){
+    private fun updateGravity() {
+        if(state == State.STUMBLE) return
         velocity.add(0f, gravity * runTime)
     }
 
-    private fun updateActorState(){
-        when(state){
+    private fun updateActorState() {
+        when (state) {
             State.FALL -> {
-                if(isGround()) resetState()
+                if (isGround()) resetState()
             }
             State.JUMP -> {
-                if(jumpFlag && isMaxJump().not()){
+                if (jumpFlag && isMaxJump().not()) {
                     velocity.add(0f, velocityJump)
                 } else state = State.FALL
             }
             State.RUN -> velocity.y = 0f
+            else -> return
         }
     }
 
-    private fun resetState(){
+    private fun resetState() {
         state = State.RUN
         runTime = 0f
         velocity.y = 0f
@@ -135,8 +138,8 @@ class Cookie(private val manager : AssetManager,
             else -> runAnimation.getKeyFrame(runTime)
         }
 
-        if(isHide.not()) {
-            batch.draw(currentFrame, x, y, width, height)
+        if (isHide.not()) {
+            batch.draw(currentFrame, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
         }
         debugCollidesIfEnable(batch, manager)
     }
@@ -146,15 +149,15 @@ class Cookie(private val manager : AssetManager,
     fun isJump() = state == State.JUMP
 
     fun startJumpForce() {
-        if(isWinningAnimation || isStartingAnimation) return
-        if(state == State.RUN){
+        if (isWinningAnimation || isStartingAnimation) return
+        if (state == State.RUN) {
             AudioManager.play(AudioManager.SoundApp.JUMP)
             initJump()
             fastMove()
         }
     }
 
-    private fun initJump(){
+    private fun initJump() {
         startJumpY = y
         state = State.JUMP
         runTime = 0f
@@ -180,66 +183,93 @@ class Cookie(private val manager : AssetManager,
         move.update()
     }
 
-    fun checkCollides(obj : RandomTableItem){
-        if(isWinningAnimation) return
-        if(collides(obj)){
-             if(isHigherThen(obj)){
-                 setOnTop(obj)
-                 obj.jumpedOn()
-            }else if(isForward(obj) && getTop(obj) - y < 20){
-                 setOnTop(obj)
-            }else setAgainstTheObject(obj)
+    fun checkCollides(obj: RandomTableItem) {
+        if (isWinningAnimation) return
+        if (collides(obj)) {
+            if(obj.structure == Structure.SHARP) {
+                stumble(obj)
+                return
+            }
+            if (isHigherThen(obj)) {
+                setOnTop(obj)
+                obj.jumpedOn()
+            } else if (isForward(obj) && getTop(obj) - y < 20) {
+                setOnTop(obj)
+            } else inFrontOfTheObject(obj)
         }
-        if(isAfterObject(obj) && state == State.RUN){
+        if (isAfterObject(obj) && state == State.RUN) {
             state = State.FALL
             fastMove()
         }
 
-        if(isAboveObject(obj)){
+        if (isAboveObject(obj)) {
             ground = getTop(obj)
-        } else if(isAfterObject(obj)){
+        } else if (isAfterObject(obj)) {
             ground = startY
         }
     }
 
-    private fun isForward(obj : RandomTableItem) = x < obj.getBoundsRect().x + 10
-    private fun isHigherThen(obj : RandomTableItem) = y > getTop(obj) - 30
+    private fun isForward(obj: RandomTableItem) = x < obj.getBoundsRect().x + 10
+    private fun isHigherThen(obj: RandomTableItem) = y > getTop(obj) - 30
 
-    private fun setOnTop(obj : RandomTableItem) {
+    private fun setOnTop(obj: RandomTableItem) {
         resetState()
-        when(obj.structure) {
+        when (obj.structure) {
             Structure.STICKY -> slowMove()
             Structure.JELLY -> initJump()
-            else -> {}
+            else -> {
+            }
         }
         obj.animate(AnimationType.ITEM_SQUASH)
         position.y = getTop(obj)
     }
 
-    private fun controlCookieVelocity(){
-        if(move.scrollSpeed != ItemScrollSpeed.NONE && x > startX) {
+    private fun controlCookieVelocity() {
+        if(state == State.STUMBLE) return
+        if (move.scrollSpeed != ItemScrollSpeed.NONE && x > startX) {
             x = startX
-            if(move.scrollSpeed == ItemScrollSpeed.FAST_MOVE) normalMove()
+            if (move.scrollSpeed == ItemScrollSpeed.FAST_MOVE) normalMove()
         }
     }
 
-    private fun normalMove(){
+    private fun normalMove() {
         move.update(speed = ItemScrollSpeed.NONE)
     }
 
-    private fun fastMove(){
+    private fun fastMove() {
         move.update(speed = ItemScrollSpeed.FAST_MOVE)
     }
 
-    private fun slowMove(){
+    private fun slowMove() {
         move.update(speed = ItemScrollSpeed.SLOW_MOVE)
     }
 
-    private fun setAgainstTheObject(obj : RandomTableItem) {
+    private fun inFrontOfTheObject(obj: RandomTableItem) {
+        when (obj.structure) {
+            else -> setAgainstTheObject(obj)
+        }
+    }
+
+    private fun stumble(obj: RandomTableItem) {
+        if (state == State.STUMBLE) return
+        state = State.STUMBLE
+        isStopAnimation = true
+        val duration = 0.5f
+        move.update(speed = ItemScrollSpeed.LEVEL_2)
+        val parallel = Actions.parallel(
+                Actions.rotateTo(-90f, duration, Interpolation.exp10),
+                Actions.moveTo(x - 50, y + 100, duration, Interpolation.exp10))
+        val sequence = Actions.sequence(
+                parallel,
+                Actions.run {  })
+        addAction(sequence)
+    }
+
+    private fun setAgainstTheObject(obj: RandomTableItem) {
         move.setX(obj.getBoundsRect().x - getBoundsRect().width - 35)
     }
 
-    override fun getBoundsRect(): Rectangle{
+    override fun getBoundsRect(): Rectangle {
         rectangle.set(x + 30, y, width - 60, height)
         return rectangle
     }

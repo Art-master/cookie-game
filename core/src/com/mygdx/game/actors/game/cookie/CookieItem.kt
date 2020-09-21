@@ -52,7 +52,7 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
 
         if (isInvolvedInGame.not()) {
             batch.setColor(color.r, color.g, color.b, color.a)
-            batch.draw(itemRegion, x, y, 0f, 0f, width, height, scaleX, scaleY, 0f)
+            batch.draw(itemRegion, x, y, 0f, 0f, width, height, scaleX, scaleY, cookie.rotation)
             drawLoadingCircle(batch)
         }
 

@@ -47,7 +47,7 @@ class RandomTableItem(private val manager: AssetManager,
     var isStopGeneration = false
 
     enum class Structure {
-        NORMAL, STICKY, JELLY
+        NORMAL, STICKY, JELLY, ICE, SHARP
     }
 
     init {
@@ -99,7 +99,7 @@ class RandomTableItem(private val manager: AssetManager,
     }
 
     private fun setRandomItem() {
-        when (rand.nextInt(18)) {
+        when (20) { //rand.nextInt(19)
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
@@ -256,6 +256,23 @@ class RandomTableItem(private val manager: AssetManager,
                 jumpOnSound = SoundApp.JUMP_ON_BOX
                 structure = Structure.NORMAL
             }
+            19 -> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.ICE_PUDDLE)
+                val boundWidth = region.originalWidth.toFloat()
+                startBound = Rectangle(0f, 0f, boundWidth, 21f)
+                y = table.worktopY - 20
+                jumpOnSound = null
+                structure = Structure.ICE
+            }
+            20 -> {
+                region = texture.findRegion(Assets.EnvironmentAtlas.PUSHPIN)
+                val boundWidth = region.originalWidth.toFloat() - 60
+                val boundHeight = region.originalHeight.toFloat()
+                startBound = Rectangle(40f, 0f, boundWidth, boundHeight)
+                y = table.worktopY
+                jumpOnSound = null
+                structure = Structure.SHARP
+            }
 /*            14-> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.OPEN_BOX)
                 val boundHeight = region.originalHeight.toFloat() - 35 - 15
@@ -331,4 +348,6 @@ class RandomTableItem(private val manager: AssetManager,
         }
         addAction(action)
     }
+
+    fun getSpeed() = scroller.scrollSpeed
 }
