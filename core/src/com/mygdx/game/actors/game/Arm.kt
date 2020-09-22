@@ -80,7 +80,9 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     private fun updateFinishAnimationIfNeed() {
-        moveToCatchCookieAnimation?.setPosition(cookie.x - 120, cookie.y + 40)
+        if(cookie.state == Cookie.State.STUMBLE){
+            moveToCatchCookieAnimation?.setPosition(cookie.x - 120, cookie.y - 100)
+        } else moveToCatchCookieAnimation?.setPosition(cookie.x - 120, cookie.y + 40)
     }
 
     private fun setMoveAction() {

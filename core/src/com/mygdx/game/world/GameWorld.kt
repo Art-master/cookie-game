@@ -215,6 +215,7 @@ class GameWorld(private val manager: AssetManager) {
             isGameOver = true
             touchable = false
             stopMoveAllActors()
+            cookie.stopMove()
             arm.actions.clear()
             arm.isGameOverAnimation = true
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {

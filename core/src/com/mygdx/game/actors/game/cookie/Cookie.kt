@@ -51,6 +51,9 @@ class Cookie(private val manager: AssetManager,
     var isHide = false
     private var startJumpY = 0f
 
+    private var isStopUpdateX = false
+    private var isStopUpdateY = false
+
     var ground = startY
         private set
 
@@ -72,8 +75,8 @@ class Cookie(private val manager: AssetManager,
     }
 
     private fun updateCoordinates() {
-        x = move.getX()
-        y = position.y
+        if (isStopUpdateX.not()) x = move.getX()
+        if (isStopUpdateY.not()) y = position.y
     }
 
     override fun act(delta: Float) {
@@ -98,7 +101,7 @@ class Cookie(private val manager: AssetManager,
     }
 
     private fun updateGravity() {
-        if(state == State.STUMBLE) return
+        if (state == State.STUMBLE) return
         velocity.add(0f, gravity * runTime)
     }
 
@@ -186,7 +189,7 @@ class Cookie(private val manager: AssetManager,
     fun checkCollides(obj: RandomTableItem) {
         if (isWinningAnimation) return
         if (collides(obj)) {
-            if(obj.structure == Structure.SHARP) {
+            if (obj.structure == Structure.SHARP) {
                 stumble(obj)
                 return
             }
@@ -225,7 +228,7 @@ class Cookie(private val manager: AssetManager,
     }
 
     private fun controlCookieVelocity() {
-        if(state == State.STUMBLE) return
+        if (state == State.STUMBLE) return
         if (move.scrollSpeed != ItemScrollSpeed.NONE && x > startX) {
             x = startX
             if (move.scrollSpeed == ItemScrollSpeed.FAST_MOVE) normalMove()
@@ -250,18 +253,35 @@ class Cookie(private val manager: AssetManager,
         }
     }
 
+    /**
+     * Execute when cookie stumbled by pushpin or other thing.
+     * It run animation, then cookie run again
+     * @param obj - table object
+     */
     private fun stumble(obj: RandomTableItem) {
         if (state == State.STUMBLE) return
         state = State.STUMBLE
         isStopAnimation = true
-        val duration = 0.5f
+        val duration = 0.2f
+        isStopUpdateX = true
+        isStopUpdateY = true
         move.update(speed = ItemScrollSpeed.LEVEL_2)
         val parallel = Actions.parallel(
-                Actions.rotateTo(-90f, duration, Interpolation.exp10),
-                Actions.moveTo(x - 50, y + 100, duration, Interpolation.exp10))
+                Actions.moveTo(x, startY + 100, duration, Interpolation.exp10),
+                Actions.rotateTo(-90f, duration, Interpolation.exp10))
+        val timeout = Actions.delay(0.5f, Actions.run {
+            rotation = 0f
+            y = startY
+            isStopUpdateY = false
+            state = State.RUN
+            isStopAnimation = false
+        })
         val sequence = Actions.sequence(
                 parallel,
-                Actions.run {  })
+                Actions.run {
+                    isStopUpdateX = false
+                    move.update(x = x)
+                }, timeout)
         addAction(sequence)
     }
 
