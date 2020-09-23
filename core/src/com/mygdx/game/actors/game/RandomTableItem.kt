@@ -99,7 +99,7 @@ class RandomTableItem(private val manager: AssetManager,
     }
 
     private fun setRandomItem() {
-        when (20) { //rand.nextInt(19)
+        when (19) { //rand.nextInt(19)
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
@@ -349,5 +349,4 @@ class RandomTableItem(private val manager: AssetManager,
         addAction(action)
     }
 
-    fun getSpeed() = scroller.scrollSpeed
 }

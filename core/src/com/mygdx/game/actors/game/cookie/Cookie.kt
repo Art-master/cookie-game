@@ -43,7 +43,7 @@ class Cookie(private val manager: AssetManager,
 
     private val rectangle: Rectangle = Rectangle()
 
-    enum class State { RUN, JUMP, FALL, STUMBLE }
+    enum class State { RUN, JUMP, FALL, STUMBLE, SLIP }
 
     var state = State.RUN
 
@@ -101,7 +101,7 @@ class Cookie(private val manager: AssetManager,
     }
 
     private fun updateGravity() {
-        if (state == State.STUMBLE) return
+        if (state == State.STUMBLE || state == State.SLIP) return
         velocity.add(0f, gravity * runTime)
     }
 
@@ -193,6 +193,11 @@ class Cookie(private val manager: AssetManager,
                 stumble(obj)
                 return
             }
+            if (obj.structure == Structure.ICE) {
+                slip(obj)
+                return
+            }
+
             if (isHigherThen(obj)) {
                 setOnTop(obj)
                 obj.jumpedOn()
@@ -228,7 +233,7 @@ class Cookie(private val manager: AssetManager,
     }
 
     private fun controlCookieVelocity() {
-        if (state == State.STUMBLE) return
+        if (state == State.STUMBLE || state == State.SLIP) return
         if (move.scrollSpeed != ItemScrollSpeed.NONE && x > startX) {
             x = startX
             if (move.scrollSpeed == ItemScrollSpeed.FAST_MOVE) normalMove()
@@ -254,13 +259,14 @@ class Cookie(private val manager: AssetManager,
     }
 
     /**
-     * Execute when cookie stumbled by pushpin or other thing.
-     * It run animation, then cookie run again
+     * Execute when cookie stumbled by pushpin or the same thing.
+     * It run animation, then cookie go up again
      * @param obj - table object
      */
     private fun stumble(obj: RandomTableItem) {
         if (state == State.STUMBLE) return
         state = State.STUMBLE
+
         isStopAnimation = true
         val duration = 0.2f
         isStopUpdateX = true
@@ -275,6 +281,43 @@ class Cookie(private val manager: AssetManager,
             isStopUpdateY = false
             state = State.RUN
             isStopAnimation = false
+            position.y = startY
+            fastMove()
+        })
+        val sequence = Actions.sequence(
+                parallel,
+                Actions.run {
+                    isStopUpdateX = false
+                    move.update(x = x)
+                }, timeout)
+        addAction(sequence)
+    }
+
+    /**
+     * Execute when cookie slipped by ice puddle or the same thing.
+     * It run animation, then cookie go up again
+     * @param obj - table object
+     */
+    private fun slip(obj: RandomTableItem) {
+        if (state == State.SLIP) return
+        state = State.SLIP
+
+        isStopAnimation = true
+        val duration = 0.2f
+        isStopUpdateX = true
+        isStopUpdateY = true
+        move.update(speed = ItemScrollSpeed.NONE)
+        val parallel = Actions.parallel(
+                Actions.moveTo(x + 30, startY - 30, duration, Interpolation.exp10),
+                Actions.rotateTo(90f, duration, Interpolation.exp10))
+        val timeout = Actions.delay(0.5f, Actions.run {
+            rotation = 0f
+            y = startY
+            state = State.RUN
+            isStopUpdateY = false
+            isStopAnimation = false
+            position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
+            fastMove()
         })
         val sequence = Actions.sequence(
                 parallel,

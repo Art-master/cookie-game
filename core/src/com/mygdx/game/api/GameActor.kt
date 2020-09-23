@@ -7,8 +7,13 @@ import com.mygdx.game.managers.VibrationManager
 
 open class GameActor : Actor() {
 
-    var isVibrating = false
+    val tailX: Float
+        get() = x + width
 
+    val tailY: Float
+        get() = y + height
+
+    var isVibrating = false
     set(value) {
         field = value
         if(value){
