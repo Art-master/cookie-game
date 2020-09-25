@@ -134,8 +134,8 @@ class Cookie(private val manager: AssetManager,
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
         currentFrame = when {
-            isJump() -> jumpUpAnimation
-            isFalling() -> jumpDownAnimation
+            state === State.JUMP -> jumpUpAnimation
+            state === State.FALL -> jumpDownAnimation
             isWinningAnimation && x >= startX -> winnerRegion
             isStopAnimation -> runRegions.first()
             else -> runAnimation.getKeyFrame(runTime)
@@ -146,10 +146,6 @@ class Cookie(private val manager: AssetManager,
         }
         debugCollidesIfEnable(batch, manager)
     }
-
-    fun isFalling() = state == State.FALL
-    fun isRun() = state == State.RUN
-    fun isJump() = state == State.JUMP
 
     fun startJumpForce() {
         if (isWinningAnimation || isStartingAnimation) return
@@ -316,7 +312,8 @@ class Cookie(private val manager: AssetManager,
             state = State.RUN
             isStopUpdateY = false
             isStopAnimation = false
-            position.y = obj.getBoundsRect().y + obj.getBoundsRect().height
+            position.y = y
+            move.update(x = x - width / 2)
             fastMove()
         })
         val sequence = Actions.sequence(

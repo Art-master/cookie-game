@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
 import com.mygdx.game.Config
+import com.mygdx.game.actors.game.cookie.Cookie.State.*
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -43,16 +43,17 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
         batch!!.color = Color.WHITE
         currentFrame = when {
             currentFrame == null -> null
-            cookie.isRun() -> runAnimation.getKeyFrame(cookie.runTime)
-            cookie.isJump() -> jumpUpRegion
-            cookie.isFalling() -> jumpDownRegion
+            cookie.state == RUN -> runAnimation.getKeyFrame(cookie.runTime)
+            cookie.state == SLIP -> runRegions.first()
+            cookie.state == JUMP -> jumpUpRegion
+            cookie.state == FALL -> jumpDownRegion
             cookie.isVisible.not() -> jumpUpRegion
             else -> null
         }
 
         if (isInvolvedInGame.not()) {
             batch.setColor(color.r, color.g, color.b, color.a)
-            batch.draw(itemRegion, x, y, 0f, 0f, width, height, scaleX, scaleY, cookie.rotation)
+            batch.draw(itemRegion, x, y, width, height)
             drawLoadingCircle(batch)
         }
 
@@ -60,7 +61,9 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
         if (isInvolvedInGame && currentFrame !== null) {
             val x = if (isGameOver) x else cookie.x
             val y = if (isGameOver) y else cookie.y
-            batch.draw(currentFrame, x, y, frameWidth!!, frameHeight!!)
+            val originX = if (isGameOver) originX else cookie.originX
+            val originY = if (isGameOver) originY else cookie.originY
+            batch.draw(currentFrame, x, y, originX, originY, frameWidth!!, frameHeight!!, 1f, 1f, cookie.rotation)
         }
     }
 
