@@ -54,6 +54,7 @@ class CookieShadow(manager : AssetManager, private val cookie: Cookie): GameActo
         val x = if(cookie.isWinningAnimation) cookie.x + 50 else cookie.x
         val y = cookie.startY - 20
         batch!!.color = color
+        if(cookie.state == Cookie.State.SLIP) return
         batch.draw(region, x, y, 0f, 0f,  width, height, scaleX, scaleY, rotation)
     }
 }
