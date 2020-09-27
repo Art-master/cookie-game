@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.utils.Array
 import com.mygdx.game.Config
 import com.mygdx.game.Config.ItemScrollSpeed
 import com.mygdx.game.actors.game.RandomTableItem
@@ -67,6 +68,8 @@ class Cookie(private val manager: AssetManager,
 
     private var move = HorizontalScroll(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
 
+    val listeners: Array<CookieLifecycle> = Array()
+
     init {
         width = runRegions[0].originalWidth.toFloat()
         height = runRegions[0].originalHeight.toFloat()
@@ -108,7 +111,11 @@ class Cookie(private val manager: AssetManager,
     private fun updateActorState() {
         when (state) {
             State.FALL -> {
-                if (isGround()) resetState()
+                if (isGround()) {
+                    listeners.forEach{ it.jumpEnd(y <= startY) }
+                    //println("isGround=${y <= startY}  y=$y startY=$startY")
+                    resetState()
+                }
             }
             State.JUMP -> {
                 if (jumpFlag && isMaxJump().not()) {

@@ -50,6 +50,7 @@ class Assets {
             const val LOADING_CIRCLE = "loading_circle"
             const val TOGETHER = "together"
             const val COOKIE_RESTS = "cookie_rests"
+            const val JUMP_DUST = "jump_dust"
         }
     }
 

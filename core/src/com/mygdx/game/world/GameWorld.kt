@@ -34,6 +34,7 @@ class GameWorld(private val manager: AssetManager) {
     private val city = City(manager, window)
     private val flower = FlowerInPot(manager, window)
     private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME / 2)
+    private val jumpDust = JumpDust(manager, cookie)
     private val sunglasses = CookieItem(manager, cookie, Assets.CookieAtlas.SUNGLASSES)
     private val hat = CookieItem(manager, cookie, Assets.CookieAtlas.HAT)
     private val boots = CookieItem(manager, cookie, Assets.CookieAtlas.BOOTS)
@@ -56,7 +57,8 @@ class GameWorld(private val manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, sunglasses, hat, boots, belt, gun, bullets, arm, score, shot, sceneShadow)
+        actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, arm, score, shot, sceneShadow)
+        cookie.listeners.addAll(jumpDust)
 
         addActorsToStage()
         stopMoveAllActors()
