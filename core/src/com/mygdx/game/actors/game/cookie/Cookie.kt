@@ -113,7 +113,6 @@ class Cookie(private val manager: AssetManager,
             State.FALL -> {
                 if (isGround()) {
                     listeners.forEach{ it.jumpEnd(y <= startY) }
-                    //println("isGround=${y <= startY}  y=$y startY=$startY")
                     resetState()
                 }
             }
@@ -231,7 +230,7 @@ class Cookie(private val manager: AssetManager,
             else -> {
             }
         }
-        obj.animate(AnimationType.ITEM_SQUASH)
+        //obj.animate(AnimationType.ITEM_SQUASH)
         position.y = getTop(obj)
     }
 
