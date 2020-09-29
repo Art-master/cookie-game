@@ -43,6 +43,7 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
         batch!!.color = Color.WHITE
         currentFrame = when {
             currentFrame == null -> null
+            cookie.state == STOP -> runRegions.first()
             cookie.state == RUN -> runAnimation.getKeyFrame(cookie.runTime)
             cookie.state == SLIP -> runRegions.first()
             cookie.state == JUMP -> jumpUpRegion

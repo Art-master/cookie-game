@@ -20,6 +20,8 @@ class JumpDust(manager: AssetManager, private val cookie: Cookie) : GameActor(),
 
     private var move = HorizontalScroll(0f, 0f, origWidth.toInt(), origHeight.toInt())
 
+    private var runTime = 0f
+
     init {
         width = origWidth
         height = origHeight
@@ -29,23 +31,25 @@ class JumpDust(manager: AssetManager, private val cookie: Cookie) : GameActor(),
 
     override fun act(delta: Float) {
         super.act(delta)
+
         move.update(delta)
         x = move.getX()
-        if (jumpDustAnimation != null && jumpDustAnimation!!.isAnimationFinished(cookie.runTime)) {
+        if (jumpDustAnimation != null && jumpDustAnimation!!.isAnimationFinished(runTime)) {
             jumpDustAnimation = null
-        }
+        } else runTime += delta
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = color
         if (jumpDustAnimation != null) {
-            val region = jumpDustAnimation?.getKeyFrame(cookie.runTime)
+            val region = jumpDustAnimation?.getKeyFrame(runTime)
             batch.draw(region, x, y, 0f, 0f, width, height, scaleX, scaleY, rotation)
         }
     }
 
     override fun jumpEnd(isGround: Boolean) {
         if (isGround && jumpDustAnimation == null) {
+            runTime = 0f
             move.update(x = cookie.x - 20, y = cookie.startY - 20, speed = Config.ItemScrollSpeed.LEVEL_2)
             jumpDustAnimation = Animation(0.04f, regions)
         }

@@ -40,11 +40,9 @@ class Cookie(private val manager: AssetManager,
     var runTime = 0f
         private set
 
-    private var isStopAnimation = false
-
     private val rectangle: Rectangle = Rectangle()
 
-    enum class State { RUN, JUMP, FALL, STUMBLE, SLIP }
+    enum class State { RUN, JUMP, FALL, STUMBLE, SLIP, STOP }
 
     var state = State.RUN
 
@@ -104,15 +102,16 @@ class Cookie(private val manager: AssetManager,
     }
 
     private fun updateGravity() {
-        if (state == State.STUMBLE || state == State.SLIP) return
-        velocity.add(0f, gravity * runTime)
+        if (state == State.RUN || state == State.JUMP || state == State.FALL) {
+            velocity.add(0f, gravity * runTime)
+        }
     }
 
     private fun updateActorState() {
         when (state) {
             State.FALL -> {
                 if (isGround()) {
-                    listeners.forEach{ it.jumpEnd(y <= startY) }
+                    listeners.forEach { it.jumpEnd(y <= startY) }
                     resetState()
                 }
             }
@@ -143,7 +142,9 @@ class Cookie(private val manager: AssetManager,
             state === State.JUMP -> jumpUpAnimation
             state === State.FALL -> jumpDownAnimation
             isWinningAnimation && x >= startX -> winnerRegion
-            isStopAnimation -> runRegions.first()
+            state == State.STOP -> runRegions.first()
+            state == State.SLIP -> runRegions.first()
+            state == State.STUMBLE -> runRegions.first()
             else -> runAnimation.getKeyFrame(runTime)
         }
 
@@ -175,13 +176,13 @@ class Cookie(private val manager: AssetManager,
     }
 
     override fun stopMove() {
-        isStopAnimation = true
         move.isStopMove = true
+        state = State.STOP
     }
 
     override fun runMove() {
         move.isStopMove = false
-        isStopAnimation = false
+        state = State.RUN
     }
 
     override fun updateSpeed() {
@@ -269,7 +270,6 @@ class Cookie(private val manager: AssetManager,
         if (state == State.STUMBLE) return
         state = State.STUMBLE
 
-        isStopAnimation = true
         val duration = 0.2f
         isStopUpdateX = true
         isStopUpdateY = true
@@ -282,7 +282,6 @@ class Cookie(private val manager: AssetManager,
             y = startY
             isStopUpdateY = false
             state = State.RUN
-            isStopAnimation = false
             position.y = startY
             fastMove()
         })
@@ -304,7 +303,6 @@ class Cookie(private val manager: AssetManager,
         if (state == State.SLIP) return
         state = State.SLIP
 
-        isStopAnimation = true
         val duration = 0.2f
         isStopUpdateX = true
         isStopUpdateY = true
@@ -317,7 +315,6 @@ class Cookie(private val manager: AssetManager,
             y = startY
             state = State.RUN
             isStopUpdateY = false
-            isStopAnimation = false
             position.y = y
             move.update(x = x - width / 2)
             fastMove()
