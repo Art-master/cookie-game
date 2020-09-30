@@ -15,13 +15,13 @@ object Config {
     }
 
     enum class Achievement(val score: Int) {
-        SUNGLASSES(5),
-        HAT(10),
-        BOOTS(15),
-        BELT(20),
-        GUN(25),
-        BULLETS(30),
-        FINISH_GAME(31)
+        SUNGLASSES(1),
+        HAT(2),
+        BOOTS(3),
+        BELT(4),
+        GUN(5),
+        BULLETS(6),
+        FINISH_GAME(7)
     }
 
     const val DEFAULT_SCROLL_SPEED = -200f

@@ -10,8 +10,6 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.Config.Achievement.*
-import com.mygdx.game.managers.ScreenManager
-import com.mygdx.game.managers.ScreenManager.Screens.*
 import com.mygdx.game.actors.game.*
 import com.mygdx.game.actors.game.cookie.*
 import com.mygdx.game.api.AnimationType
@@ -19,7 +17,9 @@ import com.mygdx.game.api.Callback
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.managers.AudioManager
+import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param.*
+import com.mygdx.game.managers.ScreenManager.Screens.GAME_OVER
 import com.mygdx.game.services.ServicesController
 import com.mygdx.game.actors.Shadow as SceneShadow
 
@@ -53,6 +53,7 @@ class GameWorld(private val manager: AssetManager) {
 
     private var touchable = true
     private var isGameOver = false
+    private var isWinGame = false
 
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
@@ -67,14 +68,14 @@ class GameWorld(private val manager: AssetManager) {
         changeScore()
         stage.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                if (touchable && items.isAllObjectLeft().not()) {
+                if (touchable && isWinGame.not()) {
                     cookie.startJumpForce()
                 }
                 return super.touchDown(event, x, y, pointer, button)
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                if (touchable && items.isAllObjectLeft().not()) {
+                if (touchable && isWinGame.not()) {
                     cookie.endJumpForce()
                 }
                 super.touchUp(event, x, y, pointer, button)
@@ -184,11 +185,12 @@ class GameWorld(private val manager: AssetManager) {
     fun update(delta: Float) {
         stage.act(delta)
         checkContactCookieAndHand()
-        controlWinning()
+        if (items.isStopGenerate) controlWinning()
 
     }
 
     private fun controlWinning() {
+        if (items.isAllObjectsScored()) isWinGame = true
         if (items.isAllObjectLeft()) {
             cookie.isWinningAnimation = true
             arm.isWinningAnimation = true
