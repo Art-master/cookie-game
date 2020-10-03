@@ -51,7 +51,9 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
             cookie.state == SLIP -> jumpDownRegion
             cookie.state == STUMBLE -> jumpDownRegion
             cookie.state == JUMP -> jumpUpRegion
+            cookie.state === FALL && cookie.isJumpPeakPassed().not() -> jumpUpRegion
             cookie.state == FALL -> jumpDownRegion
+            cookie.state == WIN -> runAnimation.getKeyFrame(cookie.runTime)
             cookie.isVisible.not() -> jumpUpRegion
             else -> null
         }

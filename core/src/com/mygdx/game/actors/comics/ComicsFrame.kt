@@ -69,6 +69,11 @@ abstract class ComicsFrame(manager: AssetManager) : GameActor(), Animated {
         addAction(sequence)
     }
 
+    fun setToFinalPosition(){
+        setScale(finalScale)
+        setPosition(getFinalMoveX(), getFinalMoveY())
+    }
+
     abstract fun getFinalMoveX(): Float
     abstract fun getFinalMoveY(): Float
 }

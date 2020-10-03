@@ -15,52 +15,40 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.AudioManager.SoundApp
+import com.mygdx.game.managers.ScreenManager
+import com.mygdx.game.managers.ScreenManager.Param
+import com.mygdx.game.managers.ScreenManager.Screens.COMICS_SCREEN
+import com.mygdx.game.managers.ScreenManager.Screens.MAIN_MENU_SCREEN
 import com.mygdx.game.managers.VibrationManager
 
-class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animated {
+class CookieStoryIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animated {
 
     private val texture = manager.get(Descriptors.menu)
 
     private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
-    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_CRASH)
-    private var disableLineRegion = texture.findRegion(Assets.MainMenuAtlas.DISABLE_LINE)
-    private var background = backgroundRegion
-
-    private var vibrationIcon = texture.findRegion(Assets.MainMenuAtlas.VIBRATION_ICON)
+    private var iconRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_STORY_ICON)
 
     private var centerX = 0f
     private var centerY = 0f
 
     init {
-        width = background.originalWidth.toFloat()
-        height = background.originalHeight.toFloat()
+        width = backgroundRegion.originalWidth.toFloat()
+        height = backgroundRegion.originalHeight.toFloat()
         x = Gdx.graphics.width - sound.x - width
         y = sound.y
 
         addClickListener()
-        changeBackground()
     }
 
     private fun addClickListener(){
         addListener(object: ClickListener(){
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                VibrationManager.switchVibrationSetting()
                 VibrationManager.vibrate()
                 AudioManager.play(SoundApp.CLICK_SOUND)
-                changeBackground()
+                ScreenManager.setScreen(COMICS_SCREEN, Pair(Param.SCREEN_LINK, MAIN_MENU_SCREEN))
                 return super.touchDown(event, x, y, pointer, button)
             }
         })
-    }
-
-    private fun changeBackground(){
-        background = if(VibrationManager.isVibrationEnable) {
-            color.a = 1f
-            backgroundRegion
-        } else {
-            color.a = 0.5f
-            backgroundRegion2
-        }
     }
 
     override fun act(delta: Float) {
@@ -72,20 +60,11 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = color
-        batch.draw(background, x, y, width, height)
+        batch.draw(backgroundRegion, x, y, width, height)
 
-        val iconWidth = vibrationIcon.originalWidth.toFloat()
-        val iconHeight = vibrationIcon.originalHeight.toFloat()
-        batch.draw(vibrationIcon, centerX - (iconWidth / 2), centerY - (iconHeight/2), iconWidth, iconHeight)
-        drawDisableLine(batch)
-    }
-
-    private fun drawDisableLine(batch: Batch){
-        if(VibrationManager.isVibrationEnable.not()){
-            val iconWidth = disableLineRegion.originalWidth.toFloat()
-            val iconHeight = disableLineRegion.originalHeight.toFloat()
-            batch.draw(disableLineRegion, centerX - (iconWidth / 2), centerY - (iconHeight / 2), iconWidth, iconHeight)
-        }
+        val iconWidth = iconRegion.originalWidth.toFloat()
+        val iconHeight = iconRegion.originalHeight.toFloat()
+        batch.draw(iconRegion, centerX - (iconWidth / 2), centerY - (iconHeight/2), iconWidth, iconHeight)
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {

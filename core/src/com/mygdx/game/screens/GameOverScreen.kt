@@ -111,7 +111,6 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             controller.share(score)
         }
         addClickListener(mainMenu) {
-            adsController.hideBannerAd()
             AudioManager.stopAll()
             restartIcon.animate(HIDE_FROM_SCENE)
             scores.animate(HIDE_FROM_SCENE)
@@ -130,6 +129,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         actor.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 AudioManager.play(CLICK_SOUND)
+                adsController.hideBannerAd()
                 VibrationManager.vibrate()
                 function()
                 return super.touchDown(event, x, y, pointer, button)

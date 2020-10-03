@@ -71,7 +71,7 @@ class PlayButton(manager: AssetManager) : GameActor(), Animated {
         val sequence: SequenceAction = when(type){
             AnimationType.HIDE_FROM_SCENE -> {
                 val runBefore = run(Runnable {
-                    region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_2)
+                    region = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_CRASH)
                 })
                 sequence(runBefore)
             }

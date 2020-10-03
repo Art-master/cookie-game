@@ -45,14 +45,15 @@ class Cookie(private val manager: AssetManager,
     enum class State { INIT, RUN, JUMP, FALL, STUMBLE, SLIP, STOP, WIN }
 
     var state = State.INIT
+        private set
 
     private var startJumpY = 0f
+    private var jumpPeakValue = 0f
 
     private var isStopUpdateX = false
     private var isStopUpdateY = false
 
-    var ground = startY
-        private set
+    private var ground = startY
 
     private var move = HorizontalScroll(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
 
@@ -101,6 +102,7 @@ class Cookie(private val manager: AssetManager,
     private fun updateActorState() {
         when (state) {
             State.FALL -> {
+                if (isJumpPeakPassed().not()) jumpPeakValue = y
                 if (isGround()) {
                     listeners.forEach { it.jumpEnd(y <= startY) }
                     resetState()
@@ -116,11 +118,14 @@ class Cookie(private val manager: AssetManager,
         }
     }
 
+    fun isJumpPeakPassed() = jumpPeakValue > y
+
     private fun resetState() {
         state = State.RUN
         runTime = 0f
         velocity.y = 0f
         position.y = startY
+        jumpPeakValue = 0f
     }
 
     private fun isGround() = position.y <= startY
@@ -130,6 +135,7 @@ class Cookie(private val manager: AssetManager,
         batch!!.color = Color.WHITE
         currentFrame = when {
             state === State.JUMP -> jumpUpAnimation
+            state === State.FALL && isJumpPeakPassed().not() -> jumpUpAnimation
             state === State.FALL -> jumpDownAnimation
             state === State.WIN && x >= startX -> winnerRegion
             state == State.STOP -> runRegions.first()

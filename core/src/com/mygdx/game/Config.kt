@@ -12,11 +12,12 @@ object Config {
 
     //Cookie
     const val GRAVITY = -50f
-    val VELOCITY_JUMP = 50f
-    val MAX_JUMP_HEIGHT = 200
+    const val VELOCITY_JUMP = 50f
+    const val MAX_JUMP_HEIGHT = 200
 
     enum class Debug(var state: Boolean) {
-        COLLISIONS(false)
+        COLLISIONS(false),
+        ALWAYS_SHOW_STORY(false)
     }
 
     enum class Achievement(val score: Int) {

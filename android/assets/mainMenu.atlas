@@ -6,147 +6,154 @@ filter: Nearest,Nearest
 repeat: none
 awards
   rotate: false
-  xy: 332, 540
+  xy: 332, 553
   size: 121, 156
   orig: 121, 156
   offset: 0, 0
   index: -1
 blackSquare
   rotate: false
-  xy: 465, 699
+  xy: 465, 712
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 blur
   rotate: false
-  xy: 1786, 1454
+  xy: 1786, 1467
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 buttonPlay
   rotate: false
-  xy: 1170, 1213
+  xy: 1170, 1226
   size: 201, 225
   orig: 201, 225
   offset: 0, 0
   index: -1
 circle
   rotate: false
-  xy: 2, 368
+  xy: 2, 381
   size: 328, 328
   orig: 328, 328
   offset: 0, 0
   index: -1
 cookieButton
   rotate: false
-  xy: 465, 702
+  xy: 465, 715
   size: 462, 491
   orig: 462, 491
   offset: 0, 0
   index: -1
 cookieButton2
   rotate: false
-  xy: 2, 698
+  xy: 2, 711
   size: 461, 495
   orig: 461, 495
   offset: 0, 0
   index: -1
 cookieButtonMini
   rotate: false
-  xy: 2, 206
+  xy: 2, 219
   size: 170, 160
   orig: 170, 160
   offset: 0, 0
   index: -1
 cookieButtonMini2
   rotate: false
-  xy: 929, 1033
+  xy: 929, 1046
   size: 172, 160
   orig: 172, 160
   offset: 0, 0
   index: -1
 cookieButtonPlayMini
   rotate: false
-  xy: 332, 443
+  xy: 2, 2
   size: 84, 95
   orig: 84, 95
   offset: 0, 0
   index: -1
+cookieStoryIcon
+  rotate: false
+  xy: 929, 808
+  size: 120, 95
+  orig: 120, 95
+  offset: 0, 0
+  index: -1
 disableLine
   rotate: false
-  xy: 1547, 1351
+  xy: 1547, 1364
   size: 136, 87
   orig: 136, 87
   offset: 0, 0
   index: -1
 gameOverText
   rotate: false
-  xy: 2, 1195
+  xy: 2, 1208
   size: 1166, 243
   orig: 1166, 243
   offset: 0, 0
   index: -1
 mainMenu
   rotate: false
-  xy: 2, 86
+  xy: 2, 99
   size: 133, 118
   orig: 133, 118
   offset: 0, 0
   index: -1
 mainMenuButton
   rotate: false
-  xy: 929, 892
+  xy: 929, 905
   size: 141, 139
   orig: 141, 139
   offset: 0, 0
   index: -1
 musicIcon
   rotate: false
-  xy: 1685, 1355
+  xy: 929, 723
   size: 74, 83
   orig: 74, 83
   offset: 0, 0
   index: -1
 replayButton
   rotate: false
-  xy: 1786, 1457
+  xy: 1786, 1470
   size: 235, 281
   orig: 235, 281
   offset: 0, 0
   index: -1
 share
   rotate: false
-  xy: 174, 243
+  xy: 174, 256
   size: 123, 123
   orig: 123, 123
   offset: 0, 0
   index: -1
 soundIcon
   rotate: false
-  xy: 2, 2
+  xy: 1685, 1369
   size: 96, 82
   orig: 96, 82
   offset: 0, 0
   index: -1
 title
   rotate: false
-  xy: 2, 1440
+  xy: 2, 1453
   size: 1782, 298
   orig: 1782, 298
   offset: 0, 0
   index: -1
 topScores
   rotate: false
-  xy: 1373, 1284
+  xy: 1373, 1297
   size: 172, 154
   orig: 172, 154
   offset: 0, 0
   index: -1
 vibrationIcon
   rotate: false
-  xy: 929, 811
+  xy: 332, 472
   size: 104, 79
   orig: 104, 79
   offset: 0, 0

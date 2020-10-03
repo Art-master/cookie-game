@@ -22,7 +22,7 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
     private val texture = manager.get(Descriptors.menu)
     private val soundRegion = texture.findRegion(Assets.MainMenuAtlas.SOUND_ICON)
     private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
-    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
+    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_CRASH)
     private var disableLineRegion = texture.findRegion(Assets.MainMenuAtlas.DISABLE_LINE)
     private var background = backgroundRegion
     private var soundIcon = soundRegion

@@ -17,12 +17,13 @@ import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param
 import com.mygdx.game.managers.ScreenManager.Param.ASSET_MANAGER
-import com.mygdx.game.managers.ScreenManager.Screens.*
+import com.mygdx.game.managers.ScreenManager.Screens.GAME_SCREEN
 
-class ComicsScreen(params: Map<Param, Any>) : Screen {
+class ComicsScreen(private val params: Map<Param, Any>) : Screen {
 
     private var manager = params[ASSET_MANAGER] as AssetManager
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
+    private var isMainButtonHost = params[Param.SCREEN_LINK] == null
     private val stage = Stage(ScreenViewport(camera))
 
     init {
@@ -63,26 +64,39 @@ class ComicsScreen(params: Map<Param, Any>) : Screen {
         }
 
         shadow.animate(AnimationType.SHOW_ON_SCENE)
-        frame1.animate(AnimationType.SHOW_ON_SCENE,
-                Runnable {
-                    frame2.animate(AnimationType.SHOW_ON_SCENE,
-                            Runnable {
-                                frame3.animate(AnimationType.SHOW_ON_SCENE,
-                                        Runnable {
-                                            frame4.animate(AnimationType.SHOW_ON_SCENE,
-                                                    Runnable {
-                                                        arrowForward.animate(AnimationType.SHOW_ON_SCENE)
-                                                    })
-                                        })
-                            })
-                })
+        if (isMainButtonHost)
+            frame1.animate(AnimationType.SHOW_ON_SCENE,
+                    Runnable {
+                        frame2.animate(AnimationType.SHOW_ON_SCENE,
+                                Runnable {
+                                    frame3.animate(AnimationType.SHOW_ON_SCENE,
+                                            Runnable {
+                                                frame4.animate(AnimationType.SHOW_ON_SCENE,
+                                                        Runnable {
+                                                            arrowForward.animate(AnimationType.SHOW_ON_SCENE)
+                                                        })
+                                            })
+                                })
+                    })
+        if (isMainButtonHost.not()) {
+            frame1.setToFinalPosition()
+            frame2.setToFinalPosition()
+            frame3.setToFinalPosition()
+            frame4.setToFinalPosition()
+            arrowForward.animate(AnimationType.SHOW_ON_SCENE)
+        }
 
         AudioManager.play(AudioManager.MusicApp.MAIN_MENU_MUSIC)
 
         addClickListener(background) {
             AudioManager.stopAll()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                ScreenManager.setScreen(GAME_SCREEN)
+                if (isMainButtonHost) {
+                    ScreenManager.setScreen(GAME_SCREEN)
+                } else {
+                    val screen = params[Param.SCREEN_LINK] as ScreenManager.Screens
+                    ScreenManager.setScreen(screen)
+                }
             })
         }
     }

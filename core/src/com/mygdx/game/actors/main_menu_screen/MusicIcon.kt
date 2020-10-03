@@ -21,7 +21,7 @@ import com.mygdx.game.managers.AudioManager.SoundApp
 class MusicIcon(manager : AssetManager) : GameActor(), Animated {
     private val texture = manager.get(Descriptors.menu)
     private var backgroundRegion = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI)
-    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_2)
+    private var backgroundRegion2 = texture.findRegion(Assets.MainMenuAtlas.COOKIE_BUTTON_MINI_CRASH)
     private var disableLineRegion = texture.findRegion(Assets.MainMenuAtlas.DISABLE_LINE)
     private var background = backgroundRegion
 
