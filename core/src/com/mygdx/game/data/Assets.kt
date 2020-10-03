@@ -51,6 +51,7 @@ class Assets {
             const val TOGETHER = "together"
             const val COOKIE_RESTS = "cookie_rests"
             const val JUMP_DUST = "jump_dust"
+            const val FALL_DUST = "dust_fall"
         }
     }
 

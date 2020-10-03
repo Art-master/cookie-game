@@ -35,6 +35,7 @@ class GameWorld(private val manager: AssetManager) {
     private val flower = FlowerInPot(manager, window)
     private val cookie = Cookie(manager, table.worktopY, Config.WIDTH_GAME / 2)
     private val jumpDust = JumpDust(manager, cookie)
+    private val fallDust = FallDust(manager, cookie)
     private val sunglasses = CookieItem(manager, cookie, Assets.CookieAtlas.SUNGLASSES)
     private val hat = CookieItem(manager, cookie, Assets.CookieAtlas.HAT)
     private val boots = CookieItem(manager, cookie, Assets.CookieAtlas.BOOTS)
@@ -58,8 +59,8 @@ class GameWorld(private val manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, arm, score, shot, sceneShadow)
-        cookie.listeners.addAll(jumpDust)
+        actors.addAll(cookieShadow, cookie, jumpDust, fallDust, sunglasses, hat, boots, belt, gun, bullets, arm, score, shot, sceneShadow)
+        cookie.listeners.addAll(jumpDust, fallDust)
 
         addActorsToStage()
         stopMoveAllActors()
@@ -219,7 +220,7 @@ class GameWorld(private val manager: AssetManager) {
             isGameOver = true
             touchable = false
             stopMoveAllActors()
-            cookie.stopMove()
+            cookie.caught()
             arm.actions.clear()
             arm.isGameOverAnimation = true
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {

@@ -83,6 +83,7 @@ class Cookie(private val manager: AssetManager,
     override fun act(delta: Float) {
         super.act(delta)
         runTime += delta
+        if(state == State.STOP) return
         if (isStartingAnimation.not() && isWinningAnimation.not()) {
             updateGravity()
             updateActorState()
@@ -180,6 +181,11 @@ class Cookie(private val manager: AssetManager,
         state = State.STOP
     }
 
+    fun caught(){
+        stopMove()
+        listeners.forEach { it.caught() }
+    }
+
     override fun runMove() {
         move.isStopMove = false
         state = State.RUN
@@ -190,7 +196,7 @@ class Cookie(private val manager: AssetManager,
     }
 
     fun checkCollides(obj: RandomTableItem) {
-        if (isWinningAnimation) return
+        if (isWinningAnimation || state == State.STOP) return
         if (collides(obj)) {
             if (obj.structure == Structure.SHARP) {
                 stumble(obj)
@@ -288,6 +294,7 @@ class Cookie(private val manager: AssetManager,
         val sequence = Actions.sequence(
                 parallel,
                 Actions.run {
+                    listeners.forEach { it.stumbled() }
                     isStopUpdateX = false
                     move.update(x = x)
                 }, timeout)

@@ -10,11 +10,11 @@ import com.mygdx.game.api.HorizontalScroll
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
-class JumpDust(manager: AssetManager, private val cookie: Cookie) : GameActor(), CookieLifecycle {
+class FallDust(manager: AssetManager, private val cookie: Cookie) : GameActor(), CookieLifecycle {
 
     private val texture = manager.get(Descriptors.cookie)
-    private val regions = texture.findRegions(Assets.CookieAtlas.JUMP_DUST)
-    private var jumpDustAnimation: Animation<TextureAtlas.AtlasRegion>? = null
+    private val regions = texture.findRegions(Assets.CookieAtlas.FALL_DUST)
+    private var dustAnimation: Animation<TextureAtlas.AtlasRegion>? = null
     private val origWidth = regions.first().originalWidth.toFloat()
     private val origHeight = regions.first().originalHeight.toFloat()
 
@@ -26,7 +26,7 @@ class JumpDust(manager: AssetManager, private val cookie: Cookie) : GameActor(),
         width = origWidth
         height = origHeight
         y = cookie.startY - 20
-        setColor(color.r, color.g, color.b, 0.5f)
+        setColor(color.r, color.g, color.b, 0.7f)
     }
 
     override fun act(delta: Float) {
@@ -34,30 +34,24 @@ class JumpDust(manager: AssetManager, private val cookie: Cookie) : GameActor(),
 
         move.update(delta)
         x = move.getX()
-        if (jumpDustAnimation != null && jumpDustAnimation!!.isAnimationFinished(runTime)) {
-            jumpDustAnimation = null
+        if (dustAnimation != null && dustAnimation!!.isAnimationFinished(runTime)) {
+            dustAnimation = null
         } else runTime += delta
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = color
-        if (jumpDustAnimation != null) {
-            val region = jumpDustAnimation?.getKeyFrame(runTime)
+        if (dustAnimation != null) {
+            val region = dustAnimation?.getKeyFrame(runTime)
             batch.draw(region, x, y, 0f, 0f, width, height, scaleX, scaleY, rotation)
         }
     }
 
-    override fun jumpEnd(isGround: Boolean) {
-        if (isGround && jumpDustAnimation == null) {
+    override fun stumbled() {
+        if (dustAnimation == null) {
             runTime = 0f
-            move.update(x = cookie.x - 20, y = cookie.startY - 20, speed = Config.ItemScrollSpeed.LEVEL_2)
-            jumpDustAnimation = Animation(0.04f, regions)
+            move.update(x = cookie.x, y = cookie.startY - 20, speed = Config.ItemScrollSpeed.LEVEL_2)
+            dustAnimation = Animation(0.04f, regions)
         }
-    }
-
-    override fun caught() {
-        jumpDustAnimation = null
-        runTime = 0f
-        remove()
     }
 }

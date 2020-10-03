@@ -100,7 +100,7 @@ class RandomTableItem(private val manager: AssetManager,
 
     private fun setRandomItem() {
         val test  = rand.nextInt(2)
-        when (111) { //TODO in production only - rand.nextInt(maxItemCount)
+        when (20) { //TODO in production only - rand.nextInt(maxItemCount)
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20
