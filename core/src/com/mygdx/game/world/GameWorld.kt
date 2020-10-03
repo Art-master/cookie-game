@@ -59,13 +59,12 @@ class GameWorld(private val manager: AssetManager) {
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, jumpDust, fallDust, sunglasses, hat, boots, belt, gun, bullets, arm, score, shot, sceneShadow)
+        actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, fallDust, arm, score, shot, sceneShadow)
         cookie.listeners.addAll(jumpDust, fallDust)
 
         addActorsToStage()
         stopMoveAllActors()
         startInitAnimation()
-        cookie.runMove()
         changeScore()
         stage.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
@@ -193,7 +192,7 @@ class GameWorld(private val manager: AssetManager) {
     private fun controlWinning() {
         if (items.isAllObjectsScored()) isWinGame = true
         if (items.isAllObjectLeft()) {
-            cookie.isWinningAnimation = true
+            cookie.win()
             arm.isWinningAnimation = true
             stopMoveAllActors()
 

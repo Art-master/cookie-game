@@ -24,9 +24,9 @@ class Cookie(private val manager: AssetManager,
 
     private val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
-    private val velocityJump = 50f
-    private val maxJumpHeight = 200
-    private val gravity = -50f
+    private val velocityJump = Config.VELOCITY_JUMP
+    private val maxJumpHeight = Config.MAX_JUMP_HEIGHT
+    private val gravity = Config.GRAVITY
 
     private val texture = manager.get(Descriptors.cookie)
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
@@ -42,12 +42,10 @@ class Cookie(private val manager: AssetManager,
 
     private val rectangle: Rectangle = Rectangle()
 
-    enum class State { RUN, JUMP, FALL, STUMBLE, SLIP, STOP }
+    enum class State { INIT, RUN, JUMP, FALL, STUMBLE, SLIP, STOP, WIN }
 
-    var state = State.RUN
+    var state = State.INIT
 
-    private var jumpFlag = false
-    var isHide = false
     private var startJumpY = 0f
 
     private var isStopUpdateX = false
@@ -55,14 +53,6 @@ class Cookie(private val manager: AssetManager,
 
     var ground = startY
         private set
-
-    private var isStartingAnimation = true
-    var isWinningAnimation = false
-        set(value) {
-            startX = Config.WIDTH_GAME / 1.5f
-            move.update(speed = ItemScrollSpeed.VERY_FAST_MOVE)
-            field = value
-        }
 
     private var move = HorizontalScroll(startX, startY, currentFrame.originalWidth, currentFrame.originalHeight)
 
@@ -83,15 +73,15 @@ class Cookie(private val manager: AssetManager,
     override fun act(delta: Float) {
         super.act(delta)
         runTime += delta
-        if(state == State.STOP) return
-        if (isStartingAnimation.not() && isWinningAnimation.not()) {
+        if (state == State.STOP) return
+        if (state != State.INIT && state != State.WIN) {
             updateGravity()
             updateActorState()
             position.add(velocity.cpy().scl(delta))
             updateCoordinates()
             move.update(delta)
             controlCookieVelocity()
-        } else if (isWinningAnimation) {
+        } else if (state == State.WIN) {
             move.update(delta)
             updateCoordinates()
             if (x >= startX) {
@@ -117,7 +107,7 @@ class Cookie(private val manager: AssetManager,
                 }
             }
             State.JUMP -> {
-                if (jumpFlag && isMaxJump().not()) {
+                if (isMaxJump().not()) {
                     velocity.add(0f, velocityJump)
                 } else state = State.FALL
             }
@@ -135,28 +125,24 @@ class Cookie(private val manager: AssetManager,
 
     private fun isGround() = position.y <= startY
     private fun isMaxJump() = position.y >= startJumpY + maxJumpHeight
-    private fun isCeiling() = position.y >= maxJumpHeight
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
         currentFrame = when {
             state === State.JUMP -> jumpUpAnimation
             state === State.FALL -> jumpDownAnimation
-            isWinningAnimation && x >= startX -> winnerRegion
+            state === State.WIN && x >= startX -> winnerRegion
             state == State.STOP -> runRegions.first()
-            state == State.SLIP -> runRegions.first()
-            state == State.STUMBLE -> runRegions.first()
+            state == State.SLIP -> jumpDownAnimation
+            state == State.STUMBLE -> jumpDownAnimation
             else -> runAnimation.getKeyFrame(runTime)
         }
 
-        if (isHide.not()) {
-            batch.draw(currentFrame, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
-        }
+        batch.draw(currentFrame, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
         debugCollidesIfEnable(batch, manager)
     }
 
     fun startJumpForce() {
-        if (isWinningAnimation || isStartingAnimation) return
         if (state == State.RUN) {
             AudioManager.play(AudioManager.SoundApp.JUMP)
             initJump()
@@ -168,11 +154,9 @@ class Cookie(private val manager: AssetManager,
         startJumpY = y
         state = State.JUMP
         runTime = 0f
-        jumpFlag = true
     }
 
     fun endJumpForce() {
-        jumpFlag = false
         startJumpY = 0f
     }
 
@@ -181,7 +165,7 @@ class Cookie(private val manager: AssetManager,
         state = State.STOP
     }
 
-    fun caught(){
+    fun caught() {
         stopMove()
         listeners.forEach { it.caught() }
     }
@@ -196,7 +180,7 @@ class Cookie(private val manager: AssetManager,
     }
 
     fun checkCollides(obj: RandomTableItem) {
-        if (isWinningAnimation || state == State.STOP) return
+        if (state == State.WIN || state == State.STOP) return
         if (collides(obj)) {
             if (obj.structure == Structure.SHARP) {
                 stumble(obj)
@@ -350,11 +334,17 @@ class Cookie(private val manager: AssetManager,
                 val animDuration = 3f
                 Actions.sequence(
                         Actions.moveTo(startX, startY, animDuration),
-                        Actions.run { isStartingAnimation = false })
+                        Actions.run { state = State.RUN })
             }
             else -> null
         }
         val run = Actions.run(runAfter)
         addAction(Actions.sequence(anim, run))
+    }
+
+    fun win() {
+        startX = Config.WIDTH_GAME / 1.5f
+        move.update(speed = ItemScrollSpeed.VERY_FAST_MOVE)
+        state = State.WIN
     }
 }

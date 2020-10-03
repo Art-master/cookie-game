@@ -100,10 +100,11 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
+        batch!!.color = color
         if (isGameOverAnimation.not()) {
             currentFrame = handAnim.getKeyFrame(runTime)
         }
-        drawProlongationHand(batch!!)
+        drawProlongationHand(batch)
         drawHand(batch)
     }
 

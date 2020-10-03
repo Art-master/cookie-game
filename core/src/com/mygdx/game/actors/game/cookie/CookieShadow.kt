@@ -2,7 +2,6 @@ package com.mygdx.game.actors.game.cookie
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.mygdx.game.actors.game.cookie.Cookie
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
@@ -51,7 +50,7 @@ class CookieShadow(manager : AssetManager, private val cookie: Cookie): GameActo
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        val x = if(cookie.isWinningAnimation) cookie.x + 50 else cookie.x
+        val x = if(cookie.state == Cookie.State.WIN) cookie.x + 50 else cookie.x
         val y = cookie.startY - 20
         batch!!.color = color
         if(cookie.state == Cookie.State.SLIP) return

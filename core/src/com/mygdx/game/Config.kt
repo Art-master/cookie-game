@@ -10,18 +10,23 @@ object Config {
     const val VIBRATION_TIME_MS = 100
     const val SOUNDS_FOLDER = "sounds/"
 
+    //Cookie
+    const val GRAVITY = -50f
+    val VELOCITY_JUMP = 50f
+    val MAX_JUMP_HEIGHT = 200
+
     enum class Debug(var state: Boolean) {
         COLLISIONS(false)
     }
 
     enum class Achievement(val score: Int) {
         SUNGLASSES(1),
-        HAT(2),
-        BOOTS(3),
-        BELT(4),
-        GUN(5),
-        BULLETS(6),
-        FINISH_GAME(7)
+        HAT(3),
+        BOOTS(6),
+        BELT(9),
+        GUN(12),
+        BULLETS(15),
+        FINISH_GAME(17)
     }
 
     const val DEFAULT_SCROLL_SPEED = -200f

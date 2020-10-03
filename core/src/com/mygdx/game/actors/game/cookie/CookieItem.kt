@@ -8,16 +8,18 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.mygdx.game.Config
 import com.mygdx.game.actors.game.cookie.Cookie.State.*
-import com.mygdx.game.api.*
+import com.mygdx.game.api.Animated
+import com.mygdx.game.api.AnimationType
+import com.mygdx.game.api.GameActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 
 class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : GameActor(), Animated {
 
     private val texture = manager.get(Descriptors.cookie)
-    private var jumpUpRegion = texture.findRegion("jump_up_$itemName")
-    private var jumpDownRegion = texture.findRegion("jump_down_$itemName")
-    private var runRegions = texture.findRegions("run_$itemName")
+    private var jumpUpRegion = texture.findRegion(Assets.CookieAtlas.JUMP_UP_PREFIX + itemName)
+    private var jumpDownRegion = texture.findRegion(Assets.CookieAtlas.JUMP_DOWN_PREFIX + itemName)
+    private var runRegions = texture.findRegions(Assets.CookieAtlas.RUN_PREFIX + itemName)
     private var itemRegion = texture.findRegion(itemName)
     private var circleLoadingRegion = texture.findRegion(Assets.CookieAtlas.LOADING_CIRCLE)
     private val runAnimation = Animation(0.1f, runRegions, Animation.PlayMode.LOOP_PINGPONG)
@@ -41,11 +43,13 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
+        if (cookie.state == INIT) return
         currentFrame = when {
             currentFrame == null -> null
             cookie.state == STOP -> runRegions.first()
             cookie.state == RUN -> runAnimation.getKeyFrame(cookie.runTime)
-            cookie.state == SLIP -> runRegions.first()
+            cookie.state == SLIP -> jumpDownRegion
+            cookie.state == STUMBLE -> jumpDownRegion
             cookie.state == JUMP -> jumpUpRegion
             cookie.state == FALL -> jumpDownRegion
             cookie.isVisible.not() -> jumpUpRegion
@@ -68,8 +72,8 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
         }
     }
 
-    private fun drawLoadingCircle(batch: Batch){
-        val alpha = if(color.a < 0.5f) color.a else 0.5f
+    private fun drawLoadingCircle(batch: Batch) {
+        val alpha = if (color.a < 0.5f) color.a else 0.5f
         batch.setColor(color.r, color.g, color.b, alpha)
         val width = circleLoadingRegion.originalWidth.toFloat()
         val height = circleLoadingRegion.originalHeight.toFloat()

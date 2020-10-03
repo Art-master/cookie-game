@@ -23,14 +23,14 @@ class Shot(manager : AssetManager, private val cookie: Cookie) : GameActor(), An
 
     override fun act(delta: Float) {
         super.act(delta)
-        if(cookie.isWinningAnimation){
+        if(cookie.state == Cookie.State.WIN){
             x = cookie.x - (width * scaleX) - 50
             y = cookie.y + 50
         }
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        if(cookie.isWinningAnimation) {
+        if(cookie.state == Cookie.State.WIN) {
             batch!!.setColor(color.r, color.g, color.b, color.a)
             batch.draw(shotRegion, x,  y, 0f, 0f, width, height, scaleX, scaleY, rotation)
         }
