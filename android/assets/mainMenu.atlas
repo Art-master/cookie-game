@@ -76,14 +76,14 @@ cookieButtonPlayMini
   index: -1
 cookieStoryIcon
   rotate: false
-  xy: 929, 808
-  size: 120, 95
-  orig: 120, 95
+  xy: 174, 269
+  size: 138, 110
+  orig: 138, 110
   offset: 0, 0
   index: -1
 disableLine
   rotate: false
-  xy: 1547, 1364
+  xy: 929, 816
   size: 136, 87
   orig: 136, 87
   offset: 0, 0
@@ -111,7 +111,7 @@ mainMenuButton
   index: -1
 musicIcon
   rotate: false
-  xy: 929, 723
+  xy: 929, 731
   size: 74, 83
   orig: 74, 83
   offset: 0, 0
@@ -125,14 +125,14 @@ replayButton
   index: -1
 share
   rotate: false
-  xy: 174, 256
+  xy: 1547, 1328
   size: 123, 123
   orig: 123, 123
   offset: 0, 0
   index: -1
 soundIcon
   rotate: false
-  xy: 1685, 1369
+  xy: 1672, 1369
   size: 96, 82
   orig: 96, 82
   offset: 0, 0
