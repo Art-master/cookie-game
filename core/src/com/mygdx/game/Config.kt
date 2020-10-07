@@ -40,6 +40,7 @@ object Config {
         LEVEL_2({ LEVEL_1.calc() * 3f }),
         SLOW_MOVE({ LEVEL_1.calc() / 1.1f }),
         FAST_MOVE({ abs(LEVEL_1.calc()) / 6.6f }),
-        VERY_FAST_MOVE({ FAST_MOVE.calc() * 10f })
+        VERY_FAST_MOVE({ FAST_MOVE.calc() * 10f }),
+        VERY_FAST_MOVE_BACK({ VERY_FAST_MOVE.calc() * -3f })
     }
 }

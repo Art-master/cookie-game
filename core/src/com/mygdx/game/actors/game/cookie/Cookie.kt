@@ -24,9 +24,9 @@ class Cookie(private val manager: AssetManager,
 
     private val position = Vector2(startX, startY)
     private val velocity = Vector2(0f, 0f)
-    private val velocityJump = Config.VELOCITY_JUMP
-    private val maxJumpHeight = Config.MAX_JUMP_HEIGHT
-    private val gravity = Config.GRAVITY
+    private var velocityJump = Config.VELOCITY_JUMP
+    private var maxJumpHeight = Config.MAX_JUMP_HEIGHT
+    private var gravity = Config.GRAVITY
 
     private val texture = manager.get(Descriptors.cookie)
     private val jumpUpAnimation = texture.findRegion(Assets.CookieAtlas.JUMP_UP)
@@ -126,6 +126,10 @@ class Cookie(private val manager: AssetManager,
         velocity.y = 0f
         position.y = startY
         jumpPeakValue = 0f
+        maxJumpHeight = Config.MAX_JUMP_HEIGHT
+        velocityJump = Config.VELOCITY_JUMP
+        gravity = Config.GRAVITY
+        normalMove()
     }
 
     private fun isGround() = position.y <= startY
@@ -156,10 +160,15 @@ class Cookie(private val manager: AssetManager,
         }
     }
 
-    private fun initJump() {
+    private fun initJump(maxJumpHeight: Int = Config.MAX_JUMP_HEIGHT,
+                         velocityJump: Float = Config.VELOCITY_JUMP,
+                         gravity: Float = Config.GRAVITY) {
         startJumpY = y
         state = State.JUMP
         runTime = 0f
+        this.maxJumpHeight = maxJumpHeight
+        this.velocityJump = velocityJump
+        this.gravity = gravity
     }
 
     fun endJumpForce() {
@@ -253,6 +262,10 @@ class Cookie(private val manager: AssetManager,
 
     private fun inFrontOfTheObject(obj: RandomTableItem) {
         when (obj.structure) {
+            Structure.JELLY -> {
+                move.update(speed = ItemScrollSpeed.VERY_FAST_MOVE_BACK)
+                initJump(60, 50f, -200f)
+            }
             else -> setAgainstTheObject(obj)
         }
     }
