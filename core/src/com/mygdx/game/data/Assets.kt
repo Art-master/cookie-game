@@ -63,8 +63,8 @@ class Assets {
         companion object {
             const val NAME = "environment.atlas"
             const val WINDOW = "window"
-            const val CURTAIN_RIGHT = "curtainRight"
             const val CURTAIN_LEFT = "curtainLeft"
+            const val CURTAIN_LEFT_ART = "curtain_art"
             const val BLUE_SKY = "blueSky"
             const val BLACK = "black"
             const val WHITE = "white"

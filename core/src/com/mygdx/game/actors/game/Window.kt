@@ -4,24 +4,26 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
+import com.mygdx.game.api.HorizontalScroll
+import com.mygdx.game.api.Listener
 import com.mygdx.game.api.Scrollable
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.api.Listener
-import com.mygdx.game.api.HorizontalScroll
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
+class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val region = texture.findRegion(Assets.EnvironmentAtlas.WINDOW)
 
     private val rand = Random()
 
-    private val curtainLeft = texture.findRegion(Assets.EnvironmentAtlas.CURTAIN_LEFT)
-    private val curtainRight = texture.findRegion(Assets.EnvironmentAtlas.CURTAIN_RIGHT)
+    private val curtainArtRegions = texture.findRegions(Assets.EnvironmentAtlas.CURTAIN_LEFT_ART)
+    private var curtainRegion = curtainArtRegions.first()
+
     private var curtainColor = getRandomColor()
 
     var scroll = HorizontalScroll(
@@ -35,11 +37,17 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
     override fun act(delta: Float) {
         super.act(delta)
         scroll.update(delta)
-        if(scroll.isScrolledLeft){
+        if (scroll.isScrolledLeft) {
             scroll.reset(scroll.originX)
             curtainColor = getRandomColor().lerp(Color.GRAY, 0.5f)
             callListeners()
+            chooseCurtain()
         }
+    }
+
+    private fun chooseCurtain() {
+        val num = rand.nextInt(curtainArtRegions.size)
+        curtainRegion = curtainArtRegions[num]
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -48,16 +56,30 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
                 scroll.width.toFloat(), scroll.height.toFloat())
 
         batch.color = curtainColor
-        batch.draw(curtainLeft, scroll.getX() - 80, scroll.getY() - 60,
-                curtainLeft.originalWidth.toFloat(), curtainLeft.originalHeight.toFloat())
-
-        batch.draw(curtainRight, scroll.getX() + 900, scroll.getY() - 60,
-                curtainLeft.originalWidth.toFloat(), curtainLeft.originalHeight.toFloat())
+        drawLeftCurtain(batch)
+        batch.color = curtainColor
+        drawRightCurtain(batch)
         batch.color = Color.GRAY
     }
 
+    private fun drawLeftCurtain(batch: Batch) {
+        val x = scroll.getX() - 80
+        val y = scroll.getY() - 60
+        val width = curtainRegion.originalWidth.toFloat()
+        val height = curtainRegion.originalHeight.toFloat()
+        batch.draw(curtainRegion, x, y, width, height)
+    }
+
+    private fun drawRightCurtain(batch: Batch) {
+        val x = scroll.getTailX() + 40
+        val y = scroll.getY() - 60
+        val width = -curtainRegion.originalWidth.toFloat()
+        val height = curtainRegion.originalHeight.toFloat()
+        batch.draw(curtainRegion, x, y, width, height)
+    }
+
     private fun getRandomColor(): Color {
-        return when(rand.nextInt(17)){
+        return when (rand.nextInt(17)) {
             0 -> Color.OLIVE
             1 -> Color.BROWN
             2 -> Color.CORAL
@@ -85,12 +107,12 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
     fun getWindowsillY() = scroll.getY() + 90
     fun getWindowsillX() = scroll.getX() + 70
 
-    fun addResetListener(listener: Listener){
+    fun addResetListener(listener: Listener) {
         listeners.add(listener)
     }
 
-    private fun callListeners(){
-        listeners.forEach{it.call()}
+    private fun callListeners() {
+        listeners.forEach { it.call() }
     }
 
     fun isCoordXInUse(x: Float): Boolean {
@@ -98,7 +120,7 @@ class Window(manager : AssetManager, startY : Float) : GameActor(), Scrollable {
     }
 
     override fun stopMove() {
-       scroll.isStopMove = true
+        scroll.isStopMove = true
     }
 
     override fun runMove() {
