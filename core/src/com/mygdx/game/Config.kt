@@ -19,8 +19,8 @@ object Config {
         COLLISIONS(false),
         ALWAYS_SHOW_STORY(false),
         COOKIE_POSITION(false),
-        PERIODIC_JUMP(true),
-        EMPTY_TABLE(true)
+        PERIODIC_JUMP(false),
+        EMPTY_TABLE(false)
     }
 
     enum class Achievement(val score: Int) {

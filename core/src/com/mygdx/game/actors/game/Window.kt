@@ -4,17 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.mygdx.game.Config
-import com.mygdx.game.api.GameActor
-import com.mygdx.game.api.HorizontalScroll
-import com.mygdx.game.api.Listener
-import com.mygdx.game.api.Scrollable
+import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable {
+class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable, WallActor {
     private val texture = manager.get(Descriptors.environment)
     private val region = texture.findRegion(Assets.EnvironmentAtlas.WINDOW)
 
@@ -25,6 +23,10 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable {
 
     private var curtainColor = getRandomColor()
 
+    override var distancePastListener = {}
+    override var nextActor: Actor? = null
+    override var distance: Int = 0
+
     var scroll = HorizontalScroll(
             Gdx.graphics.width.toFloat(), startY,
             region.originalWidth,
@@ -33,15 +35,28 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable {
 
     private val listeners = ArrayList<Listener>()
 
+    init {
+        scroll.isStopMove = true
+        y = scroll.getY()
+        width = scroll.width.toFloat()
+        height = scroll.height.toFloat()
+    }
+
     override fun act(delta: Float) {
         super.act(delta)
         scroll.update(delta)
-        if (scroll.isScrolledLeft) {
-            scroll.reset(scroll.originX)
-            curtainColor = getRandomColor().lerp(Color.GRAY, 0.5f)
-            callListeners()
-            chooseCurtain()
+        x = scroll.getX()
+        if (distance != 0 && Config.WIDTH_GAME - tailX >= distance) {
+            distancePastListener.invoke()
+            distance = 0
         }
+    }
+
+    override fun resetState(){
+        scroll.reset()
+        curtainColor = getRandomColor().lerp(Color.GRAY, 0.5f)
+        listeners.forEach { it.call() }
+        chooseCurtain()
     }
 
     private fun chooseCurtain() {
@@ -109,9 +124,6 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable {
         listeners.add(listener)
     }
 
-    private fun callListeners() {
-        listeners.forEach { it.call() }
-    }
 
     override fun stopMove() {
         scroll.isStopMove = true

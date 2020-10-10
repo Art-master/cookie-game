@@ -3,16 +3,19 @@ package com.mygdx.game.actors.game
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Array
 import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.HorizontalScroll
 import com.mygdx.game.api.Scrollable
+import com.mygdx.game.api.WallActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import java.util.*
 
-class Cupboard(manager: AssetManager, private val window: Window) : GameActor(), Scrollable {
+class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable, WallActor {
+
     private val texture = manager.get(Descriptors.environment)
     private val cupBoardRegion = texture.findRegion(Assets.EnvironmentAtlas.CUPBOARD)
     private val openDoorRegion = texture.findRegion(Assets.EnvironmentAtlas.OPEN_DOOR)
@@ -28,40 +31,44 @@ class Cupboard(manager: AssetManager, private val window: Window) : GameActor(),
     private var leftDoorRegion = getDoorRegion()
     private var rightDoorRegion = getDoorRegion()
 
-    private val startY = window.getWindowsillY() + 150f
-    private val startPaddingX = 200
-    private val windowTailX = window.scroll.getTailX()
+    override var distancePastListener = {}
+    override var distance: Int = 0
+    override var nextActor: Actor? = null
 
-    var scroll = HorizontalScroll(
-            windowTailX + startPaddingX + leftDoorRegion.originalWidth,
-            startY,
-            cupBoardRegion.originalWidth + leftDoorRegion.originalWidth,
-            cupBoardRegion.originalHeight,
-            Config.ItemScrollSpeed.LEVEL_1)
+    private val origWidth = leftDoorRegion.originalWidth + cupBoardRegion.originalWidth +
+            rightDoorRegion.originalWidth
+    private val origHeight = cupBoardRegion.originalHeight
 
-    private val randPositionX = Random(startPaddingX.toLong())
+    var scroll = HorizontalScroll(Config.WIDTH_GAME + leftDoorRegion.originalWidth,
+            originY, origWidth, origHeight, Config.ItemScrollSpeed.LEVEL_1)
 
     private var upperThinksTextures = getTexturesArray()
     private var downThinksTextures = getTexturesArray()
 
+    init {
+        scroll.isStopMove = true
+        y = scroll.getY()
+        width = origWidth.toFloat()
+        height = origHeight.toFloat()
+    }
+
     override fun act(delta: Float) {
         super.act(delta)
         scroll.update(delta)
-        if (scroll.isScrolledLeft) {
-            val position = window.scroll.getTailX() + leftDoorRegion.originalWidth + startPaddingX
-            scroll.reset(position)
-            rightDoorRegion = getDoorRegion()
-            upperThinksTextures = getTexturesArray()
-            downThinksTextures = getTexturesArray()
+        x = scroll.getX()
+        if (distance != 0 && Config.WIDTH_GAME - tailX >= distance) {
+            distancePastListener.invoke()
+            distance = 0
         }
     }
 
-    private fun calculatePosition(): Float {
-        var position: Float
-        do {
-            position = windowTailX + leftDoorRegion.originalWidth + randPositionX.nextInt(600)
-        } while (position < (Config.WIDTH_GAME + leftDoorRegion.originalWidth))
-        return position
+    override fun isScrolled() = scroll.isScrolledLeft
+
+    override fun resetState() {
+        scroll.reset()
+        rightDoorRegion = getDoorRegion()
+        upperThinksTextures = getTexturesArray()
+        downThinksTextures = getTexturesArray()
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -164,5 +171,4 @@ class Cupboard(manager: AssetManager, private val window: Window) : GameActor(),
     override fun updateSpeed() {
         scroll.update()
     }
-
 }

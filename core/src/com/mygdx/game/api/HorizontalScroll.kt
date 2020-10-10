@@ -19,9 +19,10 @@ open class HorizontalScroll(val originX: Float,
 
         if (getTailX() < 0) isScrolledLeft = true
     }
-    open fun reset(newX: Float) {
+    open fun reset(newX: Float = originX) {
         position.x = newX
         isScrolledLeft = false
+        isStopMove = false
     }
 
     open fun getTailX() = position.x + width

@@ -4,4 +4,5 @@ interface Scrollable {
     fun stopMove()
     fun runMove()
     fun updateSpeed()
+    fun isScrolled() = false
 }

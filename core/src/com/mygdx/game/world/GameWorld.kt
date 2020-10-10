@@ -16,12 +16,14 @@ import com.mygdx.game.actors.game.cookie.*
 import com.mygdx.game.api.AnimationType
 import com.mygdx.game.api.Callback
 import com.mygdx.game.api.Scrollable
+import com.mygdx.game.api.WallActor
 import com.mygdx.game.data.Assets
 import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.managers.ScreenManager.Screens.GAME_OVER
 import com.mygdx.game.services.ServicesController
+import kotlin.random.Random
 import com.mygdx.game.actors.Shadow as SceneShadow
 
 
@@ -46,12 +48,13 @@ class GameWorld(private val manager: AssetManager) {
     private val shot = Shot(manager, cookie)
     private val cookieShadow = CookieShadow(manager, cookie)
     private val shadow = Shadow(manager)
-    private val cupboard = Cupboard(manager, window)
+    private val cupboard = Cupboard(manager, 510f)
     private val score = Score(manager)
     private val arm = Arm(manager, cookie)
     private val items = TableItems(manager, table, cookie)
     private val sceneShadow = SceneShadow(manager)
     val actors: Array<Actor> = Array()
+    private val wallActors: Array<WallActor> = Array()
 
     private var touchable = true
     private var isGameOver = false
@@ -61,12 +64,14 @@ class GameWorld(private val manager: AssetManager) {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
         if (!Config.Debug.EMPTY_TABLE.state) actors.addAll(items.getActors())
         actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, fallDust, arm, score, shot, sceneShadow)
+        wallActors.addAll(window, cupboard)
         cookie.listeners.addAll(jumpDust, fallDust)
 
         addActorsToStage()
         stopMoveAllActors()
         startInitAnimation()
         changeScore()
+        controlWallActors()
 
         if (Config.Debug.PERIODIC_JUMP.state) {
             DebugUtils.startPeriodicTimer(1f, 2f) {
@@ -105,6 +110,7 @@ class GameWorld(private val manager: AssetManager) {
         sceneShadow.animate(AnimationType.SHOW_ON_SCENE, Runnable {
             cookie.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 startMoveAllActors()
+                (wallActors.first() as Scrollable).runMove()
             })
             arm.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 arm.startRepeatableMove()
@@ -114,6 +120,22 @@ class GameWorld(private val manager: AssetManager) {
 
     private fun changeScore() {
         items.getActors().forEach { controlScore(it) }
+    }
+
+    private fun controlWallActors() {
+        val random = Random(500)
+        for (i in 0 until wallActors.size) {
+            val actor = wallActors[i]
+            if (i < wallActors.size - 1) actor.nextActor = wallActors.get(i + 1) as Actor
+            actor.distancePastListener = {
+                (actor.nextActor as WallActor).resetState()
+                (actor.nextActor as WallActor).distance = random.nextInt(900, 1200)
+            }
+        }
+        wallActors.apply {
+            this.last().nextActor = this.first() as Actor
+            this.first().distance = random.nextInt(900, 1200)
+        }
     }
 
     private fun controlScore(actor: RandomTableItem) {
@@ -182,7 +204,7 @@ class GameWorld(private val manager: AssetManager) {
 
     private fun startMoveAllActors() {
         foreEachActor {
-            if (it is Scrollable) it.runMove()
+            if (it is Scrollable && it !is WallActor) it.runMove()
         }
     }
 
