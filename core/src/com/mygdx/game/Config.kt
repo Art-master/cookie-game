@@ -17,7 +17,10 @@ object Config {
 
     enum class Debug(var state: Boolean) {
         COLLISIONS(false),
-        ALWAYS_SHOW_STORY(false)
+        ALWAYS_SHOW_STORY(false),
+        COOKIE_POSITION(false),
+        PERIODIC_JUMP(true),
+        EMPTY_TABLE(true)
     }
 
     enum class Achievement(val score: Int) {
@@ -27,7 +30,7 @@ object Config {
         BELT(9),
         GUN(12),
         BULLETS(15),
-        FINISH_GAME(17)
+        FINISH_GAME(80)
     }
 
     const val DEFAULT_SCROLL_SPEED = -200f

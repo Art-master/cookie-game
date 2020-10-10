@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.mygdx.game.Config
 import com.mygdx.game.Config.Achievement.*
+import com.mygdx.game.DebugUtils
 import com.mygdx.game.actors.game.*
 import com.mygdx.game.actors.game.cookie.*
 import com.mygdx.game.api.AnimationType
@@ -58,7 +59,7 @@ class GameWorld(private val manager: AssetManager) {
 
     init {
         actors.addAll(background, cupboard, shadow, city, window, flower, table)
-        actors.addAll(items.getActors())
+        if (!Config.Debug.EMPTY_TABLE.state) actors.addAll(items.getActors())
         actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, fallDust, arm, score, shot, sceneShadow)
         cookie.listeners.addAll(jumpDust, fallDust)
 
@@ -66,10 +67,19 @@ class GameWorld(private val manager: AssetManager) {
         stopMoveAllActors()
         startInitAnimation()
         changeScore()
+
+        if (Config.Debug.PERIODIC_JUMP.state) {
+            DebugUtils.startPeriodicTimer(1f, 2f) {
+                cookie.startJumpForce()
+            }
+        }
+
+
         stage.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 if (touchable && isWinGame.not()) {
                     cookie.startJumpForce()
+                    AudioManager.play(AudioManager.SoundApp.JUMP)
                 }
                 return super.touchDown(event, x, y, pointer, button)
             }

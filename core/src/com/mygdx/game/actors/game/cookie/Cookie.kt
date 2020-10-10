@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Array
 import com.mygdx.game.Config
 import com.mygdx.game.Config.ItemScrollSpeed
+import com.mygdx.game.DebugUtils
 import com.mygdx.game.actors.game.RandomTableItem
 import com.mygdx.game.actors.game.RandomTableItem.Structure
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
-import com.mygdx.game.managers.AudioManager
 
 class Cookie(private val manager: AssetManager,
              val startY: Float,
@@ -147,6 +147,7 @@ class Cookie(private val manager: AssetManager,
             state == State.STUMBLE -> jumpDownAnimation
             else -> runAnimation.getKeyFrame(runTime)
         }
+        DebugUtils.drawVerticalLine(batch, manager, startX)
 
         batch.draw(currentFrame, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
         debugCollidesIfEnable(batch, manager)
@@ -154,7 +155,6 @@ class Cookie(private val manager: AssetManager,
 
     fun startJumpForce() {
         if (state == State.RUN) {
-            AudioManager.play(AudioManager.SoundApp.JUMP)
             initJump()
             fastMove()
         }
@@ -243,21 +243,21 @@ class Cookie(private val manager: AssetManager,
     private fun controlCookieVelocity() {
         if (state == State.STUMBLE || state == State.SLIP) return
         if (move.scrollSpeed != ItemScrollSpeed.NONE && x > startX) {
-            x = startX
             if (move.scrollSpeed == ItemScrollSpeed.FAST_MOVE) normalMove()
+            x = startX
         }
     }
 
     private fun normalMove() {
-        move.update(speed = ItemScrollSpeed.NONE)
+        move.update(x = x, speed = ItemScrollSpeed.NONE)
     }
 
     private fun fastMove() {
-        move.update(speed = ItemScrollSpeed.FAST_MOVE)
+        move.update(x = x, speed = ItemScrollSpeed.FAST_MOVE)
     }
 
     private fun slowMove() {
-        move.update(speed = ItemScrollSpeed.SLOW_MOVE)
+        move.update(x = x, speed = ItemScrollSpeed.SLOW_MOVE)
     }
 
     private fun inFrontOfTheObject(obj: RandomTableItem) {

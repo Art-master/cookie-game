@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.mygdx.game.Config
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.HorizontalScroll
@@ -57,7 +56,6 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable {
 
         batch.color = curtainColor
         drawLeftCurtain(batch)
-        batch.color = curtainColor
         drawRightCurtain(batch)
         batch.color = Color.GRAY
     }
@@ -113,10 +111,6 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable {
 
     private fun callListeners() {
         listeners.forEach { it.call() }
-    }
-
-    fun isCoordXInUse(x: Float): Boolean {
-        return x >= scroll.getX() && x <= scroll.getX() + region.originalWidth
     }
 
     override fun stopMove() {
