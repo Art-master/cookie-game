@@ -15,12 +15,15 @@ object Config {
     const val VELOCITY_JUMP = 50f
     const val MAX_JUMP_HEIGHT = 200
 
+    //Kitchen items
+    const val MIN_CUPBOARD_ITEMS_COUNT = 4
+
     enum class Debug(var state: Boolean) {
         COLLISIONS(false),
         ALWAYS_SHOW_STORY(false),
         COOKIE_POSITION(false),
         PERIODIC_JUMP(false),
-        EMPTY_TABLE(false)
+        EMPTY_TABLE(true)
     }
 
     enum class Achievement(val score: Int) {

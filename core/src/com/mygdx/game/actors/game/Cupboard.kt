@@ -20,12 +20,7 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
     private val cupBoardRegion = texture.findRegion(Assets.EnvironmentAtlas.CUPBOARD)
     private val openDoorRegion = texture.findRegion(Assets.EnvironmentAtlas.OPEN_DOOR)
     private val closeDoorRegion = texture.findRegion(Assets.EnvironmentAtlas.CLOSE_DOOR)
-    private val jar1Region = texture.findRegion(Assets.EnvironmentAtlas.JAR1)
-    private val jar2Region = texture.findRegion(Assets.EnvironmentAtlas.JAR2)
-    private val jar3Region = texture.findRegion(Assets.EnvironmentAtlas.JAR3)
-    private val saltRegion = texture.findRegion(Assets.EnvironmentAtlas.SALT)
-    private val paperRegion = texture.findRegion(Assets.EnvironmentAtlas.PAPER)
-    private val cupRegion = texture.findRegion(Assets.EnvironmentAtlas.CUP)
+    private val itemRegions = texture.findRegions(Assets.EnvironmentAtlas.CUPBOARD_ITEMS)
 
     private val rand = Random()
     private var leftDoorRegion = getDoorRegion()
@@ -42,8 +37,8 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
     var scroll = HorizontalScroll(Config.WIDTH_GAME + leftDoorRegion.originalWidth,
             originY, origWidth, origHeight, Config.ItemScrollSpeed.LEVEL_1)
 
-    private var upperThinksTextures = getTexturesArray()
-    private var downThinksTextures = getTexturesArray()
+    private var upperItemsTextures = getTexturesArray()
+    private var downItemsTextures = getTexturesArray()
 
     init {
         scroll.isStopMove = true
@@ -67,8 +62,9 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
     override fun resetState() {
         scroll.reset()
         rightDoorRegion = getDoorRegion()
-        upperThinksTextures = getTexturesArray()
-        downThinksTextures = getTexturesArray()
+        leftDoorRegion = getDoorRegion()
+        upperItemsTextures = getTexturesArray()
+        downItemsTextures = getTexturesArray()
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -82,15 +78,15 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
 
     private fun drawUtensil(batch: Batch) {
         val shellX = scroll.getX() + 25
-        val shellDownY = scroll.getY() + 25
-        for (element in upperThinksTextures) {
+        val shellDownY = scroll.getY() + 20
+        for (element in upperItemsTextures) {
             batch.draw(element.region, shellX + element.randX, shellDownY,
                     element.region.originalWidth.toFloat(),
                     element.region.originalHeight.toFloat())
         }
 
-        val shellUpY = scroll.getY() + 225
-        for (element in downThinksTextures) {
+        val shellUpY = scroll.getY() + 220
+        for (element in downItemsTextures) {
             batch.draw(element.region, shellX + element.randX, shellUpY,
                     element.region.originalWidth.toFloat(),
                     element.region.originalHeight.toFloat())
@@ -135,23 +131,21 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
 
     private fun getTexturesArray(): Array<Utensil> {
         val array = Array<Utensil>()
-        for (i in 1..rand.nextInt(5)) {
-            val utensil = Utensil(getUtensilRegion(rand.nextInt(5)), rand.nextInt(500))
+        val minItemsCount = Config.MIN_CUPBOARD_ITEMS_COUNT
+        for (i in minItemsCount..rand.nextInt(itemRegions.size)) {
+            val region = getRandomRegion(array)
+            val utensil = Utensil(region, rand.nextInt(500))
             array.add(utensil)
         }
         return array
     }
 
-    private fun getUtensilRegion(num: Int): TextureAtlas.AtlasRegion {
-        return when (num) {
-            0 -> jar1Region
-            1 -> jar2Region
-            2 -> jar3Region
-            3 -> saltRegion
-            4 -> paperRegion
-            5 -> cupRegion
-            else -> jar1Region
+    private fun getRandomRegion(array: Array<Utensil>): TextureAtlas.AtlasRegion {
+        val region = itemRegions.random()
+        for (obj in array) {
+            if (obj.region == region) return getRandomRegion(array)
         }
+        return region
     }
 
     override fun getX() = scroll.getX()
