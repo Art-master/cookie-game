@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Array
 import com.mygdx.game.Config
+import com.mygdx.game.DebugUtils
 import com.mygdx.game.api.GameActor
 import com.mygdx.game.api.HorizontalScroll
 import com.mygdx.game.api.Scrollable
@@ -14,7 +15,7 @@ import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
 import java.util.*
 
-class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable, WallActor {
+class Cupboard(val manager: AssetManager, originY: Float) : GameActor(), Scrollable, WallActor {
 
     private val texture = manager.get(Descriptors.environment)
     private val cupBoardRegion = texture.findRegion(Assets.EnvironmentAtlas.CUPBOARD)
@@ -36,6 +37,8 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
 
     var scroll = HorizontalScroll(Config.WIDTH_GAME + leftDoorRegion.originalWidth,
             originY, origWidth, origHeight, Config.ItemScrollSpeed.LEVEL_1)
+
+    private val shelfWidth = 670f
 
     private var upperItemsTextures = getTexturesArray()
     private var downItemsTextures = getTexturesArray()
@@ -76,18 +79,22 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
         drawRightDoor(batch)
     }
 
+    private fun getShelfX() = scroll.getX() + 10
+    private fun getDownShelfY() = scroll.getY() + 20
+    private fun getUpShelfY() = scroll.getY() + 220
+
     private fun drawUtensil(batch: Batch) {
-        val shellX = scroll.getX() + 25
-        val shellDownY = scroll.getY() + 20
+        val shelfX = getShelfX()
+        val shellUpY = getUpShelfY()
         for (element in upperItemsTextures) {
-            batch.draw(element.region, shellX + element.randX, shellDownY,
+            batch.draw(element.region, shelfX + element.randX, shellUpY,
                     element.region.originalWidth.toFloat(),
                     element.region.originalHeight.toFloat())
         }
 
-        val shellUpY = scroll.getY() + 220
+        val shellDownY = getDownShelfY()
         for (element in downItemsTextures) {
-            batch.draw(element.region, shellX + element.randX, shellUpY,
+            batch.draw(element.region, shelfX + element.randX, shellDownY,
                     element.region.originalWidth.toFloat(),
                     element.region.originalHeight.toFloat())
         }
@@ -131,10 +138,15 @@ class Cupboard(manager: AssetManager, originY: Float) : GameActor(), Scrollable,
 
     private fun getTexturesArray(): Array<Utensil> {
         val array = Array<Utensil>()
+        var commonItemsWidth = 0
         val minItemsCount = Config.MIN_CUPBOARD_ITEMS_COUNT
         for (i in minItemsCount..rand.nextInt(itemRegions.size)) {
             val region = getRandomRegion(array)
-            val utensil = Utensil(region, rand.nextInt(500))
+            val randomDistance = rand.nextInt(50)
+            val futureWidth = commonItemsWidth + randomDistance + region.originalWidth
+            if (futureWidth > shelfWidth) return array
+            val utensil = Utensil(region, commonItemsWidth)
+            commonItemsWidth += (randomDistance + region.originalWidth)
             array.add(utensil)
         }
         return array
