@@ -64,10 +64,10 @@ class Cupboard(val manager: AssetManager, originY: Float) : GameActor(), Scrolla
 
     override fun resetState() {
         scroll.reset()
-        rightDoorRegion = getDoorRegion()
-        leftDoorRegion = getDoorRegion()
         upperItemsTextures = getTexturesArray()
         downItemsTextures = getTexturesArray()
+        rightDoorRegion = getDoorRegion()
+        leftDoorRegion = getDoorRegion()
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
