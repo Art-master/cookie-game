@@ -36,24 +36,10 @@ class SoundIcon(manager : AssetManager, sound: GameActor) : GameActor(), Animate
         y = sound.y
         width = background.originalWidth.toFloat()
         height = background.originalHeight.toFloat()
-
-        addClickListener()
         changeBackground()
     }
 
-    private fun addClickListener(){
-        addListener(object: ClickListener(){
-            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                AudioManager.switchSoundSetting()
-                AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
-                AudioManager.play(SoundApp.CLICK_SOUND)
-                changeBackground()
-                return super.touchDown(event, x, y, pointer, button)
-            }
-        })
-    }
-
-    private fun changeBackground(){
+    fun changeBackground(){
         background = if(AudioManager.isSoundEnable) {
             color.a = 1f
             backgroundRegion

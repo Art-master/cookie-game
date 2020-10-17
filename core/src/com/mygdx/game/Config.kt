@@ -7,7 +7,6 @@ object Config {
     const val HEIGHT_GAME = 1080f
     const val SHADOW_ANIMATION_TIME_S = 1f
     const val BUTTONS_ANIMATION_TIME_S = 1f
-    const val VIBRATION_TIME_MS = 100
     const val SOUNDS_FOLDER = "sounds/"
 
     //Cookie
@@ -19,11 +18,11 @@ object Config {
     const val MIN_CUPBOARD_ITEMS_COUNT = 4
 
     enum class Debug(var state: Boolean) {
-        COLLISIONS(false),
+        COLLISIONS(true),
         ALWAYS_SHOW_STORY(false),
         COOKIE_POSITION(false),
         PERIODIC_JUMP(false),
-        EMPTY_TABLE(true)
+        EMPTY_TABLE(false)
     }
 
     enum class Achievement(val score: Int) {

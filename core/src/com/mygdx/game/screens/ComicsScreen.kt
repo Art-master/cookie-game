@@ -18,6 +18,7 @@ import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param
 import com.mygdx.game.managers.ScreenManager.Param.ASSET_MANAGER
 import com.mygdx.game.managers.ScreenManager.Screens.GAME_SCREEN
+import com.mygdx.game.managers.VibrationManager
 
 class ComicsScreen(private val params: Map<Param, Any>) : Screen {
 
@@ -90,6 +91,7 @@ class ComicsScreen(private val params: Map<Param, Any>) : Screen {
 
         addClickListener(background) {
             AudioManager.stopAll()
+            VibrationManager.vibrate()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 if (isMainButtonHost) {
                     ScreenManager.setScreen(GAME_SCREEN)

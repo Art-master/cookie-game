@@ -18,8 +18,8 @@ import com.mygdx.game.managers.AudioManager.MusicApp
 import com.mygdx.game.managers.AudioManager.SoundApp
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param.*
-import com.mygdx.game.managers.ScreenManager.Screens.COMICS_SCREEN
-import com.mygdx.game.managers.ScreenManager.Screens.GAME_SCREEN
+import com.mygdx.game.managers.ScreenManager.Screens.*
+import com.mygdx.game.managers.VibrationManager
 import com.mygdx.game.services.AdsController
 
 
@@ -55,18 +55,18 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     private fun addActorsToStage() {
         val background = Background(manager)
         val title = MainTitle(manager)
-        val soundIcon = MusicIcon(manager)
-        val musicIcon = SoundIcon(manager, soundIcon)
-        val vibrationIcon = VibrationIcon(manager, soundIcon)
-        val cookieStoryIcon = CookieStoryIcon(manager, musicIcon)
+        val musicIcon = MusicIcon(manager)
+        val soundIcon = SoundIcon(manager, musicIcon)
+        val vibrationIcon = VibrationIcon(manager, musicIcon)
+        val cookieStoryIcon = CookieStoryIcon(manager, soundIcon)
         val playButton = PlayButton(manager)
         val shadow = Shadow(manager)
 
         stage.apply {
             addActor(background)
             addActor(title)
-            addActor(soundIcon)
             addActor(musicIcon)
+            addActor(soundIcon)
             addActor(vibrationIcon)
             if (firstAppRun.not()) addActor(cookieStoryIcon)
             addActor(playButton)
@@ -74,19 +74,46 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         }
 
         title.animate(AnimationType.SHOW_ON_SCENE)
-        soundIcon.animate(AnimationType.SHOW_ON_SCENE)
         musicIcon.animate(AnimationType.SHOW_ON_SCENE)
+        soundIcon.animate(AnimationType.SHOW_ON_SCENE)
         vibrationIcon.animate(AnimationType.SHOW_ON_SCENE)
         cookieStoryIcon.animate(AnimationType.SHOW_ON_SCENE)
         playButton.animate(AnimationType.SHOW_ON_SCENE)
         shadow.animate(AnimationType.SHOW_ON_SCENE)
 
+        addClickListener(musicIcon) {
+            AudioManager.switchMusicSetting()
+            AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
+            AudioManager.play(SoundApp.CLICK_SOUND)
+            musicIcon.changeBackground()
+        }
+
+        addClickListener(soundIcon) {
+            AudioManager.switchSoundSetting()
+            AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
+            AudioManager.play(SoundApp.CLICK_SOUND)
+            soundIcon.changeBackground()
+        }
+
+        addClickListener(vibrationIcon) {
+            VibrationManager.switchVibrationSetting()
+            AudioManager.play(SoundApp.CLICK_SOUND)
+            vibrationIcon.changeBackground()
+        }
+
+        addClickListener(cookieStoryIcon) {
+            AudioManager.play(SoundApp.CLICK_SOUND)
+            ScreenManager.setScreen(COMICS_SCREEN, Pair(SCREEN_LINK, MAIN_MENU_SCREEN))
+            if(firstAppRun.not()) adsController.hideBannerAd()
+        }
+
         addClickListener(playButton) {
+            AudioManager.play(SoundApp.CRUNCH)
             if(firstAppRun.not()) adsController.hideBannerAd()
             playButton.animate(AnimationType.HIDE_FROM_SCENE)
             title.animate(AnimationType.HIDE_FROM_SCENE)
-            soundIcon.animate(AnimationType.HIDE_FROM_SCENE)
             musicIcon.animate(AnimationType.HIDE_FROM_SCENE)
+            soundIcon.animate(AnimationType.HIDE_FROM_SCENE)
             vibrationIcon.animate(AnimationType.HIDE_FROM_SCENE)
             cookieStoryIcon.animate(AnimationType.HIDE_FROM_SCENE)
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
@@ -94,6 +121,7 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
                 AudioManager.stopAll()
             })
         }
+
         AudioManager.play(MusicApp.MAIN_MENU_MUSIC, true)
     }
 
@@ -107,7 +135,7 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         actor.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 function()
-                AudioManager.play(SoundApp.CRUNCH)
+                VibrationManager.vibrate()
                 return super.touchDown(event, x, y, pointer, button)
             }
         })

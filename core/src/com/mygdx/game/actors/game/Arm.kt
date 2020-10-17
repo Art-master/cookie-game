@@ -158,7 +158,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     private fun catchCookieAnimation(runAfter: Runnable): SequenceAction? {
-        val animDuration = 0.5f
+        val animDuration = 0.2f
         currentFrame = handRegion
         moveToCatchCookieAnimation = Actions.moveTo(0f, 0f, animDuration)
         updateFinishAnimationIfNeed()

@@ -22,6 +22,8 @@ import com.mygdx.game.managers.AudioManager
 import com.mygdx.game.managers.ScreenManager
 import com.mygdx.game.managers.ScreenManager.Param.*
 import com.mygdx.game.managers.ScreenManager.Screens.GAME_OVER
+import com.mygdx.game.managers.VibrationManager
+import com.mygdx.game.managers.VibrationManager.VibrationType.*
 import com.mygdx.game.services.ServicesController
 import kotlin.random.Random
 import com.mygdx.game.actors.Shadow as SceneShadow
@@ -144,6 +146,7 @@ class GameWorld(private val manager: AssetManager) {
             override fun call() {
                 score.scoreNum++
                 score.animate(AnimationType.SCORE_INCREASE)
+                VibrationManager.vibrate()
                 controlItemsScrollSpeed()
                 when (score.scoreNum) {
                     SUNGLASSES.score -> {
@@ -257,6 +260,7 @@ class GameWorld(private val manager: AssetManager) {
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 actors.filterIsInstance<CookieItem>().forEach {
                     it.animate(AnimationType.HIDE_FROM_SCENE)
+                    VibrationManager.vibrate(ACTOR_CATCH)
                 }
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                     ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))

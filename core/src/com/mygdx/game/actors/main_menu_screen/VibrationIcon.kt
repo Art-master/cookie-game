@@ -37,23 +37,10 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
         x = Gdx.graphics.width - sound.x - width
         y = sound.y
 
-        addClickListener()
         changeBackground()
     }
 
-    private fun addClickListener(){
-        addListener(object: ClickListener(){
-            override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                VibrationManager.switchVibrationSetting()
-                VibrationManager.vibrate()
-                AudioManager.play(SoundApp.CLICK_SOUND)
-                changeBackground()
-                return super.touchDown(event, x, y, pointer, button)
-            }
-        })
-    }
-
-    private fun changeBackground(){
+    fun changeBackground(){
         background = if(VibrationManager.isVibrationEnable) {
             color.a = 1f
             backgroundRegion
