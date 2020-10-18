@@ -87,6 +87,7 @@ class GameWorld(private val manager: AssetManager) {
                 if (touchable && isWinGame.not()) {
                     cookie.startJumpForce()
                     AudioManager.play(AudioManager.SoundApp.JUMP)
+                    VibrationManager.cancel()
                 }
                 return super.touchDown(event, x, y, pointer, button)
             }
@@ -238,6 +239,7 @@ class GameWorld(private val manager: AssetManager) {
             shot.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 sceneShadow.invertColor()
                 sceneShadow.animate(AnimationType.SHOW_ON_SCENE)
+                VibrationManager.vibrate(BOOM)
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                     val shadow = SceneShadow(manager)
                     stage.addActor(shadow)
@@ -257,6 +259,7 @@ class GameWorld(private val manager: AssetManager) {
             cookie.caught()
             arm.actions.clear()
             arm.isGameOverAnimation = true
+            VibrationManager.cancel()
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 actors.filterIsInstance<CookieItem>().forEach {
                     it.animate(AnimationType.HIDE_FROM_SCENE)

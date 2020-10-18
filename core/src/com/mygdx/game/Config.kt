@@ -18,7 +18,7 @@ object Config {
     const val MIN_CUPBOARD_ITEMS_COUNT = 4
 
     enum class Debug(var state: Boolean) {
-        COLLISIONS(true),
+        COLLISIONS(false),
         ALWAYS_SHOW_STORY(false),
         COOKIE_POSITION(false),
         PERIODIC_JUMP(false),

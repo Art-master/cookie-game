@@ -17,6 +17,8 @@ import com.mygdx.game.actors.game.RandomTableItem.Structure
 import com.mygdx.game.api.*
 import com.mygdx.game.data.Assets
 import com.mygdx.game.data.Descriptors
+import com.mygdx.game.managers.VibrationManager
+import com.mygdx.game.managers.VibrationManager.VibrationType.*
 
 class Cookie(private val manager: AssetManager,
              val startY: Float,
@@ -130,6 +132,7 @@ class Cookie(private val manager: AssetManager,
         velocityJump = Config.VELOCITY_JUMP
         gravity = Config.GRAVITY
         normalMove()
+        VibrationManager.cancel()
     }
 
     private fun isGround() = position.y <= startY
@@ -258,6 +261,7 @@ class Cookie(private val manager: AssetManager,
 
     private fun slowMove() {
         move.update(x = x, speed = ItemScrollSpeed.SLOW_MOVE)
+        VibrationManager.vibrate(STICKY_ITEM)
     }
 
     private fun inFrontOfTheObject(obj: RandomTableItem) {
@@ -293,10 +297,12 @@ class Cookie(private val manager: AssetManager,
             state = State.RUN
             position.y = startY
             fastMove()
+            VibrationManager.cancel()
         })
         val sequence = Actions.sequence(
                 parallel,
                 Actions.run {
+                    VibrationManager.vibrate(ACTOR_FALL)
                     listeners.forEach { it.stumbled() }
                     isStopUpdateX = false
                     move.update(x = x)
@@ -326,12 +332,15 @@ class Cookie(private val manager: AssetManager,
             state = State.RUN
             isStopUpdateY = false
             position.y = y
-            move.update(x = x - width / 2)
+            x -= width / 2
+            move.update(x = x)
             fastMove()
+            VibrationManager.cancel()
         })
         val sequence = Actions.sequence(
                 parallel,
                 Actions.run {
+                    VibrationManager.vibrate(STICKY_SLIP)
                     isStopUpdateX = false
                     move.update(x = x)
                 }, timeout)
