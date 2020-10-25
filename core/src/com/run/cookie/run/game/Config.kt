@@ -22,17 +22,19 @@ object Config {
         ALWAYS_SHOW_STORY(false),
         COOKIE_POSITION(false),
         PERIODIC_JUMP(false),
-        EMPTY_TABLE(false)
+        EMPTY_TABLE(false),
+        PLAY_SERVICES(false),
+        ADS(false)
     }
 
     enum class Achievement(val score: Int) {
         SUNGLASSES(1),
         HAT(3),
-        BOOTS(6),
-        BELT(9),
-        GUN(12),
-        BULLETS(15),
-        FINISH_GAME(80)
+        BOOTS(60),
+        BELT(90),
+        GUN(120),
+        BULLETS(150),
+        FINISH_GAME(800)
     }
 
     const val DEFAULT_SCROLL_SPEED = -200f

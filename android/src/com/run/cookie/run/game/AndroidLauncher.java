@@ -50,9 +50,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.run.cookie.run.game.services.AdsController;
 import com.run.cookie.run.game.services.CallBack;
 import com.run.cookie.run.game.services.ServicesController;
-import com.run.cookie.run.game.services.AdsController;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -122,9 +122,16 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
             RequestConfiguration configuration =
                     new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
             MobileAds.setRequestConfiguration(configuration);
-            bannerAdUnitId = getString(R.string.test_ad_banner_id);
-            interstitialAdUnitId = getString(R.string.test_ad_interstitial_id);
-            interstitialVideoId = getString(R.string.test_ad_interstitial_video_id);
+
+            bannerAdUnitId = getString(Config.Debug.ADS.getState()
+                    ? R.string.test_ad_banner_id :
+                    R.string.ad_banner_id);
+            interstitialAdUnitId = getString(Config.Debug.ADS.getState()
+                    ? R.string.test_ad_interstitial_id :
+                    R.string.ad_interstitial_id);
+            interstitialVideoId = getString(Config.Debug.ADS.getState()
+                    ? R.string.test_ad_interstitial_video_id :
+                    R.string.ad_interstitial_video_id);
         } else {
             bannerAdUnitId = getString(R.string.ad_banner_id);
             interstitialAdUnitId = getString(R.string.ad_interstitial_id);
@@ -151,7 +158,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     public boolean isWifiConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(cm == null) return false;
+        if (cm == null) return false;
         NetworkInfo ni = cm.getActiveNetworkInfo();
         return (ni != null && ni.isConnected());
     }
@@ -342,7 +349,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if(result == null) return;
+            if (result == null) return;
             if (result.isSuccess()) {
                 // The signed in account is stored in the result.
                 // Set pop up notification for signed in account to display when user is signed in
@@ -361,10 +368,9 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                     message = getString(R.string.sign_in_exception_msg);
                 }
                 Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.TOP, 0,160);
+                toast.setGravity(Gravity.TOP, 0, 160);
                 toast.show();
             }
-
         }
     }
 
@@ -537,7 +543,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     public void showAllAchievements() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if(account == null) return;
+        if (account == null) return;
         final int RC_ACHIEVEMENT_UI = 9003;
         Games.getAchievementsClient(this, account)
                 .getAchievementsIntent()
@@ -556,6 +562,6 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         String msg = getString(R.string.share_msg, score) + getString(R.string.app_link); //TODO replace link after publishing
         sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
         sendIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sendIntent,getString(R.string.share_window_header)));
+        startActivity(Intent.createChooser(sendIntent, getString(R.string.share_window_header)));
     }
 }

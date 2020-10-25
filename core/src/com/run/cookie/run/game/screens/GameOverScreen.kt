@@ -40,6 +40,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         //adsController.showInterstitialAd()
         adsController.showBannerAd()
         //adsController.showVideoAd()
+        if(controller.isSignedIn()) controller.submitScore(score.toLong())
     }
 
     override fun hide() {
@@ -73,7 +74,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             addActor(restartIcon)
             addActor(shadow)
             addActor(scores)
-            if(!controller.isSignedIn()){ //TODO after tests delete inversion
+            if(controller.isSignedIn() || Config.Debug.PLAY_SERVICES.state){
                 addActor(topScores)
                 addActor(awards)
             }
@@ -104,8 +105,13 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             })
         }
 
-        addClickListener(topScores) { topScores.animate(CLICK) }
-        addClickListener(awards) { awards.animate(CLICK) }
+        addClickListener(topScores) {
+            controller.showLeaderboard()
+            topScores.animate(CLICK)
+        }
+        addClickListener(awards) {
+            controller.showAllAchievements()
+            awards.animate(CLICK) }
         addClickListener(share) {
             share.animate(CLICK)
             controller.share(score)

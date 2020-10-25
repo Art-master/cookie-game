@@ -102,9 +102,7 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
                                 ),
                                 Actions.run { isInvolvedInGame = true }
                         ),
-                        Actions.repeat(10, Actions.sequence(
-                                Actions.rotateBy(-360f, 5f),
-                                Actions.rotateTo(0f)))
+                        Actions.rotateBy(-360f, 2f)
                 )
 
             }

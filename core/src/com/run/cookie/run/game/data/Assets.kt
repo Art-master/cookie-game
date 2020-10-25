@@ -40,7 +40,7 @@ class Assets {
             const val JUMP_DOWN_PREFIX = "jump_down_"
             const val RUN_PREFIX = "run_"
 
-            const val RUN = "cookie"
+            const val RUN = "run"
             const val JUMP_UP = "jump_up"
             const val JUMP_DOWN = "jump_down"
             const val SUNGLASSES = "sunglasses"

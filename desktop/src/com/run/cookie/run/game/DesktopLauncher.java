@@ -1,9 +1,7 @@
-package com.run.cookie.run.game.desktop;
+package com.run.cookie.run.game;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.run.cookie.run.game.Config;
-import com.run.cookie.run.game.GdxGame;
 import com.run.cookie.run.game.services.AdsController;
 import com.run.cookie.run.game.services.CallBack;
 import com.run.cookie.run.game.services.ServicesController;
