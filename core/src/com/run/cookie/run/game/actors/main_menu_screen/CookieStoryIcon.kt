@@ -34,7 +34,7 @@ class CookieStoryIcon(manager : AssetManager, sound: GameActor) : GameActor(), A
     init {
         width = backgroundRegion.originalWidth.toFloat()
         height = backgroundRegion.originalHeight.toFloat()
-        x = Gdx.graphics.width - sound.x - width
+        x = Config.WIDTH_GAME - sound.x - width
         y = sound.y
 
         addClickListener()

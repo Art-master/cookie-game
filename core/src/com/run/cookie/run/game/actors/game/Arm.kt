@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -11,6 +10,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.actors.game.cookie.Cookie
 import com.run.cookie.run.game.api.Animated
 import com.run.cookie.run.game.api.AnimationType
@@ -35,7 +35,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
 
     private val random = Random()
     private var runTime = 0f
-    private val initPosition = Vector2(0f, Gdx.graphics.height / 3f)
+    private val initPosition = Vector2(0f, Config.HEIGHT_GAME / 3f)
     private var limitX: Float = 0.0f
     private var limitY: Float = 0.0f
     private var moveToAction = MoveToAction()

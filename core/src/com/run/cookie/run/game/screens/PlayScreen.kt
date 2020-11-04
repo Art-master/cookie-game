@@ -1,16 +1,14 @@
-package com.run.cookie.run.game.world
+package com.run.cookie.run.game.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.run.cookie.run.game.Config
-import com.run.cookie.run.game.Config.Achievement.*
 import com.run.cookie.run.game.DebugUtils
+import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.game.*
 import com.run.cookie.run.game.actors.game.cookie.*
 import com.run.cookie.run.game.api.AnimationType
@@ -19,20 +17,13 @@ import com.run.cookie.run.game.api.Scrollable
 import com.run.cookie.run.game.api.WallActor
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.managers.AudioManager
+import com.run.cookie.run.game.managers.AudioManager.MusicApp
 import com.run.cookie.run.game.managers.ScreenManager
-import com.run.cookie.run.game.managers.ScreenManager.Param.*
-import com.run.cookie.run.game.managers.ScreenManager.Screens.GAME_OVER
 import com.run.cookie.run.game.managers.VibrationManager
-import com.run.cookie.run.game.managers.VibrationManager.VibrationType.*
 import com.run.cookie.run.game.services.ServicesController
 import kotlin.random.Random
-import com.run.cookie.run.game.actors.Shadow as SceneShadow
 
-
-class GameWorld(private val manager: AssetManager) {
-
-    val stage = Stage(ScreenViewport())
-
+class PlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params) {
     private val background = Background(manager)
     private val table = Table(manager, 240f)
     private val window = Window(manager, 270f)
@@ -49,12 +40,11 @@ class GameWorld(private val manager: AssetManager) {
     private val bullets = CookieItem(manager, cookie, Assets.CookieAtlas.BULLETS)
     private val shot = Shot(manager, cookie)
     private val cookieShadow = CookieShadow(manager, cookie)
-    private val shadow = Shadow(manager)
+    private val kitchenShadow = com.run.cookie.run.game.actors.game.Shadow(manager)
     private val cupboard = Cupboard(manager, 510f)
     private val score = Score(manager)
     private val arm = Arm(manager, cookie)
     private val items = TableItems(manager, table, cookie)
-    private val sceneShadow = SceneShadow(manager)
     val actors: Array<Actor> = Array()
     private val wallActors: Array<WallActor> = Array()
 
@@ -63,9 +53,9 @@ class GameWorld(private val manager: AssetManager) {
     private var isWinGame = false
 
     init {
-        actors.addAll(background, cupboard, shadow, city, window, flower, table)
+        actors.addAll(background, cupboard, kitchenShadow, city, window, flower, table)
         if (!Config.Debug.EMPTY_TABLE.state) actors.addAll(items.getActors())
-        actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, fallDust, arm, score, shot, sceneShadow)
+        actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, fallDust, arm, score, shot)
         wallActors.addAll(window, cupboard)
         cookie.listeners.addAll(jumpDust, fallDust)
 
@@ -100,8 +90,10 @@ class GameWorld(private val manager: AssetManager) {
             }
         }
         )
+        AudioManager.play(MusicApp.GAME_MUSIC, true)
         Gdx.input.inputProcessor = stage
     }
+
 
     private fun addActorsToStage() {
         for (actor in actors) {
@@ -110,7 +102,7 @@ class GameWorld(private val manager: AssetManager) {
     }
 
     private fun startInitAnimation() {
-        sceneShadow.animate(AnimationType.SHOW_ON_SCENE, Runnable {
+        shadow.animate(AnimationType.SHOW_ON_SCENE, Runnable {
             cookie.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 startMoveAllActors()
                 (wallActors.first() as Scrollable).runMove()
@@ -119,6 +111,22 @@ class GameWorld(private val manager: AssetManager) {
                 arm.startRepeatableMove()
             })
         })
+    }
+
+    override fun hide() {
+    }
+
+    override fun show() {
+    }
+
+    override fun render(delta: Float) {
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        val bufferBitMv = if (Gdx.graphics.bufferFormat.coverageSampling) GL20.GL_COVERAGE_BUFFER_BIT_NV else 0
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT or bufferBitMv)
+
+        applyStages(delta)
+        checkContactCookieAndHand()
+        if (items.isStopGenerate) controlWinning()
     }
 
     private fun changeScore() {
@@ -142,7 +150,7 @@ class GameWorld(private val manager: AssetManager) {
     }
 
     private fun controlScore(actor: RandomTableItem) {
-        val controller = ScreenManager.globalParameters[SERVICES_CONTROLLER] as ServicesController
+        val controller = ScreenManager.globalParameters[ScreenManager.Param.SERVICES_CONTROLLER] as ServicesController
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
@@ -150,37 +158,37 @@ class GameWorld(private val manager: AssetManager) {
                 VibrationManager.vibrate()
                 controlItemsScrollSpeed()
                 when (score.scoreNum) {
-                    SUNGLASSES.score -> {
+                    Config.Achievement.SUNGLASSES.score -> {
                         sunglasses.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            controller.unlockAchievement(SUNGLASSES)
+                            controller.unlockAchievement(Config.Achievement.SUNGLASSES)
                         })
                     }
-                    HAT.score -> {
+                    Config.Achievement.HAT.score -> {
                         hat.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            controller.unlockAchievement(HAT)
+                            controller.unlockAchievement(Config.Achievement.HAT)
                         })
                     }
-                    BOOTS.score -> {
+                    Config.Achievement.BOOTS.score -> {
                         boots.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            controller.unlockAchievement(BOOTS)
+                            controller.unlockAchievement(Config.Achievement.BOOTS)
                         })
                     }
-                    BELT.score -> {
+                    Config.Achievement.BELT.score -> {
                         belt.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            controller.unlockAchievement(BELT)
+                            controller.unlockAchievement(Config.Achievement.BELT)
                         })
                     }
-                    GUN.score -> {
+                    Config.Achievement.GUN.score -> {
                         gun.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            controller.unlockAchievement(GUN)
+                            controller.unlockAchievement(Config.Achievement.GUN)
                         })
                     }
-                    BULLETS.score -> {
+                    Config.Achievement.BULLETS.score -> {
                         bullets.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                            controller.unlockAchievement(BULLETS)
+                            controller.unlockAchievement(Config.Achievement.BULLETS)
                         })
                     }
-                    FINISH_GAME.score -> {
+                    Config.Achievement.FINISH_GAME.score -> {
                         items.isStopGenerate = true
                     }
                 }
@@ -218,13 +226,6 @@ class GameWorld(private val manager: AssetManager) {
         }
     }
 
-    fun update(delta: Float) {
-        stage.act(delta)
-        checkContactCookieAndHand()
-        if (items.isStopGenerate) controlWinning()
-
-    }
-
     private fun controlWinning() {
         if (items.isAllObjectsScored()) isWinGame = true
         if (items.isAllObjectLeft()) {
@@ -237,14 +238,14 @@ class GameWorld(private val manager: AssetManager) {
                 (it as Actor).remove()
             }
             shot.animate(AnimationType.SHOW_ON_SCENE, Runnable {
-                sceneShadow.invertColor()
-                sceneShadow.animate(AnimationType.SHOW_ON_SCENE)
-                VibrationManager.vibrate(BOOM)
+                shadow.invertColor()
+                shadow.animate(AnimationType.SHOW_ON_SCENE)
+                VibrationManager.vibrate(VibrationManager.VibrationType.BOOM)
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                    val shadow = SceneShadow(manager)
+                    val shadow = Shadow(manager)
                     stage.addActor(shadow)
                     shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                        ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum), Pair(WAS_WIN_GAME, true))
+                        ScreenManager.setScreen(ScreenManager.Screens.GAME_OVER, Pair(ScreenManager.Param.SCORE, score.scoreNum), Pair(ScreenManager.Param.WAS_WIN_GAME, true))
                     })
                 })
             })
@@ -263,14 +264,27 @@ class GameWorld(private val manager: AssetManager) {
             arm.animate(AnimationType.COOKIE_CATCH, Runnable {
                 actors.filterIsInstance<CookieItem>().forEach {
                     it.animate(AnimationType.HIDE_FROM_SCENE)
-                    VibrationManager.vibrate(ACTOR_CATCH)
+                    VibrationManager.vibrate(VibrationManager.VibrationType.ACTOR_CATCH)
                 }
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                    ScreenManager.setScreen(GAME_OVER, Pair(SCORE, score.scoreNum))
+                    ScreenManager.setScreen(ScreenManager.Screens.GAME_OVER, Pair(ScreenManager.Param.SCORE, score.scoreNum))
                 })
             })
             AudioManager.stopAll()
         }
     }
 
+    override fun pause() {
+    }
+
+    override fun resume() {
+    }
+
+    override fun resize(width: Int, height: Int) {
+    }
+
+    override fun dispose() {
+        Config.currentScrollSpeed = Config.DEFAULT_SCROLL_SPEED
+        super.dispose()
+    }
 }

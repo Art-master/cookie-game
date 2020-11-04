@@ -1,52 +1,48 @@
 package com.run.cookie.run.game.screens
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.viewport.FillViewport
+import com.badlogic.gdx.utils.viewport.FitViewport
 import com.run.cookie.run.game.Config
-import com.run.cookie.run.game.managers.AudioManager
-import com.run.cookie.run.game.managers.AudioManager.MusicApp
+import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.managers.ScreenManager
-import com.run.cookie.run.game.world.GameWorld
+import com.run.cookie.run.game.services.AdsController
 
-class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
-    private var runTime = 0f
-    private var manager = params[ScreenManager.Param.ASSET_MANAGER] as AssetManager
-    private var gameWorld : GameWorld? = null
+abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
+    val manager = params[ScreenManager.Param.ASSET_MANAGER] as AssetManager
 
-    override fun hide() {
+    val adsController = params[ScreenManager.Param.SERVICES_CONTROLLER] as AdsController
+
+    val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
+    val stageBackground = Stage(FillViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
+    var stage = Stage(FitViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
+    private val stageShadow = Stage(FillViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
+    val shadow = Shadow(manager)
+
+    init {
+        stageShadow.addActor(shadow)
     }
 
-    override fun show() {
+    fun applyStages(delta: Float){
+        stageBackground.viewport.apply()
+        stageBackground.act(delta)
+        stageBackground.draw()
+
+        stage.viewport.apply()
+        stage.act(delta)
+        stage.draw()
+
+        stageShadow.viewport.apply()
+        stageShadow.act(delta)
+        stageShadow.draw()
     }
 
-    override fun render(delta: Float) {
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        val bufferBitMv = if (Gdx.graphics.bufferFormat.coverageSampling) GL20.GL_COVERAGE_BUFFER_BIT_NV else 0
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT or bufferBitMv)
-
-        if(manager.isFinished && gameWorld == null){
-            gameWorld = GameWorld(manager)
-            AudioManager.play(MusicApp.GAME_MUSIC, true)
-        }
-
-        gameWorld!!.update(delta)
-        gameWorld!!.stage.draw()
-        runTime += delta
-    }
-
-    override fun pause() {
-    }
-
-    override fun resume() {
-    }
-
-    override fun resize(width: Int, height: Int) {
-    }
-
-    override fun dispose() {
-        Config.currentScrollSpeed = Config.DEFAULT_SCROLL_SPEED
-        gameWorld?.stage?.dispose()
+    override fun dispose(){
+        stageBackground.dispose()
+        stage.dispose()
+        stageShadow.dispose()
     }
 }

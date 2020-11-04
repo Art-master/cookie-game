@@ -1,12 +1,12 @@
 package com.run.cookie.run.game.actors.comics
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction
+import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.api.Animated
 import com.run.cookie.run.game.api.AnimationType
 import com.run.cookie.run.game.api.GameActor
@@ -20,7 +20,7 @@ class ArrowForward(manager: AssetManager) : GameActor(), Animated {
     init {
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
-        x = Gdx.graphics.width - width
+        x = Config.WIDTH_GAME - width
         y = 0f
         scaleX = 0.3f
         scaleY = 0.3f

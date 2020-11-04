@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -12,7 +11,6 @@ import com.run.cookie.run.game.api.AnimationType
 import com.run.cookie.run.game.api.GameActor
 import com.run.cookie.run.game.data.FontParam
 
-
 class Score(manager : AssetManager) : GameActor(), Animated {
     private var score: BitmapFont = manager.get(FontParam.SCORE.fontName)
     private val matrix = Matrix4()
@@ -21,7 +19,7 @@ class Score(manager : AssetManager) : GameActor(), Animated {
     private val paddingX = 300
 
     init {
-        y = Gdx.graphics.height - 50f
+        y = Config.HEIGHT_GAME - 50f
         setScale(1f)
     }
 

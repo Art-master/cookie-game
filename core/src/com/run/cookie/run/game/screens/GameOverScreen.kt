@@ -1,46 +1,35 @@
 package com.run.cookie.run.game.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
-import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.run.cookie.run.game.Config
-import com.run.cookie.run.game.managers.ScreenManager
-import com.run.cookie.run.game.managers.ScreenManager.Screens.*
-import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.game_over_screen.*
-import com.run.cookie.run.game.services.AdsController
 import com.run.cookie.run.game.api.AnimationType.*
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.managers.AudioManager
-import com.run.cookie.run.game.managers.AudioManager.MusicApp.*
-import com.run.cookie.run.game.managers.AudioManager.SoundApp.*
+import com.run.cookie.run.game.managers.AudioManager.MusicApp.MAIN_MENU_MUSIC
+import com.run.cookie.run.game.managers.AudioManager.SoundApp.CLICK_SOUND
+import com.run.cookie.run.game.managers.ScreenManager
 import com.run.cookie.run.game.managers.ScreenManager.Param.*
-import com.run.cookie.run.game.managers.ScreenManager.Param.SCORE
+import com.run.cookie.run.game.managers.ScreenManager.Screens.GAME_SCREEN
+import com.run.cookie.run.game.managers.ScreenManager.Screens.MAIN_MENU_SCREEN
 import com.run.cookie.run.game.managers.VibrationManager
 import com.run.cookie.run.game.services.ServicesController
 
-class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
+class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params) {
 
-    private var manager = params[ASSET_MANAGER] as AssetManager
-    private var adsController = params[SERVICES_CONTROLLER] as AdsController
     private var controller = params[SERVICES_CONTROLLER] as ServicesController
     private var score = params[SCORE] as Int
     private var wasWinGame = params[WAS_WIN_GAME] as Boolean?
-    private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
-    private val stage = Stage(ScreenViewport(camera))
 
     init {
         Gdx.input.inputProcessor = stage
         //adsController.showInterstitialAd()
         adsController.showBannerAd()
         //adsController.showVideoAd()
-        if(controller.isSignedIn()) controller.submitScore(score.toLong())
+        if (controller.isSignedIn()) controller.submitScore(score.toLong())
     }
 
     override fun hide() {
@@ -50,31 +39,26 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun render(delta: Float) {
-        if (manager.isFinished && stage.actors.isEmpty) {
-            addActorsToStage()
-        }
-        stage.act(delta)
-        stage.draw()
+        if (stage.actors.isEmpty) addActorsToStage()
+        applyStages(delta)
     }
 
     private fun addActorsToStage() {
         val background = Background(manager)
         val finalAction = if (wasWinGame == true) Together(manager) else CookieRests(manager)
         val restartIcon = RestartIcon(manager)
-        val shadow = Shadow(manager)
         val scores = Scores(manager, score)
         val topScores = GameOverMenuIcon(manager, 40f, 780f, Assets.MainMenuAtlas.TOP_SCORES)
         val awards = GameOverMenuIcon(manager, 70f, 580f, Assets.MainMenuAtlas.AWARDS)
         val share = GameOverMenuIcon(manager, 1777f, 780f, Assets.MainMenuAtlas.SHARE, false)
         val mainMenu = GameOverMenuIcon(manager, 1777f, 580f, Assets.MainMenuAtlas.MAIN_MENU, false)
 
+        stageBackground.addActor(background)
         stage.apply {
-            addActor(background)
             addActor(finalAction)
             addActor(restartIcon)
-            addActor(shadow)
             addActor(scores)
-            if(controller.isSignedIn() || Config.Debug.PLAY_SERVICES.state){
+            if (controller.isSignedIn() || Config.Debug.PLAY_SERVICES.state) {
                 addActor(topScores)
                 addActor(awards)
             }
@@ -111,7 +95,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         }
         addClickListener(awards) {
             controller.showAllAchievements()
-            awards.animate(CLICK) }
+            awards.animate(CLICK)
+        }
         addClickListener(share) {
             share.animate(CLICK)
             controller.share(score)
@@ -153,6 +138,6 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun dispose() {
-        stage.dispose()
+        super.dispose()
     }
 }

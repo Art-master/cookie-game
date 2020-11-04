@@ -1,16 +1,10 @@
 package com.run.cookie.run.game.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
-import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.run.cookie.run.game.Config
-import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.main_menu_screen.*
 import com.run.cookie.run.game.api.AnimationType
 import com.run.cookie.run.game.managers.AudioManager
@@ -20,22 +14,14 @@ import com.run.cookie.run.game.managers.ScreenManager
 import com.run.cookie.run.game.managers.ScreenManager.Param.*
 import com.run.cookie.run.game.managers.ScreenManager.Screens.*
 import com.run.cookie.run.game.managers.VibrationManager
-import com.run.cookie.run.game.services.AdsController
 
+class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params) {
 
-class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
-
-    private var manager = params[ASSET_MANAGER] as AssetManager
     private var firstAppRun = params[FIRST_APP_RUN] as Boolean
-
-    private var adsController = params[SERVICES_CONTROLLER] as AdsController
-
-    private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
-    private val stage = Stage(ScreenViewport(camera))
 
     init {
         Gdx.input.inputProcessor = stage
-        if(firstAppRun.not()) adsController.showBannerAd()
+        if (firstAppRun.not()) adsController.showBannerAd()
     }
 
     override fun hide() {
@@ -45,11 +31,8 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun render(delta: Float) {
-        if (manager.isFinished && stage.actors.isEmpty) {
-            addActorsToStage()
-        }
-        stage.act(delta)
-        stage.draw()
+        if (stage.actors.isEmpty) addActorsToStage()
+        applyStages(delta)
     }
 
     private fun addActorsToStage() {
@@ -60,17 +43,14 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         val vibrationIcon = VibrationIcon(manager, musicIcon)
         val cookieStoryIcon = CookieStoryIcon(manager, soundIcon)
         val playButton = PlayButton(manager)
-        val shadow = Shadow(manager)
-
+        stageBackground.addActor(background)
         stage.apply {
-            addActor(background)
             addActor(title)
             addActor(musicIcon)
             addActor(soundIcon)
             addActor(vibrationIcon)
             if (firstAppRun.not()) addActor(cookieStoryIcon)
             addActor(playButton)
-            addActor(shadow)
         }
 
         title.animate(AnimationType.SHOW_ON_SCENE)
@@ -104,12 +84,12 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         addClickListener(cookieStoryIcon) {
             AudioManager.play(SoundApp.CLICK_SOUND)
             ScreenManager.setScreen(COMICS_SCREEN, Pair(SCREEN_LINK, MAIN_MENU_SCREEN))
-            if(firstAppRun.not()) adsController.hideBannerAd()
+            if (firstAppRun.not()) adsController.hideBannerAd()
         }
 
         addClickListener(playButton) {
             AudioManager.play(SoundApp.CRUNCH)
-            if(firstAppRun.not()) adsController.hideBannerAd()
+            if (firstAppRun.not()) adsController.hideBannerAd()
             playButton.animate(AnimationType.HIDE_FROM_SCENE)
             title.animate(AnimationType.HIDE_FROM_SCENE)
             musicIcon.animate(AnimationType.HIDE_FROM_SCENE)
@@ -151,6 +131,6 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun dispose() {
-        stage.dispose()
+        super.dispose()
     }
 }

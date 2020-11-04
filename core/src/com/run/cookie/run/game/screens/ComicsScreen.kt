@@ -1,31 +1,20 @@
 package com.run.cookie.run.game.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
-import com.badlogic.gdx.assets.AssetManager
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.run.cookie.run.game.Config
-import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.comics.*
 import com.run.cookie.run.game.api.AnimationType
 import com.run.cookie.run.game.managers.AudioManager
 import com.run.cookie.run.game.managers.ScreenManager
 import com.run.cookie.run.game.managers.ScreenManager.Param
-import com.run.cookie.run.game.managers.ScreenManager.Param.ASSET_MANAGER
 import com.run.cookie.run.game.managers.ScreenManager.Screens.GAME_SCREEN
 import com.run.cookie.run.game.managers.VibrationManager
 
-class ComicsScreen(private val params: Map<Param, Any>) : Screen {
+class ComicsScreen(private val params: Map<Param, Any>) : GameScreen(params) {
 
-    private var manager = params[ASSET_MANAGER] as AssetManager
-    private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private var isMainButtonHost = params[Param.SCREEN_LINK] == null
-    private val stage = Stage(ScreenViewport(camera))
 
     init {
         Gdx.input.inputProcessor = stage
@@ -38,11 +27,8 @@ class ComicsScreen(private val params: Map<Param, Any>) : Screen {
     }
 
     override fun render(delta: Float) {
-        if (manager.isFinished && stage.actors.isEmpty) {
-            addActorsToStage()
-        }
-        stage.act(delta)
-        stage.draw()
+        if (stage.actors.isEmpty) addActorsToStage()
+        applyStages(delta)
     }
 
     private fun addActorsToStage() {
@@ -52,16 +38,14 @@ class ComicsScreen(private val params: Map<Param, Any>) : Screen {
         val frame3 = ComicsFrame3(manager, frame1)
         val frame4 = ComicsFrame4(manager, frame2, frame3)
         val arrowForward = ArrowForward(manager)
-        val shadow = Shadow(manager)
 
+        stageBackground.addActor(background)
         stage.apply {
-            addActor(background)
             addActor(frame1)
             addActor(frame2)
             addActor(frame3)
             addActor(frame4)
             addActor(arrowForward)
-            addActor(shadow)
         }
 
         shadow.animate(AnimationType.SHOW_ON_SCENE)
@@ -89,7 +73,7 @@ class ComicsScreen(private val params: Map<Param, Any>) : Screen {
 
         AudioManager.play(AudioManager.MusicApp.MAIN_MENU_MUSIC)
 
-        addClickListener(background) {
+        addClickListener(stage) {
             AudioManager.stopAll()
             VibrationManager.vibrate()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
@@ -103,8 +87,8 @@ class ComicsScreen(private val params: Map<Param, Any>) : Screen {
         }
     }
 
-    private fun addClickListener(actor: Actor, function: () -> Unit) {
-        actor.addListener(object : ClickListener() {
+    private fun <T : Stage> addClickListener(obj: T, function: () -> Unit) {
+        obj.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 AudioManager.play(AudioManager.SoundApp.CLICK_SOUND)
                 function()
@@ -123,6 +107,6 @@ class ComicsScreen(private val params: Map<Param, Any>) : Screen {
     }
 
     override fun dispose() {
-        stage.dispose()
+        super.dispose()
     }
 }

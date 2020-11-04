@@ -30,7 +30,7 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
     init {
         width = background.originalWidth.toFloat()
         height = background.originalHeight.toFloat()
-        x = Gdx.graphics.width - sound.x - width
+        x = Config.WIDTH_GAME - sound.x - width
         y = sound.y
 
         changeBackground()

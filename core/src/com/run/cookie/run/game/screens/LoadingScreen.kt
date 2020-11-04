@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Timer
-import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Prefs
 import com.run.cookie.run.game.actors.loading_progress.Background
@@ -30,7 +30,7 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     private val manager = AssetManager()
     private val adsManager = params[SERVICES_CONTROLLER] as AdsController
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
-    private val stage = Stage(ScreenViewport(camera))
+    private val stage = Stage(ExtendViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
 
     var progressBar: ProgressBar? = null
 
