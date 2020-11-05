@@ -102,6 +102,7 @@ class Assets {
             const val ICE_PUDDLE = "ice_puddle"
             const val PUSHPIN = "pushpin"
             const val BREAD = "bread"
+            const val CUP = "cup"
         }
     }
 
