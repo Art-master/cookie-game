@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.main_menu_screen
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.run.cookie.run.game.data.Assets
@@ -25,7 +24,7 @@ class MainTitle(manager : AssetManager) : GameActor(), Animated {
         width = region.originalWidth.toFloat()
         height = region.originalHeight.toFloat()
         x = (Config.WIDTH_GAME / 2) - width / 2
-        y = Gdx.graphics.height.toFloat()
+        y = Config.HEIGHT_GAME
     }
 
     override fun act(delta: Float) {
@@ -45,7 +44,7 @@ class MainTitle(manager : AssetManager) : GameActor(), Animated {
 
         val animation = when(type){
             AnimationType.HIDE_FROM_SCENE -> {
-                moveTo(x, Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+                moveTo(x, Config.HEIGHT_GAME, animDuration, Interpolation.exp10)
             }
             AnimationType.SHOW_ON_SCENE -> {
                 val y = (Config.HEIGHT_GAME - height - 50)

@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.main_menu_screen
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Interpolation
@@ -75,7 +74,7 @@ class VibrationIcon(manager : AssetManager, sound: GameActor) : GameActor(), Ani
         val animDuration = Config.BUTTONS_ANIMATION_TIME_S / 2
         val action = when(type) {
             AnimationType.HIDE_FROM_SCENE -> {
-                Actions.moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+                Actions.moveTo(x, -Config.HEIGHT_GAME, animDuration, Interpolation.exp10)
             }
             AnimationType.SHOW_ON_SCENE -> {
                 val y = 50f

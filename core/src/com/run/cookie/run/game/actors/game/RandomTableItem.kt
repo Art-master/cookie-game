@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
@@ -28,7 +27,7 @@ class RandomTableItem(private val manager: AssetManager,
     private var startBound = Rectangle()
     private var bound = Rectangle()
 
-    private val screenWidth = Gdx.graphics.width.toFloat()
+    private val screenWidth = Config.WIDTH_GAME
 
     private lateinit var scroller: HorizontalScroll
 

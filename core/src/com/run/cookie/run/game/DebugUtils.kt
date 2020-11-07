@@ -1,6 +1,5 @@
 package com.run.cookie.run.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.utils.Timer
@@ -12,7 +11,7 @@ object DebugUtils {
         if (!Config.Debug.COOKIE_POSITION.state) return
         val texture = manager.get(Descriptors.environment)
         val region = texture.findRegion(Assets.EnvironmentAtlas.SHADOW)
-        batch?.draw(region, x, 0f, 1f, Gdx.graphics.height.toFloat())
+        batch?.draw(region, x, 0f, 1f, Config.HEIGHT_GAME)
     }
 
     fun startPeriodicTimer(delaySeconds: Float = 0f, intervalSeconds: Float = 0f, func: () -> Any) {

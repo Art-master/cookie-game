@@ -22,7 +22,7 @@ object ScreenManager {
         val nextScreen= when(screen){
             Screens.LOADING_SCREEN -> LoadingScreen(allParams)
             Screens.MAIN_MENU_SCREEN -> MainMenuScreen(allParams)
-            Screens.GAME_SCREEN -> PlayScreen(allParams)
+            Screens.GAME_SCREEN -> GamePlayScreen(allParams)
             Screens.GAME_OVER -> GameOverScreen(allParams)
             Screens.COMICS_SCREEN -> ComicsScreen(allParams)
         }

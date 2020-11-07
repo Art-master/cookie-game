@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.game_over_screen
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -19,7 +18,7 @@ class GameOverMenuIcon(manager: AssetManager, private val posX: Float, private v
     private val region = texture.findRegion(assetName)
 
     private val startX = if (isLeft) -region.originalWidth.toFloat()
-    else Gdx.graphics.width + region.originalWidth.toFloat()
+    else Config.WIDTH_GAME + region.originalWidth.toFloat()
 
     init {
         this.x = startX

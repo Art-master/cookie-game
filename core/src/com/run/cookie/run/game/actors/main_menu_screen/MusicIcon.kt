@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.data.Descriptors
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo
 import com.run.cookie.run.game.Config
@@ -29,7 +28,7 @@ class MusicIcon(manager : AssetManager) : GameActor(), Animated {
     init {
         isVibrating = true
         x = 100f
-        y = -Gdx.graphics.height.toFloat()
+        y = -Config.HEIGHT_GAME
         width = background.originalWidth.toFloat()
         height = background.originalHeight.toFloat()
         changeBackground()
@@ -75,7 +74,7 @@ class MusicIcon(manager : AssetManager) : GameActor(), Animated {
         val animDuration = Config.BUTTONS_ANIMATION_TIME_S / 2
         val action = when(type) {
             AnimationType.HIDE_FROM_SCENE -> {
-                moveTo(x, -Gdx.graphics.height.toFloat(), animDuration, Interpolation.exp10)
+                moveTo(x, -Config.HEIGHT_GAME, animDuration, Interpolation.exp10)
             }
             AnimationType.SHOW_ON_SCENE -> {
                 val y = 50f

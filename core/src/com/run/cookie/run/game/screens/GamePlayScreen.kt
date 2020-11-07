@@ -23,7 +23,7 @@ import com.run.cookie.run.game.managers.VibrationManager
 import com.run.cookie.run.game.services.ServicesController
 import kotlin.random.Random
 
-class PlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params) {
+class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params) {
     private val background = Background(manager)
     private val table = Table(manager, 240f)
     private val window = Window(manager, 270f)

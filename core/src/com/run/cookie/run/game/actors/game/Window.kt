@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -28,7 +27,7 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable, Wa
     override var distance: Int = 0
 
     var scroll = HorizontalScroll(
-            Gdx.graphics.width.toFloat(), startY,
+            Config.WIDTH_GAME, startY,
             region.originalWidth,
             region.originalHeight,
             Config.ItemScrollSpeed.LEVEL_1)

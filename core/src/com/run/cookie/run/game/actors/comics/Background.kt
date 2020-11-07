@@ -1,6 +1,5 @@
 package com.run.cookie.run.game.actors.comics
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -14,8 +13,8 @@ class Background(manager: AssetManager) : GameActor() {
     private val white = environmentAtlas.findRegion(Assets.EnvironmentAtlas.WHITE)
 
     init {
-        width = Gdx.graphics.width.toFloat()
-        height = Gdx.graphics.height.toFloat()
+        width = Config.WIDTH_GAME
+        height = Config.HEIGHT_GAME
         x = 0f
         y = 0f
     }

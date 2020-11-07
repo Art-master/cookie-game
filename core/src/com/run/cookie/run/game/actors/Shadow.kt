@@ -1,12 +1,12 @@
 package com.run.cookie.run.game.actors
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Config.SHADOW_ANIMATION_TIME_S
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.data.Descriptors
@@ -20,8 +20,8 @@ class Shadow(val manager : AssetManager) : Actor(), Animated {
     init {
         x = 0f
         y = 0f
-        width = Gdx.graphics.width.toFloat()
-        height = Gdx.graphics.height.toFloat()
+        width = Config.WIDTH_GAME
+        height = Config.HEIGHT_GAME
 
         val color = color
         setColor(color.r, color.g, color.b, 0f)

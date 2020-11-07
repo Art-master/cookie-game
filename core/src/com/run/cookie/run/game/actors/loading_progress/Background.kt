@@ -1,11 +1,11 @@
 package com.run.cookie.run.game.actors.loading_progress
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.data.Descriptors
 import com.badlogic.gdx.graphics.Color
+import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.api.GameActor
 
 class Background(manager : AssetManager) : GameActor() {
@@ -13,8 +13,8 @@ class Background(manager : AssetManager) : GameActor() {
     private val whiteSquareRegion = progressAtlas.findRegion(Assets.ProgressAtlas.WHITE_SQUARE)
 
     init {
-        width = Gdx.graphics.width.toFloat()
-        height = Gdx.graphics.height.toFloat()
+        width = Config.WIDTH_GAME
+        height = Config.HEIGHT_GAME
         x = 0f
         y = 0f
     }
