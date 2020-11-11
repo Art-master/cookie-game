@@ -17,6 +17,7 @@ class Assets {
         companion object {
             const val NAME = "loadingBar.atlas"
             const val WHITE_SQUARE = "white_square"
+            const val BLACK_SQUARE = "black"
             const val PROGRESS_BAR = "loading_bar"
             const val PROGRESS_LINE = "loading_progress"
         }

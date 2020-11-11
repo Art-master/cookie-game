@@ -3,7 +3,6 @@ package com.run.cookie.run.game.actors
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.run.cookie.run.game.Config
@@ -12,10 +11,11 @@ import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.data.Descriptors
 import com.run.cookie.run.game.api.Animated
 import com.run.cookie.run.game.api.AnimationType
+import com.run.cookie.run.game.api.GameActor
 
-class Shadow(val manager : AssetManager) : Actor(), Animated {
-    private val texture = manager.get(Descriptors.menu)
-    private var region = texture.findRegion(Assets.MainMenuAtlas.BLACK_SQUARE)
+class Shadow(val manager : AssetManager) : GameActor(), Animated {
+    private val texture = manager.get(Descriptors.progressBar)
+    private var region = texture.findRegion(Assets.ProgressAtlas.BLACK_SQUARE)
 
     init {
         x = 0f
@@ -23,7 +23,6 @@ class Shadow(val manager : AssetManager) : Actor(), Animated {
         width = Config.WIDTH_GAME
         height = Config.HEIGHT_GAME
 
-        val color = color
         setColor(color.r, color.g, color.b, 0f)
         touchable = Touchable.disabled
     }

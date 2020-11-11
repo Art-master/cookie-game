@@ -8,10 +8,12 @@ import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.data.Descriptors
 
 class Shadow(manager : AssetManager) : GameActor() {
-    private val texture = manager.get(Descriptors.environment)
-    private val region = texture.findRegion(Assets.EnvironmentAtlas.SHADOW)
+    private val texture = manager.get(Descriptors.progressBar)
+    private var region = texture.findRegion(Assets.ProgressAtlas.BLACK_SQUARE)
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        batch!!.draw(region, 0f, 0f, Config.WIDTH_GAME, Config.HEIGHT_GAME)
+        batch!!.setColor(color.r, color.g, color.b, 0.5f)
+        batch.draw(region, 0f, 0f, Config.WIDTH_GAME, Config.HEIGHT_GAME)
+        batch.setColor(color.r, color.g, color.b, 1f)
     }
 }

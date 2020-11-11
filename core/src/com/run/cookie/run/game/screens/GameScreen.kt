@@ -43,6 +43,6 @@ abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     override fun dispose(){
         stageBackground.dispose()
         stage.dispose()
-        stageShadow.dispose()
+        //stageShadow.dispose() // Early disposing lead to blink
     }
 }

@@ -108,6 +108,7 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     private fun loadResources() {
+        manager.load(Descriptors.progressBar) // store unfiltered regions
         manager.load(Descriptors.background)
         manager.load(Descriptors.gameOverBackground)
         manager.load(Descriptors.comics)
