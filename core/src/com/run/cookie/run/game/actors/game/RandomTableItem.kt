@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.run.cookie.run.game.Config
+import com.run.cookie.run.game.Config.Debug
 import com.run.cookie.run.game.actors.game.cookie.Cookie
 import com.run.cookie.run.game.api.*
 import com.run.cookie.run.game.data.Assets
@@ -98,8 +99,13 @@ class RandomTableItem(private val manager: AssetManager,
     }
 
     private fun setRandomItem() {
-        val maxItemCount  = 21
-        when (1) { //TODO in production only - rand.nextInt(maxItemCount)
+        val tableItem = if (Debug.CERTAIN_TABLE_ITEM.state) {
+            Debug.CERTAIN_TABLE_ITEM.info as Int
+        } else {
+            rand.nextInt(Config.CUPBOARD_ITEMS_COUNT + 1)
+        }
+
+        when (tableItem) {
             1 -> {
                 region = texture.findRegion(Assets.EnvironmentAtlas.BOX1)
                 val boundHeight = region.originalHeight.toFloat() - 25 - 20

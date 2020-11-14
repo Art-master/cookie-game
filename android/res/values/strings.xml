@@ -30,6 +30,6 @@
 
     <string name="share_msg">Я набрал %1$d очков в игре "Run Cookie Run "</string>
     <string name="share_window_header">Поделиться</string>
-    <string name="app_link">https://stackoverflow.com/questions/3656371/is-it-possible-dynamically-to-add-string-to-string-xml-in-android</string>
+    <string name="app_link_common">https://play.google.com/store/apps/details?id=</string>
 
 </resources>

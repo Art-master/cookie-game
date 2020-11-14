@@ -138,7 +138,7 @@ class Cupboard(val manager: AssetManager, originY: Float) : GameActor(), Scrolla
     private fun getTexturesArray(): Array<Utensil> {
         val array = Array<Utensil>()
         var commonItemsWidth = 0
-        val minItemsCount = Config.MIN_CUPBOARD_ITEMS_COUNT
+        val minItemsCount = Config.MIN_CUPBOARD_ITEMS_COUNT_ON_TABLE
         for (i in minItemsCount..rand.nextInt(itemRegions.size)) {
             val region = getRandomRegion(array)
             val randomDistance = rand.nextInt(50)

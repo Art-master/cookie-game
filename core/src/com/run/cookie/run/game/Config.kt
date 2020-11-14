@@ -15,31 +15,33 @@ object Config {
     const val MAX_JUMP_HEIGHT = 200
 
     //Kitchen items
-    const val MIN_CUPBOARD_ITEMS_COUNT = 4
+    const val MIN_CUPBOARD_ITEMS_COUNT_ON_TABLE = 4
+    const val CUPBOARD_ITEMS_COUNT = 20
 
-    enum class Debug(var state: Boolean) {
+    enum class Debug(var state: Boolean, var info: Any = 0) {
         COLLISIONS(false),
-        ALWAYS_SHOW_STORY(true),
+        ALWAYS_SHOW_STORY(false),
         COOKIE_POSITION(false),
         PERIODIC_JUMP(false),
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
-        ADS(false)
+        ADS(false),
+        CERTAIN_TABLE_ITEM(false, 20),
     }
 
     enum class Achievement(val score: Int) {
-        SUNGLASSES(1),
-        HAT(3),
-        BOOTS(60),
-        BELT(90),
-        GUN(120),
-        BULLETS(150),
-        FINISH_GAME(800)
+        SUNGLASSES(50),
+        HAT(100),
+        BOOTS(150),
+        BELT(200),
+        GUN(250),
+        BULLETS(300),
+        FINISH_GAME(400)
     }
 
     const val DEFAULT_SCROLL_SPEED = -200f
     var currentScrollSpeed = DEFAULT_SCROLL_SPEED
-    const val SPEED_INCREASE_STEP = -20f
+    const val SPEED_INCREASE_STEP = -5f
 
     enum class ItemScrollSpeed(var calc: () -> Float) {
         NONE({ 0f }),
