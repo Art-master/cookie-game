@@ -2,6 +2,7 @@ package com.run.cookie.run.game.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
@@ -36,9 +37,9 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ExtendViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
 
-    var progressBar: ProgressBar? = null
+    private var progressBar: ProgressBar? = null
 
-    var firstRun = false
+    private var firstRun = false
 
     init {
         val prefs = Gdx.app.getPreferences(Prefs.NAME)
@@ -47,7 +48,7 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         ScreenManager.setGlobalParameter(FIRST_APP_RUN, firstRun)
 
         manager.load(Descriptors.progressBar)
-        manager.finishLoadingAsset(Descriptors.progressBar)
+        manager.finishLoadingAsset<AssetDescriptor<TextureAtlas>>(Descriptors.progressBar)
         if (firstRun.not()) adsManager.showBannerAd()
 
         Gdx.input.inputProcessor = stage
