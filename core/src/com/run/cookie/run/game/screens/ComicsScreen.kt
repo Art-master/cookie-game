@@ -54,6 +54,7 @@ class ComicsScreen(private val params: Map<Param, Any>) : GameScreen(params) {
                     Runnable {
                         frame2.animate(AnimationType.SHOW_ON_SCENE,
                                 Runnable {
+                                    AudioManager.play(AudioManager.SoundApp.DOOR_SQUEAK)
                                     frame3.animate(AnimationType.SHOW_ON_SCENE,
                                             Runnable {
                                                 frame4.animate(AnimationType.SHOW_ON_SCENE,

@@ -21,7 +21,9 @@ object AudioManager {
         CRUNCH(AssetDescriptor("${Config.SOUNDS_FOLDER}/crunch.mp3", Sound::class.java), 0.3f),
         JUMP_ON_BOX( AssetDescriptor("${Config.SOUNDS_FOLDER}/jump_on_box.wav", Sound::class.java)),
         JUMP(AssetDescriptor("${Config.SOUNDS_FOLDER}/jump.wav", Sound::class.java)),
-        SCORE(AssetDescriptor("${Config.SOUNDS_FOLDER}/score.wav", Sound::class.java),0.3f)
+        SCORE(AssetDescriptor("${Config.SOUNDS_FOLDER}/score.wav", Sound::class.java),0.3f),
+        DOOR_SQUEAK(AssetDescriptor("${Config.SOUNDS_FOLDER}/door_squeak.mp3", Sound::class.java),0.3f),
+        GUN_SHOT(AssetDescriptor("${Config.SOUNDS_FOLDER}/gun_shot.wav", Sound::class.java),0.3f)
     }
 
     enum class MusicApp(val descriptor: AssetDescriptor<Music>, val volume: Float = 1f) : Audio {
