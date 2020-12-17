@@ -97,8 +97,8 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             vibrationIcon.animate(AnimationType.HIDE_FROM_SCENE)
             cookieStoryIcon.animate(AnimationType.HIDE_FROM_SCENE)
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                setScreen()
                 AudioManager.stopAll()
+                setScreen()
             })
         }
 

@@ -20,7 +20,7 @@ object Config {
 
     enum class Debug(var state: Boolean, var info: Any = 0) {
         COLLISIONS(false),
-        ALWAYS_SHOW_STORY(false),
+        ALWAYS_SHOW_STORY(true), //TODO
         COOKIE_POSITION(false),
         PERIODIC_JUMP(false),
         EMPTY_TABLE(false),

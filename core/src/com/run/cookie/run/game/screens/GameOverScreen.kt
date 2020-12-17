@@ -22,6 +22,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
     private var controller = params[SERVICES_CONTROLLER] as ServicesController
     private var score = params[SCORE] as Int
+    private val scoresActor = Scores(manager, score)
+
     private var wasWinGame = params[WAS_WIN_GAME] as Boolean?
 
     init {
@@ -29,7 +31,9 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         //adsController.showInterstitialAd()
         adsController.showBannerAd()
         //adsController.showVideoAd()
-        if (controller.isSignedIn()) controller.submitScore(score.toLong())
+        if (controller.isSignedIn() && score > scoresActor.bestScoreNum) {
+            controller.submitScore(score.toLong())
+        }
     }
 
     override fun hide() {
@@ -48,7 +52,6 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         val finalAction = if (wasWinGame == true) Together(manager) else CookieRests(manager)
         val restartIcon = RestartIcon(manager)
         val cup = Cup(manager)
-        val scores = Scores(manager, score)
         val topScores = GameOverMenuIcon(manager, 40f, 780f, Assets.MainMenuAtlas.TOP_SCORES)
         val awards = GameOverMenuIcon(manager, 70f, 580f, Assets.MainMenuAtlas.AWARDS)
         val share = GameOverMenuIcon(manager, 1777f, 780f, Assets.MainMenuAtlas.SHARE, false)
@@ -59,7 +62,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             addActor(cup)
             addActor(finalAction)
             addActor(restartIcon)
-            addActor(scores)
+            addActor(scoresActor)
             if (controller.isSignedIn() || Config.Debug.PLAY_SERVICES.state) {
                 addActor(topScores)
                 addActor(awards)
@@ -70,7 +73,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
         restartIcon.animate(SHOW_ON_SCENE)
         shadow.animate(SHOW_ON_SCENE)
-        scores.animate(SHOW_ON_SCENE)
+        scoresActor.animate(SHOW_ON_SCENE)
         topScores.animate(SHOW_ON_SCENE)
         awards.animate(SHOW_ON_SCENE)
         share.animate(SHOW_ON_SCENE)
@@ -81,7 +84,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             adsController.hideBannerAd()
             AudioManager.stopAll()
             restartIcon.animate(HIDE_FROM_SCENE)
-            scores.animate(HIDE_FROM_SCENE)
+            scoresActor.animate(HIDE_FROM_SCENE)
             topScores.animate(HIDE_FROM_SCENE)
             awards.animate(HIDE_FROM_SCENE)
             share.animate(HIDE_FROM_SCENE)
@@ -104,9 +107,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             controller.share(score)
         }
         addClickListener(mainMenu) {
-            AudioManager.stopAll()
             restartIcon.animate(HIDE_FROM_SCENE)
-            scores.animate(HIDE_FROM_SCENE)
+            scoresActor.animate(HIDE_FROM_SCENE)
             topScores.animate(HIDE_FROM_SCENE)
             awards.animate(HIDE_FROM_SCENE)
             share.animate(HIDE_FROM_SCENE)

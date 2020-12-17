@@ -28,7 +28,7 @@ object AudioManager {
 
     enum class MusicApp(val descriptor: AssetDescriptor<Music>, val volume: Float = 1f) : Audio {
         GAME_MUSIC(AssetDescriptor("${Config.SOUNDS_FOLDER}/gameMusic.mp3", Music::class.java),0.3f),
-        MAIN_MENU_MUSIC(AssetDescriptor("${Config.SOUNDS_FOLDER}/mainMenuMusic.mp3", Music::class.java)),
+        MAIN_MENU_MUSIC(AssetDescriptor("${Config.SOUNDS_FOLDER}/mainMenuMusic.mp3", Music::class.java),0.3f),
     }
 
     private val prefs = Gdx.app.getPreferences(Prefs.NAME)

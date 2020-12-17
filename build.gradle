@@ -10,8 +10,9 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.3'
+        classpath 'com.android.tools.build:gradle:3.4.3' //error for version 3.4.4
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.11'
+        classpath 'com.google.gms:google-services:4.3.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
     }
@@ -58,14 +59,17 @@ project(":desktop") {
 project(":android") {
     apply plugin: "android"
     apply plugin: "kotlin-android"
+    apply plugin: 'com.google.gms.google-services'
 
     configurations { natives }
 
     dependencies {
         implementation project(":core")
-        implementation 'com.google.android.gms:play-services-ads:19.3.0'
-        implementation 'com.google.android.gms:play-services-games:20.0.1'
-        implementation "com.google.android.gms:play-services-auth:18.1.0"
+        implementation 'com.google.android.gms:play-services-ads:19.6.0'
+        implementation 'com.google.android.gms:play-services-games:21.0.0'
+        implementation "com.google.android.gms:play-services-auth:19.0.0"
+        implementation platform('com.google.firebase:firebase-bom:26.1.1')
+        implementation 'com.google.firebase:firebase-analytics'
         implementation 'com.android.support:multidex:1.0.3'
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"

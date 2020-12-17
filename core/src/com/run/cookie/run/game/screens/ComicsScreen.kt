@@ -72,13 +72,11 @@ class ComicsScreen(private val params: Map<Param, Any>) : GameScreen(params) {
             arrowForward.animate(AnimationType.SHOW_ON_SCENE)
         }
 
-        AudioManager.play(AudioManager.MusicApp.MAIN_MENU_MUSIC)
-
         addClickListener(stage) {
-            AudioManager.stopAll()
             VibrationManager.vibrate()
             shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                 if (isMainButtonHost) {
+                    AudioManager.stopAll()
                     ScreenManager.setScreen(GAME_SCREEN)
                 } else {
                     val screen = params[Param.SCREEN_LINK] as ScreenManager.Screens

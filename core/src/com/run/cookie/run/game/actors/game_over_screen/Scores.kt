@@ -17,7 +17,7 @@ class Scores(manager: AssetManager, private val currentScoreNum: Int = 0) : Game
 
     private var score: BitmapFont = manager.get(FontParam.CURRENT_SCORE.fontName)
     private var scoreBest: BitmapFont = manager.get(FontParam.BEST_SCORE.fontName)
-    private var bestScoreNum: Int = 0
+    var bestScoreNum: Int = 0
 
     private val symbol = 50
 
