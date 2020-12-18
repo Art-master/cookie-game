@@ -38,7 +38,7 @@ public class DesktopLauncher {
         }
 
         @Override
-        public boolean isWifiConnected() {
+        public boolean isNetworkAvailable() {
             return false;
         }
 
@@ -69,6 +69,11 @@ public class DesktopLauncher {
 
         @Override
         public void signIn() {
+
+        }
+
+        @Override
+        public void signInSilently() {
 
         }
 

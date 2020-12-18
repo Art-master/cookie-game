@@ -203,8 +203,7 @@ class Cookie(private val manager: AssetManager,
             if (obj.structure == Structure.SHARP) {
                 stumble(obj)
                 return
-            }
-            if (obj.structure == Structure.ICE) {
+            } else if (obj.structure == Structure.ICE) {
                 slip(obj)
                 return
             }
@@ -214,7 +213,7 @@ class Cookie(private val manager: AssetManager,
                 obj.jumpedOn()
             } else if (isForward(obj) && getTop(obj) - y < 20) {
                 setOnTop(obj)
-            } else inFrontOfTheObject(obj)
+            } else if(aheadOfObj(obj)) inFrontOfTheObject(obj)
         }
         if (isAfterObject(obj) && state == State.RUN) {
             state = State.FALL
@@ -230,6 +229,7 @@ class Cookie(private val manager: AssetManager,
 
     private fun isForward(obj: RandomTableItem) = x < obj.getBoundsRect().x + 10
     private fun isHigherThen(obj: RandomTableItem) = y > getTop(obj) - 30
+    private fun aheadOfObj(obj: RandomTableItem) = x < obj.x + 30
 
     private fun setOnTop(obj: RandomTableItem) {
         resetState()

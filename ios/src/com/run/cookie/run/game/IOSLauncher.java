@@ -40,7 +40,7 @@ public class IOSLauncher extends IOSApplication.Delegate implements AdsControlle
     }
 
     @Override
-    public boolean isWifiConnected() {
+    public boolean isNetworkAvailable() {
         return false;
     }
 
@@ -71,6 +71,11 @@ public class IOSLauncher extends IOSApplication.Delegate implements AdsControlle
 
     @Override
     public void signIn() {
+
+    }
+
+    @Override
+    public void signInSilently() {
 
     }
 

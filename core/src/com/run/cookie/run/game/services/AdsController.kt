@@ -1,7 +1,7 @@
 package com.run.cookie.run.game.services
 
 interface AdsController: ServicesController {
-    fun isWifiConnected(): Boolean
+    fun isNetworkAvailable(): Boolean
     fun isInterstitialLoaded(): Boolean
     fun showBannerAd()
     fun hideBannerAd()

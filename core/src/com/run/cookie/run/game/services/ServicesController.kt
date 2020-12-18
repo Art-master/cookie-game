@@ -6,6 +6,7 @@ import java.lang.Exception
 interface ServicesController{
     fun isSignedIn(): Boolean
     fun signIn()
+    fun signInSilently()
     fun signOut()
     fun submitScore(highScore: Long)
     fun showLeaderboard()

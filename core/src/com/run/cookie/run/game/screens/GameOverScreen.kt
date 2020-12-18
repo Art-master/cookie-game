@@ -63,10 +63,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             addActor(finalAction)
             addActor(restartIcon)
             addActor(scoresActor)
-            if (controller.isSignedIn() || Config.Debug.PLAY_SERVICES.state) {
-                addActor(topScores)
-                addActor(awards)
-            }
+            addActor(topScores)
+            addActor(awards)
             addActor(share)
             addActor(mainMenu)
         }

@@ -12,7 +12,7 @@ class GdxGame(private val controller: ServicesController) : Game() {
         ScreenManager.game = this
         ScreenManager.globalParameters[SERVICES_CONTROLLER] = controller
         ScreenManager.setScreen(LOADING_SCREEN)
-        controller.signIn()
+        controller.signInSilently()
     }
 
     override fun render() {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,13 +27,17 @@ import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -78,7 +83,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
     private AdView bannerAd;
     private InterstitialAd interstitialAd;
-    private RewardedVideoAd rewardedVideoAd;
+    private RewardedAd rewardedVideoAd;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount signedInAccount;
 
@@ -150,18 +155,60 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         interstitialAd.loadAd(new AdRequest.Builder().build());
 
         //AdMob Rewarded Video
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        setRewardVideoListener();
-        rewardedVideoAd.loadAd(interstitialVideoId, new AdRequest.Builder().build());
+        rewardedVideoAd = new RewardedAd(this, interstitialVideoId);
+        ServerSideVerificationOptions serverSideVerificationOptions =
+                new ServerSideVerificationOptions.Builder().setUserId("userId").build();
+        rewardedVideoAd.setServerSideVerificationOptions(serverSideVerificationOptions);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        rewardedVideoAd.setOnPaidEventListener(new OnPaidEventListener() {
+            @Override
+            public void onPaidEvent(AdValue adValue) {
+
+            }
+        });
+
+        rewardedVideoAd.loadAd(adRequest, new RewardedAdLoadCallback() {
+            @Override
+            public void onRewardedAdLoaded() {
+
+            }
+        });
     }
 
     @Override
-    public boolean isWifiConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null) return false;
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        return (ni != null && ni.isConnected());
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager != null) {
+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+                if (capabilities != null) {
+                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                        return true;
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                        return true;
+                    } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                        return true;
+                    }
+                }
+            } else {
+
+                try {
+                    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+                    if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+                        Log.i("update_status", "Network is available : true");
+                        return true;
+                    }
+                } catch (Exception e) {
+                    Log.i("update_status", "" + e.getMessage());
+                }
+            }
+        }
+        Log.i("update_status", "Network is available : FALSE ");
+        return false;
     }
+
 
     @Override
     public boolean isInterstitialLoaded() {
@@ -242,69 +289,31 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     @Override
-    public void showVideoAd(@Nullable Runnable then) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (rewardedVideoAd.isLoaded()) {
-                    rewardedVideoAd.show();
-                } else {
-                    rewardedVideoAd.loadAd(interstitialVideoId, new AdRequest.Builder().build());
+    public void showVideoAd(@Nullable final Runnable then) {
+        if (rewardedVideoAd.isLoaded()) {
+            rewardedVideoAd.show(this, new RewardedAdCallback() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    if (then != null) then.run();
                 }
-            }
-        });
-    }
-
-    private void setRewardVideoListener() {
-        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
-            @Override
-            public void onRewardedVideoAdLoaded() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-
-            }
-
-            @Override
-            public void onRewarded(RewardItem rewardItem) {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdFailedToLoad(int i) {
-
-            }
-
-            @Override
-            public void onRewardedVideoCompleted() {
-
-            }
-        });
+            });
+        } else {
+            rewardedVideoAd.loadAd(new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
+                @Override
+                public void onRewardedAdLoaded() {
+                }
+            });
+        }
     }
 
     @Override
     public void signIn() {
-        signInSilently();
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signInSilently() {
+    @Override
+    public void signInSilently() {
         Log.d(LOG_TAG, "signInSilently()");
         //GoogleSignInClient signInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
         mGoogleSignInClient.silentSignIn().addOnCompleteListener(this,
@@ -396,20 +405,20 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     public void submitScore(long highScore) {
         //Ensure user is signed in so game doesn't crash
-        if (GoogleSignIn.getLastSignedInAccount(this) != null) {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            if (account == null) return;
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null) {
             String id = getString(R.string.leaderboard);
             Games.getLeaderboardsClient(this, account).submitScore(id, highScore);
+        } else {
+            signIn();
         }
     }
 
     @Override
     public void showLeaderboard() {
         //Ensure user is signed in so game doesn't crash
-        if (GoogleSignIn.getLastSignedInAccount(this) != null) {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            if (account == null) return;
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null) {
             String id = getString(R.string.leaderboard);
             Games.getLeaderboardsClient(this, account)
                     .getLeaderboardIntent(id)
@@ -461,7 +470,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 }
             });
 
-        }
+        } else signIn();
     }
 
     @Override
@@ -503,7 +512,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 }
             });
 
-        }
+        } else signIn();
     }
 
     @Override
@@ -543,16 +552,17 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     public void showAllAchievements() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account == null) return;
-        final int RC_ACHIEVEMENT_UI = 9003;
-        Games.getAchievementsClient(this, account)
-                .getAchievementsIntent()
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_ACHIEVEMENT_UI);
-                    }
-                });
+        if (account != null) {
+            final int RC_ACHIEVEMENT_UI = 9003;
+            Games.getAchievementsClient(this, account)
+                    .getAchievementsIntent()
+                    .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                        @Override
+                        public void onSuccess(Intent intent) {
+                            startActivityForResult(intent, RC_ACHIEVEMENT_UI);
+                        }
+                    });
+        } else signIn();
     }
 
     @Override

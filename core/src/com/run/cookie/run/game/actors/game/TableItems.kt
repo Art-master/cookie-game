@@ -10,10 +10,11 @@ class TableItems(private val manager: AssetManager,
                  private val table: Table,
                  private val cookie: Cookie) {
 
-    private val minDistance = 500
+    private val minDistance = 200
     private val random = Random(minDistance)
     private val randomItemNum = 5
-    private val limitDistance = minDistance + 50
+    private val limitDistance = minDistance + 300
+
     private val actionItems = Array<RandomTableItem>(randomItemNum)
     var isStopGenerate = false
         set(value) {
@@ -26,6 +27,9 @@ class TableItems(private val manager: AssetManager,
         startFirst()
     }
 
+    /**
+     * Init items on the table and control its distance
+     */
     private fun initTableItems() {
         for (i in 0 until randomItemNum) {
             val actor = RandomTableItem(manager, table, cookie)
