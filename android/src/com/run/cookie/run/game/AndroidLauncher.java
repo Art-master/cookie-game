@@ -20,16 +20,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.RequestConfiguration;
@@ -55,6 +56,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.run.cookie.run.game.services.AdsCallback;
 import com.run.cookie.run.game.services.AdsController;
 import com.run.cookie.run.game.services.CallBack;
 import com.run.cookie.run.game.services.ServicesController;
@@ -167,12 +169,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
             }
         });
 
-        rewardedVideoAd.loadAd(adRequest, new RewardedAdLoadCallback() {
-            @Override
-            public void onRewardedAdLoaded() {
-
-            }
-        });
+        rewardedVideoAd.loadAd(adRequest, null);
     }
 
     @Override
@@ -239,18 +236,29 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     @Override
-    public void showInterstitialAd(@Nullable final Runnable then) {
+    public void showInterstitialAd(@Nullable final AdsCallback callback) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (then != null) {
+                if (callback != null) {
                     interstitialAd.setAdListener(new AdListener() {
                         @Override
                         public void onAdClosed() {
-                            Gdx.app.postRunnable(then);
+                            callback.close();
                             AdRequest.Builder builder = new AdRequest.Builder();
                             AdRequest ad = builder.build();
                             interstitialAd.loadAd(ad);
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(LoadAdError loadAdError) {
+                            super.onAdFailedToLoad(loadAdError);
+                            callback.fail();
+                        }
+
+                        @Override
+                        public void onAdLoaded() {
+                            super.onAdLoaded();
                         }
                     });
                 }
@@ -260,9 +268,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                     AdRequest.Builder builder = new AdRequest.Builder();
                     AdRequest ad = builder.build();
                     interstitialAd.loadAd(ad);
-                    if (then != null) Gdx.app.postRunnable(then);
                 }
-
             }
         });
     }
@@ -289,21 +295,42 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     @Override
-    public void showVideoAd(@Nullable final Runnable then) {
-        if (rewardedVideoAd.isLoaded()) {
-            rewardedVideoAd.show(this, new RewardedAdCallback() {
-                @Override
-                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                    if (then != null) then.run();
+    public void showVideoAd(@Nullable final AdsCallback callback) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (rewardedVideoAd.isLoaded()) {
+                    rewardedVideoAd.show(AndroidLauncher.this, new RewardedAdCallback() {
+                        @Override
+                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                            if (callback != null) callback.click();
+                            AdRequest adRequest = new AdRequest.Builder().build();
+                            rewardedVideoAd.loadAd(adRequest, null);
+                        }
+
+                        @Override
+                        public void onRewardedAdClosed() {
+                            AdRequest adRequest = new AdRequest.Builder().build();
+                            rewardedVideoAd.loadAd(adRequest, null);
+                            if (callback != null) callback.close();
+                        }
+
+                        @Override
+                        public void onRewardedAdFailedToShow(AdError adError) {
+                            super.onRewardedAdFailedToShow(adError);
+                            if (callback != null) callback.fail();
+                        }
+                    });
+                } else {
+                    rewardedVideoAd.loadAd(new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
+                        @Override
+                        public void onRewardedAdLoaded() {
+
+                        }
+                    });
                 }
-            });
-        } else {
-            rewardedVideoAd.loadAd(new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
-                @Override
-                public void onRewardedAdLoaded() {
-                }
-            });
-        }
+            }
+        });
     }
 
     @Override

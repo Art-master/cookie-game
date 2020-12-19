@@ -5,6 +5,12 @@ interface AdsController: ServicesController {
     fun isInterstitialLoaded(): Boolean
     fun showBannerAd()
     fun hideBannerAd()
-    fun showInterstitialAd(then: Runnable? = null)
-    fun showVideoAd(then: Runnable? = null)
+    fun showInterstitialAd(then: AdsCallback)
+    fun showVideoAd(then: AdsCallback)
+}
+
+interface AdsCallback {
+    fun close()
+    fun click()
+    fun fail()
 }

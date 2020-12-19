@@ -7,6 +7,7 @@ import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
+import com.run.cookie.run.game.services.AdsCallback;
 import com.run.cookie.run.game.services.AdsController;
 import com.run.cookie.run.game.services.CallBack;
 import com.run.cookie.run.game.services.ServicesController;
@@ -60,12 +61,12 @@ public class IOSLauncher extends IOSApplication.Delegate implements AdsControlle
     }
 
     @Override
-    public void showInterstitialAd(@Nullable Runnable then) {
+    public void showInterstitialAd(@NotNull AdsCallback then, @Nullable Runnable fail) {
 
     }
 
     @Override
-    public void showVideoAd(@Nullable Runnable then) {
+    public void showVideoAd(@Nullable Runnable then, @NotNull Runnable fail) {
 
     }
 

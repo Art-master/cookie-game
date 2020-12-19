@@ -21,6 +21,7 @@ import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Prefs
 import com.run.cookie.run.game.actors.loading_progress.Background
 import com.run.cookie.run.game.actors.loading_progress.ProgressBar
+import com.run.cookie.run.game.api.Advertising
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.data.Descriptors
 import com.run.cookie.run.game.managers.AudioManager
@@ -46,6 +47,7 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         firstRun = prefs.getBoolean(Prefs.FIRST_RUN, true)
         if (firstRun) prefs.putBoolean(Prefs.FIRST_RUN, false).flush()
         ScreenManager.setGlobalParameter(FIRST_APP_RUN, firstRun)
+        ScreenManager.setGlobalParameter(AD, Advertising())
 
         manager.load(Descriptors.progressBar)
         manager.finishLoadingAsset<AssetDescriptor<TextureAtlas>>(Descriptors.progressBar)

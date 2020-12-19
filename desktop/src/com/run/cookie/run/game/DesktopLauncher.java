@@ -2,6 +2,7 @@ package com.run.cookie.run.game;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.run.cookie.run.game.services.AdsCallback;
 import com.run.cookie.run.game.services.AdsController;
 import com.run.cookie.run.game.services.CallBack;
 import com.run.cookie.run.game.services.ServicesController;
@@ -58,12 +59,12 @@ public class DesktopLauncher {
         }
 
         @Override
-        public void showInterstitialAd(@Nullable Runnable then) {
+        public void showInterstitialAd(@NotNull AdsCallback then, @Nullable Runnable fail) {
 
         }
 
         @Override
-        public void showVideoAd(@Nullable Runnable then) {
+        public void showVideoAd(@Nullable Runnable then, @NotNull Runnable fail) {
 
         }
 

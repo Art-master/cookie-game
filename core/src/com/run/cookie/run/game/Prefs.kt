@@ -7,4 +7,5 @@ object Prefs {
     const val VIBRATION = "vibration"
     const val BEST_SCORE = "bestScore"
     const val FIRST_RUN = "firstRun"
+    const val ADVERTISING = "advertising"
 }
