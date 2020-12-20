@@ -23,7 +23,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
     private var controller = params[SERVICES_CONTROLLER] as ServicesController
     private var score = params[SCORE] as Int
-    private var advertizing = params[FIRST_APP_RUN] as Advertising
+    private var advertising = params[AD] as Advertising
 
     private val scoresActor = Scores(manager, score)
 
@@ -31,6 +31,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
     init {
         Gdx.input.inputProcessor = stage
+        adsController.showBannerAd()
         if (controller.isSignedIn() && score > scoresActor.bestScoreNum) {
             controller.submitScore(score.toLong())
         }
@@ -107,6 +108,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             controller.share(score)
         }
         addClickListener(mainMenu) {
+            adsController.hideBannerAd()
             restartIcon.animate(HIDE_FROM_SCENE)
             scoresActor.animate(HIDE_FROM_SCENE)
             topScores.animate(HIDE_FROM_SCENE)
@@ -128,7 +130,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
                         }
 
                         override fun click() {
-                            advertizing.commonClickCount++
+                            advertising.commonClickCount++
                             ScreenManager.setScreen(screen)
                         }
 
@@ -143,35 +145,37 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
     }
 
     private fun showAddIfNeedAndSetScreenAfter(callback: AdsCallback) {
-        val lastAd = advertizing.last
+        val lastAd = advertising.last
         val minCountOneByOne = 2
 
-        if (advertizing.commonClickCount > 5) callback.close()
+        if (advertising.commonClickCount > 5) callback.close()
 
         if (lastAd.type == Advertising.AdType.NONE && lastAd.lastCountOneByOne == minCountOneByOne) {
-            val index = advertizing.history.size - 2
+            val index = advertising.history.size - 2
 
-            if (advertizing.history.elementAtOrNull(index) != null) {
-                val prev = advertizing.history[index]
+            if (advertising.history.elementAtOrNull(index) != null) {
+                val prev = advertising.history[index]
                 if (prev.type == Advertising.AdType.VIDEO) {
+
                     prev.type = Advertising.AdType.INTERSTITIAL
                     adsController.showInterstitialAd(callback)
                 } else if (prev.type == Advertising.AdType.INTERSTITIAL) {
+                    advertising.last = Advertising.Adv()
                     prev.type = Advertising.AdType.VIDEO
                     adsController.showVideoAd(callback)
                 }
-
             } else {
-                advertizing.last = Advertising.Adv()
-                advertizing.last.type = Advertising.AdType.INTERSTITIAL
+                advertising.last = Advertising.Adv()
+                advertising.last.type = Advertising.AdType.INTERSTITIAL
                 adsController.showInterstitialAd(callback)
             }
         } else if (lastAd.type == Advertising.AdType.NONE) {
             lastAd.type = Advertising.AdType.NONE
             lastAd.lastCountOneByOne++
+            callback.close()
         }
-        advertizing.last.timeMs = System.currentTimeMillis()
-        advertizing.last.lastCountOneByOne++
+        advertising.last.timeMs = System.currentTimeMillis()
+        advertising.last.lastCountOneByOne++
     }
 
 

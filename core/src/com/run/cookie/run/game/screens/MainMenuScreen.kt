@@ -21,7 +21,6 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
     init {
         Gdx.input.inputProcessor = stage
-        if (firstAppRun.not()) adsController.showBannerAd()
     }
 
     override fun hide() {
@@ -84,12 +83,10 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         addClickListener(cookieStoryIcon) {
             AudioManager.play(SoundApp.CLICK_SOUND)
             ScreenManager.setScreen(COMICS_SCREEN, Pair(SCREEN_LINK, MAIN_MENU_SCREEN))
-            if (firstAppRun.not()) adsController.hideBannerAd()
         }
 
         addClickListener(playButton) {
             AudioManager.play(SoundApp.CRUNCH)
-            if (firstAppRun.not()) adsController.hideBannerAd()
             playButton.animate(AnimationType.HIDE_FROM_SCENE)
             title.animate(AnimationType.HIDE_FROM_SCENE)
             musicIcon.animate(AnimationType.HIDE_FROM_SCENE)

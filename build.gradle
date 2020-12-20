@@ -65,11 +65,12 @@ project(":android") {
 
     dependencies {
         implementation project(":core")
+        implementation platform('com.google.firebase:firebase-bom:26.1.1')
+        implementation 'com.google.firebase:firebase-analytics'
+        implementation 'com.google.android.gms:play-services-basement:17.5.0'
         implementation 'com.google.android.gms:play-services-ads:19.6.0'
         implementation 'com.google.android.gms:play-services-games:21.0.0'
         implementation "com.google.android.gms:play-services-auth:19.0.0"
-        implementation platform('com.google.firebase:firebase-bom:26.1.1')
-        implementation 'com.google.firebase:firebase-analytics'
         implementation 'com.android.support:multidex:1.0.3'
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"

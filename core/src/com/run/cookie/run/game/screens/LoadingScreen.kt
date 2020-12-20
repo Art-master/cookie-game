@@ -51,7 +51,6 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
         manager.load(Descriptors.progressBar)
         manager.finishLoadingAsset<AssetDescriptor<TextureAtlas>>(Descriptors.progressBar)
-        if (firstRun.not()) adsManager.showBannerAd()
 
         Gdx.input.inputProcessor = stage
     }
@@ -73,7 +72,6 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
             Timer.schedule(object : Timer.Task() {
                 override fun run() {
-                    adsManager.hideBannerAd()
                     setTexturesFilters(manager.get(Descriptors.background))
                     setTexturesFilters(manager.get(Descriptors.gameOverBackground))
                     setTexturesFilters(manager.get(Descriptors.comics))

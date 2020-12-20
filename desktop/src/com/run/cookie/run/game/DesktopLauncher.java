@@ -8,7 +8,6 @@ import com.run.cookie.run.game.services.CallBack;
 import com.run.cookie.run.game.services.ServicesController;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
@@ -59,16 +58,6 @@ public class DesktopLauncher {
         }
 
         @Override
-        public void showInterstitialAd(@NotNull AdsCallback then, @Nullable Runnable fail) {
-
-        }
-
-        @Override
-        public void showVideoAd(@Nullable Runnable then, @NotNull Runnable fail) {
-
-        }
-
-        @Override
         public void signIn() {
 
         }
@@ -110,6 +99,16 @@ public class DesktopLauncher {
 
         @Override
         public void share(int score) {
+
+        }
+
+        @Override
+        public void showInterstitialAd(@NotNull AdsCallback then) {
+
+        }
+
+        @Override
+        public void showVideoAd(@NotNull AdsCallback then) {
 
         }
     }

@@ -1,7 +1,6 @@
 package com.run.cookie.run.game;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -60,15 +59,6 @@ public class IOSLauncher extends IOSApplication.Delegate implements AdsControlle
 
     }
 
-    @Override
-    public void showInterstitialAd(@NotNull AdsCallback then, @Nullable Runnable fail) {
-
-    }
-
-    @Override
-    public void showVideoAd(@Nullable Runnable then, @NotNull Runnable fail) {
-
-    }
 
     @Override
     public void signIn() {
@@ -112,6 +102,16 @@ public class IOSLauncher extends IOSApplication.Delegate implements AdsControlle
 
     @Override
     public void share(int score) {
+
+    }
+
+    @Override
+    public void showInterstitialAd(@NotNull AdsCallback then) {
+
+    }
+
+    @Override
+    public void showVideoAd(@NotNull AdsCallback then) {
 
     }
 }
