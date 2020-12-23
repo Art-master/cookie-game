@@ -153,7 +153,6 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         bannerAd.setAdUnitId(bannerAdUnitId);
         bannerAd.setAdSize(AdSize.BANNER);
 
-
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(interstitialAdUnitId);
         interstitialAd.loadAd(new AdRequest.Builder().build());
