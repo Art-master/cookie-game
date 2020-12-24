@@ -35,6 +35,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         if (controller.isSignedIn() && score > scoresActor.bestScoreNum) {
             controller.submitScore(score.toLong())
         }
+        ScreenManager.setGlobalParameter(FIRST_APP_RUN, false)
     }
 
     override fun hide() {
