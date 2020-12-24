@@ -28,13 +28,11 @@ import com.run.cookie.run.game.managers.AudioManager
 import com.run.cookie.run.game.managers.ScreenManager
 import com.run.cookie.run.game.managers.ScreenManager.Param.*
 import com.run.cookie.run.game.managers.ScreenManager.Screens.MAIN_MENU_SCREEN
-import com.run.cookie.run.game.services.AdsController
 
 
 class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private val manager = AssetManager()
-    private val adsManager = params[SERVICES_CONTROLLER] as AdsController
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
     private val stage = Stage(ExtendViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
 
@@ -49,10 +47,16 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         ScreenManager.setGlobalParameter(FIRST_APP_RUN, firstRun)
         ScreenManager.setGlobalParameter(AD, Advertising())
 
-        manager.load(Descriptors.progressBar)
-        manager.finishLoadingAsset<AssetDescriptor<TextureAtlas>>(Descriptors.progressBar)
+        loadStartResources()
+        initProgressBarActors()
+        loadResources()
 
         Gdx.input.inputProcessor = stage
+    }
+
+    private fun loadStartResources() {
+        manager.load(Descriptors.progressBar)
+        manager.finishLoadingAsset<AssetDescriptor<TextureAtlas>>(Descriptors.progressBar)
     }
 
     override fun hide() {
@@ -62,32 +66,33 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     override fun render(delta: Float) {
-        if (stage.actors.isEmpty && manager.isLoaded(Descriptors.progressBar)) {
-            initProgressBarActors()
-            loadResources()
+        if (progressBar?.progress != 100) {
+            if (manager.update()) {
+                progressBar?.progress = 100
+
+                Timer.schedule(object : Timer.Task() {
+                    override fun run() {
+                        loadResourcesFinished()
+                    }
+                }, 0.2f)
+
+            } else progressBar?.progress = (manager.progress * 100).toInt()
         }
-
-        if (manager.update()) {
-            progressBar?.setProgress(0.100f)
-
-            Timer.schedule(object : Timer.Task() {
-                override fun run() {
-                    setTexturesFilters(manager.get(Descriptors.background))
-                    setTexturesFilters(manager.get(Descriptors.gameOverBackground))
-                    setTexturesFilters(manager.get(Descriptors.comics))
-                    setTexturesFilters(manager.get(Descriptors.menu))
-                    setTexturesFilters(manager.get(Descriptors.cookie))
-                    setTexturesFilters(manager.get(Descriptors.environment))
-
-                    ScreenManager.setGlobalParameter(ASSET_MANAGER, manager)
-                    ScreenManager.setScreen(MAIN_MENU_SCREEN)
-                }
-            }, 0.2f)
-
-        } else progressBar?.setProgress(manager.progress)
 
         stage.act(delta)
         stage.draw()
+    }
+
+    private fun loadResourcesFinished() {
+        setTexturesFilters(manager.get(Descriptors.background))
+        setTexturesFilters(manager.get(Descriptors.gameOverBackground))
+        setTexturesFilters(manager.get(Descriptors.comics))
+        setTexturesFilters(manager.get(Descriptors.menu))
+        setTexturesFilters(manager.get(Descriptors.cookie))
+        setTexturesFilters(manager.get(Descriptors.environment))
+
+        ScreenManager.setGlobalParameter(ASSET_MANAGER, manager)
+        ScreenManager.setScreen(MAIN_MENU_SCREEN)
     }
 
     private fun setTexturesFilters(data: Disposable) {

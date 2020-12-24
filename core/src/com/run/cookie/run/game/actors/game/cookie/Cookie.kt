@@ -93,6 +93,7 @@ class Cookie(private val manager: AssetManager,
             }
             controlCookieVelocity()
         }
+        if(y < startY) y = startY // prevent falling
     }
 
     private fun updateGravity() {
@@ -235,7 +236,7 @@ class Cookie(private val manager: AssetManager,
         resetState()
         when (obj.structure) {
             Structure.STICKY -> slowMove()
-            Structure.JELLY -> initJump()
+            Structure.JELLY -> initJump(120, 100f, Config.GRAVITY)
             else -> {
             }
         }

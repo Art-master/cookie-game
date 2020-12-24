@@ -26,7 +26,7 @@ object Config {
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
         ADS(false),
-        CERTAIN_TABLE_ITEM(false, 20),
+        CERTAIN_TABLE_ITEM(false, 8),
     }
 
     enum class Achievement(val score: Int) {

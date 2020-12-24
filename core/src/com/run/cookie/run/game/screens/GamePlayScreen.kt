@@ -11,6 +11,7 @@ import com.run.cookie.run.game.DebugUtils
 import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.game.*
 import com.run.cookie.run.game.actors.game.cookie.*
+import com.run.cookie.run.game.actors.game.cookie.Cookie.State
 import com.run.cookie.run.game.api.AnimationType
 import com.run.cookie.run.game.api.Callback
 import com.run.cookie.run.game.api.Scrollable
@@ -74,7 +75,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
         stage.addListener(object : ClickListener() {
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
-                if (touchable && isWinGame.not()) {
+                if (cookie.state == State.RUN && touchable && isWinGame.not()) {
                     cookie.startJumpForce()
                     AudioManager.play(AudioManager.SoundApp.JUMP)
                     VibrationManager.cancel()

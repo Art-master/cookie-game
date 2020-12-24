@@ -15,6 +15,14 @@ class ProgressBar(manager : AssetManager) : GameActor() {
     private var progressLineWidth = 0f
     private val progressLineHeight = progressLineRegion.originalHeight.toFloat()
 
+    var progress = 0
+    set(value) {
+        field = value
+        progressLineWidth = if(value == 100){
+            progressLineRegion.originalWidth.toFloat()
+        } else ((progressLineRegion.originalWidth / 100) * progress).toFloat()
+    }
+
     init {
         width = barRegion.originalWidth.toFloat()
         height = barRegion.originalHeight.toFloat()
@@ -31,11 +39,5 @@ class ProgressBar(manager : AssetManager) : GameActor() {
 
     private fun drawProgress(batch: Batch){
         batch.draw(progressLineRegion, x + 15, y + 15, progressLineWidth, progressLineHeight)
-    }
-
-    fun setProgress(progress: Float) {
-        progressLineWidth = if(progress == 0.1f){
-            progressLineRegion.originalWidth.toFloat()
-        } else (progressLineRegion.originalWidth / 100) * (progress * 100)
     }
 }
