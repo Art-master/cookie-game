@@ -27,6 +27,7 @@ object Config {
         PLAY_SERVICES(false),
         ADS(false),
         CERTAIN_TABLE_ITEM(false, 8),
+        MAX_SPEED(false),
     }
 
     enum class Achievement(val score: Int) {
@@ -39,9 +40,11 @@ object Config {
         FINISH_GAME(623)
     }
 
-    const val DEFAULT_SCROLL_SPEED = -200f
+    const val SPEED_INCREASE_STEP = -0.8f
+    private const val NORMAL_SPEED = -200f
+    private val maxSpeed = (Achievement.FINISH_GAME.score / 10) * SPEED_INCREASE_STEP
+    val DEFAULT_SCROLL_SPEED = if(Debug.MAX_SPEED.state) NORMAL_SPEED + maxSpeed else -200f
     var currentScrollSpeed = DEFAULT_SCROLL_SPEED
-    const val SPEED_INCREASE_STEP = -5f
 
     enum class ItemScrollSpeed(var calc: () -> Float) {
         NONE({ 0f }),
