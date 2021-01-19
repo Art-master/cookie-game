@@ -14,11 +14,14 @@ open class HorizontalScroll(val originX: Float,
     var isScrolledLeft = false
     var isStopMove = false
 
-    open fun update(delta: Float) {
-        if(!isStopMove) position.add(velocity.cpy().scl(delta))
+    open fun act(delta: Float) {
+        if (!isStopMove) {
+            position.add(velocity.x * delta, velocity.y * delta)
+        }
 
         if (getTailX() < 0) isScrolledLeft = true
     }
+
     open fun reset(newX: Float = originX) {
         position.x = newX
         isScrolledLeft = false
@@ -30,10 +33,11 @@ open class HorizontalScroll(val originX: Float,
     open fun setX(x: Float) {
         position.x = x
     }
+
     open fun getY() = position.y
 
     open fun update(x: Float = position.x, y: Float = position.y, width: Int = this.width,
-                    height: Int = this.height, speed: Config.ItemScrollSpeed = scrollSpeed){
+                    height: Int = this.height, speed: Config.ItemScrollSpeed = scrollSpeed) {
         position.x = x
         position.y = y
         this.width = width

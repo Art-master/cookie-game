@@ -51,7 +51,7 @@ class Cupboard(val manager: AssetManager, originY: Float) : GameActor(), Scrolla
 
     override fun act(delta: Float) {
         super.act(delta)
-        scroll.update(delta)
+        scroll.act(delta)
         x = scroll.getX()
         if (distance != 0 && Config.WIDTH_GAME - tailX >= distance) {
             distancePastListener.invoke()

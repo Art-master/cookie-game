@@ -23,7 +23,7 @@ class RandomTableItem(private val manager: AssetManager,
 
     private val rand = Random()
     private val texture = manager.get(Descriptors.environment)
-    private lateinit var region: TextureAtlas.AtlasRegion
+    private var region: TextureAtlas.AtlasRegion = texture.findRegion(Assets.EnvironmentAtlas.BLACK)
 
     private var startBound = Rectangle()
     private var bound = Rectangle()
@@ -33,7 +33,7 @@ class RandomTableItem(private val manager: AssetManager,
     private lateinit var scroller: HorizontalScroll
 
     private var jumpOnSound: AudioManager.Audio? = null
-    var startAct = false
+    var allowUpdate = false
     var distanceUntil = 100
     var prevActor: RandomTableItem? = null
     var callback: Callback? = null
@@ -52,7 +52,7 @@ class RandomTableItem(private val manager: AssetManager,
 
     init {
         setRandomItem()
-        resetScroller()
+        scroller = getScroller()
         updateCoordinates()
         updateBound()
     }
@@ -60,11 +60,10 @@ class RandomTableItem(private val manager: AssetManager,
     fun isItemLeft() = scroller.isScrolledLeft
 
     override fun act(delta: Float) {
-        super.act(delta)
         checkDistance()
-        if (startAct) {
+        if (allowUpdate) {
             if (scroller.isScrolledLeft && isStopGeneration.not()) {
-                startAct = false
+                allowUpdate = false
                 isScored = false
                 setRandomItem()
                 resetScroller()
@@ -72,22 +71,28 @@ class RandomTableItem(private val manager: AssetManager,
             }
             cookie.checkCollides(this)
             updateCoordinates()
-            scroller.update(delta)
+            scroller.act(delta)
             updateBound()
             isGoThrough(cookie)
         }
+        super.act(delta)
     }
 
     private fun checkDistance() {
         if (prevActor != null) {
-            if (prevActor!!.startAct.not() && screenWidth - scroller.getTailX() >= distanceUntil) {
-                prevActor!!.startAct = true
+            if (prevActor!!.allowUpdate.not() && screenWidth - scroller.getTailX() >= distanceUntil) {
+                prevActor!!.allowUpdate = true
             }
         }
     }
 
     private fun resetScroller() {
-        scroller = HorizontalScroll(screenWidth, y,
+        scroller.reset()
+        scroller.update(screenWidth, y, region.originalWidth, region.originalHeight)
+    }
+
+    private fun getScroller(): HorizontalScroll {
+        return HorizontalScroll(screenWidth, y,
                 region.originalWidth, region.originalHeight, Config.ItemScrollSpeed.LEVEL_2)
     }
 
@@ -298,25 +303,23 @@ class RandomTableItem(private val manager: AssetManager,
                 structure = Structure.NORMAL
             }
         }
+        height = region.originalHeight.toFloat()
+        width = region.originalWidth.toFloat()
     }
 
     private fun updateCoordinates() {
-        height = scroller.height.toFloat()
-        width = scroller.width.toFloat()
         x = scroller.getX()
         y = scroller.getY()
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        val width = region.originalWidth.toFloat()
-        val height = region.originalHeight.toFloat()
-        if (startAct) batch!!.draw(region, x, y, x, y, width, height, scaleX, scaleY, rotation)
+        if (allowUpdate) batch!!.draw(region, x, y, x, y, width, height, scaleX, scaleY, rotation)
         debugCollidesIfEnable(batch, manager)
     }
 
     private fun isGoThrough(actor: Actor) {
-        val actorMiddlePoint = actor.x + actor.width / 2
-        val itemMiddlePoint = scroller.getTailX() - scroller.width / 2
+        val actorMiddlePoint = actor.right / 2
+        val itemMiddlePoint = scroller.getX() + scroller.width / 2
 
         if (!isScored && actorMiddlePoint >= itemMiddlePoint) {
             isScored = true

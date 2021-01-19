@@ -50,7 +50,7 @@ class TableItems(private val manager: AssetManager,
     }
 
     private fun startFirst() {
-        actionItems[0].startAct = true
+        actionItems[0].allowUpdate = true
     }
 
     fun isAllObjectLeft(): Boolean {

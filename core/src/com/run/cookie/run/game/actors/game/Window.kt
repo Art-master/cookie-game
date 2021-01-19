@@ -43,7 +43,7 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable, Wa
 
     override fun act(delta: Float) {
         super.act(delta)
-        scroll.update(delta)
+        scroll.act(delta)
         x = scroll.getX()
         if (distance != 0 && Config.WIDTH_GAME - tailX >= distance) {
             distancePastListener.invoke()

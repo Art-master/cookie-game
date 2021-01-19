@@ -82,10 +82,10 @@ class Cookie(private val manager: AssetManager,
             updateActorState()
             position.add(velocity.cpy().scl(delta))
             updateCoordinates()
-            move.update(delta)
+            move.act(delta)
             controlCookieVelocity()
         } else if (state == State.WIN) {
-            move.update(delta)
+            move.act(delta)
             updateCoordinates()
             if (x >= startX) {
                 width = winnerRegion.originalWidth.toFloat()

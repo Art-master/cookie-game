@@ -24,8 +24,8 @@ class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
 
     override fun act(delta: Float) {
         super.act(delta)
-        scrollerBack.update(delta)
-        scrollerFront.update(delta)
+        scrollerBack.act(delta)
+        scrollerFront.act(delta)
 
         if (scrollerBack.isScrolledLeft) {
             scrollerBack.reset(scrollerFront.getTailX())

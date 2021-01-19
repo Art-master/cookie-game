@@ -32,7 +32,7 @@ class JumpDust(manager: AssetManager, private val cookie: Cookie) : GameActor(),
     override fun act(delta: Float) {
         super.act(delta)
 
-        move.update(delta)
+        move.act(delta)
         x = move.getX()
         if (jumpDustAnimation != null && jumpDustAnimation!!.isAnimationFinished(runTime)) {
             jumpDustAnimation = null
