@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
@@ -65,8 +66,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIRED;
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.COLLECTION_PUBLIC;
@@ -125,9 +124,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     private void initAdsIdentifier() {
         boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
         if (isDebuggable) {
-            List<String> testDeviceIds = Collections.singletonList(getString(R.string.test_device_id));
-            RequestConfiguration configuration =
-                    new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
+            RequestConfiguration configuration = new RequestConfiguration.Builder().build();
             MobileAds.setRequestConfiguration(configuration);
 
             bannerAdUnitId = getString(Config.Debug.ADS.getState()
@@ -149,7 +146,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     public void setupAds() {
         bannerAd = new AdView(this);
         bannerAd.setVisibility(View.INVISIBLE);
-        bannerAd.setBackgroundColor(0xff000000); // black
+        bannerAd.setBackgroundColor(Color.argb(1,1,1,1)); // transparent
         bannerAd.setAdUnitId(bannerAdUnitId);
         bannerAd.setAdSize(AdSize.BANNER);
 

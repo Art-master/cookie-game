@@ -25,9 +25,11 @@ object Config {
         PERIODIC_JUMP(false),
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
-        ADS(false),
+        ADS(true),
         CERTAIN_TABLE_ITEM(false, 8),
         MAX_SPEED(false),
+        PROFILLER(false),
+        FPS(true),
     }
 
     enum class Achievement(val score: Int) {

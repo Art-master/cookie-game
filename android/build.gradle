@@ -87,7 +87,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.tapcon.game/com.tapcon.game.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.run.cookie.run.game/com.run.cookie.run.game.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"

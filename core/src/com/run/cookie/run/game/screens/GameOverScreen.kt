@@ -153,7 +153,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
         if (lastAd.type == Advertising.AdType.NONE && lastAd.lastCountOneByOne == minCountOneByOne) {
             val index = advertising.history.size - 2
-
+            lastAd.lastCountOneByOne = 0
             if (advertising.history.elementAtOrNull(index) != null) {
                 val prev = advertising.history[index]
                 if (prev.type == Advertising.AdType.VIDEO) {
@@ -170,13 +170,12 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
                 advertising.last.type = Advertising.AdType.INTERSTITIAL
                 adsController.showInterstitialAd(callback)
             }
-        } else if (lastAd.type == Advertising.AdType.NONE) {
+        } else {
             lastAd.type = Advertising.AdType.NONE
             lastAd.lastCountOneByOne++
+            advertising.last.timeMs = System.currentTimeMillis()
             callback.close()
         }
-        advertising.last.timeMs = System.currentTimeMillis()
-        advertising.last.lastCountOneByOne++
     }
 
 

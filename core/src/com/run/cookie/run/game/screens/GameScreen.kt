@@ -1,8 +1,11 @@
 package com.run.cookie.run.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.FPSLogger
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.profiling.GLProfiler
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FillViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
@@ -22,11 +25,21 @@ abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     private val stageShadow = Stage(FillViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
     val shadow = Shadow(manager)
 
+    private var profiler: GLProfiler? = null
+    private var fpsLogger: FPSLogger? = null
+
     init {
         stageShadow.addActor(shadow)
+
+        if (Config.Debug.PROFILLER.state) {
+            profiler = GLProfiler(Gdx.graphics)
+            profiler!!.enable()
+        }
+
+        if (Config.Debug.FPS.state) fpsLogger = FPSLogger()
     }
 
-    fun applyStages(delta: Float){
+    fun applyStages(delta: Float) {
         stageBackground.viewport.apply()
         stageBackground.act(delta)
         stageBackground.draw()
@@ -38,9 +51,22 @@ abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         stageShadow.viewport.apply()
         stageShadow.act(delta)
         stageShadow.draw()
+
+        Gdx.graphics.gL30
+
+        profiler?.let {
+            val drawCalls = profiler!!.drawCalls.toFloat()
+            val textureBinds = profiler!!.textureBindings.toFloat()
+            println("===== render ======")
+            println("draw calls = $drawCalls")
+            println("texture binds = $textureBinds")
+            profiler!!.reset()
+        }
+
+        fpsLogger?.log()
     }
 
-    override fun dispose(){
+    override fun dispose() {
         stageBackground.dispose()
         stage.dispose()
         //stageShadow.dispose() // Early disposing lead to blink

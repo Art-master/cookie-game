@@ -10,9 +10,9 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.3' //error for version 3.4.4
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.11'
-        classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.12'
+        classpath 'com.google.gms:google-services:4.3.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 
     }
@@ -25,8 +25,8 @@ allprojects {
     version = '1.2'
     ext {
         appName = "run_cookie_run"
-        gdxVersion = '1.9.12'
-        roboVMVersion = '2.3.11'
+        gdxVersion = '1.9.13'
+        roboVMVersion = '2.3.12'
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
