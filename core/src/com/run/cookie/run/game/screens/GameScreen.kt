@@ -31,7 +31,7 @@ abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     init {
         stageShadow.addActor(shadow)
 
-        if (Config.Debug.PROFILLER.state) {
+        if (Config.Debug.PROFILER.state) {
             profiler = GLProfiler(Gdx.graphics)
             profiler!!.enable()
         }
@@ -51,8 +51,6 @@ abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         stageShadow.viewport.apply()
         stageShadow.act(delta)
         stageShadow.draw()
-
-        Gdx.graphics.gL30
 
         profiler?.let {
             val drawCalls = profiler!!.drawCalls.toFloat()

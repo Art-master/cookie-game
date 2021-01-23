@@ -30,7 +30,7 @@ class RandomTableItem(private val manager: AssetManager,
 
     private val screenWidth = Config.WIDTH_GAME
 
-    private lateinit var scroller: HorizontalScroll
+    private var scroller: HorizontalScroll
 
     private var jumpOnSound: AudioManager.Audio? = null
     var allowUpdate = false

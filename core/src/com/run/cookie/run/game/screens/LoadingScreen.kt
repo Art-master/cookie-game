@@ -84,23 +84,8 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     private fun loadResourcesFinished() {
-        setTexturesFilters(manager.get(Descriptors.background))
-        setTexturesFilters(manager.get(Descriptors.gameOverBackground))
-        setTexturesFilters(manager.get(Descriptors.comics))
-        setTexturesFilters(manager.get(Descriptors.menu))
-        setTexturesFilters(manager.get(Descriptors.cookie))
-        setTexturesFilters(manager.get(Descriptors.environment))
-
         ScreenManager.setGlobalParameter(ASSET_MANAGER, manager)
         ScreenManager.setScreen(MAIN_MENU_SCREEN)
-    }
-
-    private fun setTexturesFilters(data: Disposable) {
-        if (data is Texture) {
-            data.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        } else if (data is TextureAtlas) {
-            data.textures.forEach { it.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear) }
-        }
     }
 
     private fun initProgressBarActors() {
