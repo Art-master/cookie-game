@@ -11,12 +11,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 object Descriptors {
 
     private val textureParams = TextureLoader.TextureParameter().apply {
-        minFilter = Texture.TextureFilter.Linear
         genMipMaps = true
         loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
             run {
                 assetManager.get<Texture>(fileName).
-                setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
             }
         }
     }
@@ -26,7 +25,7 @@ object Descriptors {
         loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
             run {
                 assetManager.get<TextureAtlas>(fileName).textures.forEach {
-                    it.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                    it.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
                 }
             }
         }

@@ -52,6 +52,7 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         loadResources()
 
         Gdx.input.inputProcessor = stage
+        Texture.setAssetManager(manager)
     }
 
     private fun loadStartResources() {

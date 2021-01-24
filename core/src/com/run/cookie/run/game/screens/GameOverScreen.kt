@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.run.cookie.run.game.actors.game_over_screen.*
 import com.run.cookie.run.game.api.Advertising
+import com.run.cookie.run.game.api.Advertising.AdType
+import com.run.cookie.run.game.api.Advertising.Adv
 import com.run.cookie.run.game.api.AnimationType.*
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.managers.AudioManager
@@ -18,6 +20,7 @@ import com.run.cookie.run.game.managers.ScreenManager.Screens.MAIN_MENU_SCREEN
 import com.run.cookie.run.game.managers.VibrationManager
 import com.run.cookie.run.game.services.AdsCallback
 import com.run.cookie.run.game.services.ServicesController
+import java.util.*
 
 class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params) {
 
@@ -28,6 +31,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
     private val scoresActor = Scores(manager, score)
 
     private var wasWinGame = params[WAS_WIN_GAME] as Boolean?
+
+    private var newScreen: ScreenManager.Screens? = null
 
     init {
         Gdx.input.inputProcessor = stage
@@ -47,6 +52,11 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
     override fun render(delta: Float) {
         if (stage.actors.isEmpty) addActorsToStage()
         applyStages(delta)
+
+        newScreen?.let {
+            ScreenManager.setScreen(newScreen!!)
+            newScreen = null
+        }
     }
 
     private fun addActorsToStage() {
@@ -127,52 +137,49 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             showAddIfNeedAndSetScreenAfter(
                     object : AdsCallback {
                         override fun close() {
-                            ScreenManager.setScreen(screen)
+                            newScreen = screen
                         }
 
                         override fun click() {
                             advertising.commonClickCount++
-                            ScreenManager.setScreen(screen)
+                            newScreen = screen
                         }
 
                         override fun fail() {
-                            ScreenManager.setScreen(screen)
+                            newScreen = screen
                         }
 
-                    })
-        } else {
-            ScreenManager.setScreen(screen)
-        }
+                    }, screen)
+        } else newScreen = screen
     }
 
-    private fun showAddIfNeedAndSetScreenAfter(callback: AdsCallback) {
+    private fun showAddIfNeedAndSetScreenAfter(callback: AdsCallback, screen: ScreenManager.Screens) {
         val lastAd = advertising.last
         val minCountOneByOne = 2
 
+        Timer().schedule(object : TimerTask() {
+            override fun run() {
+                newScreen = screen
+            }
+        }, 5 * 1000)
+
+        try {
+            adsController.showVideoAd(callback)
+        } catch (e: Exception) {
+            callback.close()
+        }
+
+
         if (advertising.commonClickCount > 5) callback.close()
 
-        if (lastAd.type == Advertising.AdType.NONE && lastAd.lastCountOneByOne == minCountOneByOne) {
-            val index = advertising.history.size - 2
+        if (lastAd.type == AdType.NONE && lastAd.lastCountOneByOne == minCountOneByOne) {
             lastAd.lastCountOneByOne = 0
-            if (advertising.history.elementAtOrNull(index) != null) {
-                val prev = advertising.history[index]
-                if (prev.type == Advertising.AdType.VIDEO) {
-
-                    prev.type = Advertising.AdType.INTERSTITIAL
-                    adsController.showInterstitialAd(callback)
-                } else if (prev.type == Advertising.AdType.INTERSTITIAL) {
-                    advertising.last = Advertising.Adv()
-                    prev.type = Advertising.AdType.VIDEO
-                    adsController.showVideoAd(callback)
-                }
-            } else {
-                advertising.last = Advertising.Adv()
-                advertising.last.type = Advertising.AdType.INTERSTITIAL
-                adsController.showInterstitialAd(callback)
-            }
+            advertising.last = Adv(AdType.INTERSTITIAL)
+            adsController.showInterstitialAd(callback)
         } else {
-            lastAd.type = Advertising.AdType.NONE
-            lastAd.lastCountOneByOne++
+            if (lastAd.type != AdType.NONE) {
+                advertising.last = Adv()
+            } else lastAd.lastCountOneByOne++
             advertising.last.timeMs = System.currentTimeMillis()
             callback.close()
         }

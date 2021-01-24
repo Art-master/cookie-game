@@ -35,6 +35,8 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
@@ -66,6 +68,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIRED;
 import static com.google.android.gms.games.leaderboard.LeaderboardVariant.COLLECTION_PUBLIC;
@@ -77,7 +81,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     private String interstitialAdUnitId = "";
     private String interstitialVideoId = "";
 
-    private int RC_SIGN_IN = 1;
+    private final int RC_SIGN_IN = 1;
     // -- Leaderboard variables
     private static final int RC_LEADERBOARD_UI = 9004;
     private static final String LOG_TAG = "ANDROID_APP";
@@ -91,7 +95,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initAdsIdentifier();
+        initAdsIdentifiers();
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -100,7 +104,9 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         View gameView = initializeForView(new GdxGame(this), config);
+
         setupAds();
+
         RelativeLayout layout = new RelativeLayout(this);
         layout.addView(gameView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -121,32 +127,34 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build());
     }
 
-    private void initAdsIdentifier() {
+    private void initAdsIdentifiers() {
         boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
-        if (isDebuggable) {
-            RequestConfiguration configuration = new RequestConfiguration.Builder().build();
-            MobileAds.setRequestConfiguration(configuration);
+        List<String> testDeviceIds = Collections.singletonList(getString(R.string.test_device_id));
+        RequestConfiguration configuration =
+                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
 
-            bannerAdUnitId = getString(Config.Debug.ADS.getState()
-                    ? R.string.test_ad_banner_id :
-                    R.string.ad_banner_id);
-            interstitialAdUnitId = getString(Config.Debug.ADS.getState()
-                    ? R.string.test_ad_interstitial_id :
-                    R.string.ad_interstitial_id);
-            interstitialVideoId = getString(Config.Debug.ADS.getState()
-                    ? R.string.test_ad_interstitial_video_id :
-                    R.string.ad_interstitial_video_id);
-        } else {
-            bannerAdUnitId = getString(R.string.ad_banner_id);
-            interstitialAdUnitId = getString(R.string.ad_interstitial_id);
-            interstitialVideoId = getString(R.string.ad_interstitial_video_id);
-        }
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        MobileAds.setRequestConfiguration(configuration);
+
+        bannerAdUnitId = getString(Config.Debug.ADS.getState() || isDebuggable
+                ? R.string.test_ad_banner_id :
+                R.string.ad_banner_id);
+        interstitialAdUnitId = getString(Config.Debug.ADS.getState() || isDebuggable
+                ? R.string.test_ad_interstitial_id :
+                R.string.ad_interstitial_id);
+        interstitialVideoId = getString(Config.Debug.ADS.getState() || isDebuggable
+                ? R.string.test_ad_interstitial_video_id :
+                R.string.ad_interstitial_video_id);
     }
 
     public void setupAds() {
         bannerAd = new AdView(this);
         bannerAd.setVisibility(View.INVISIBLE);
-        bannerAd.setBackgroundColor(Color.argb(1,1,1,1)); // transparent
+        bannerAd.setBackgroundColor(Color.argb(1, 1, 1, 1)); // transparent
         bannerAd.setAdUnitId(bannerAdUnitId);
         bannerAd.setAdSize(AdSize.BANNER);
 

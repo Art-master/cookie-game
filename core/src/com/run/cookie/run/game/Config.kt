@@ -10,9 +10,9 @@ object Config {
     const val SOUNDS_FOLDER = "sounds/"
 
     //Cookie
-    const val GRAVITY = -50f
-    const val VELOCITY_JUMP = 50f
-    const val MAX_JUMP_HEIGHT = 200
+    const val GRAVITY = -100f
+    const val VELOCITY_JUMP = 100f
+    const val MAX_JUMP_HEIGHT = 140
 
     //Kitchen items
     const val MIN_CUPBOARD_ITEMS_COUNT_ON_TABLE = 4

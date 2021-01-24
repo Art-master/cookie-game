@@ -13,6 +13,6 @@ class Advertising {
     }
     var history = ArrayList<Adv>()
 
-    data class Adv(var timeMs: Long = 0, var type: AdType = AdType.NONE, var lastCountOneByOne: Int = 1)
+    data class Adv(var type: AdType = AdType.NONE, var timeMs: Long = 0, var lastCountOneByOne: Int = 1)
 }
 

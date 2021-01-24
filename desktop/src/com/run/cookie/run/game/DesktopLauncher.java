@@ -13,7 +13,6 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.vSyncEnabled = true;
-        config.useGL30 = true;
         config.title = "Run, Cookie, run";
         config.width = 1920;
         config.height = 1080;
