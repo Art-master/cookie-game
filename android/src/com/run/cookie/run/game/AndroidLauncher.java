@@ -25,23 +25,21 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidGraphics;
 import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdValue;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.OnPaidEventListener;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -95,7 +93,6 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initAdsIdentifiers();
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -105,17 +102,12 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         View gameView = initializeForView(new GdxGame(this), config);
 
-        setupAds();
-
         RelativeLayout layout = new RelativeLayout(this);
         layout.addView(gameView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-        layout.addView(bannerAd, params);
+        initAdsIdentifiers();
+        setupAds(layout);
 
         setContentView(layout);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -151,31 +143,98 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 R.string.ad_interstitial_video_id);
     }
 
-    public void setupAds() {
+    public void setupAds(RelativeLayout layout) {
+        loadInterstitialAd(null);
+        loadRewardedVideoAd(null);
+
         bannerAd = new AdView(this);
-        bannerAd.setVisibility(View.INVISIBLE);
+        bannerAd.setVisibility(View.VISIBLE);
         bannerAd.setBackgroundColor(Color.argb(1, 1, 1, 1)); // transparent
-        bannerAd.setAdUnitId(bannerAdUnitId);
         bannerAd.setAdSize(AdSize.BANNER);
+        bannerAd.setAdUnitId(bannerAdUnitId);
 
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(interstitialAdUnitId);
-        interstitialAd.loadAd(new AdRequest.Builder().build());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layout.addView(bannerAd, params);
+    }
 
-        //AdMob Rewarded Video
-        rewardedVideoAd = new RewardedAd(this, interstitialVideoId);
-        ServerSideVerificationOptions serverSideVerificationOptions =
-                new ServerSideVerificationOptions.Builder().setUserId("userId").build();
-        rewardedVideoAd.setServerSideVerificationOptions(serverSideVerificationOptions);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        rewardedVideoAd.setOnPaidEventListener(new OnPaidEventListener() {
+    private void loadInterstitialAd(final AdsCallback adsCallback) {
+        final FullScreenContentCallback callback = new FullScreenContentCallback(){
             @Override
-            public void onPaidEvent(AdValue adValue) {
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                if(adsCallback != null) adsCallback.fail();
+            }
 
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+                if(adsCallback != null) adsCallback.close();
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                interstitialAd = null;
+                if(adsCallback != null) adsCallback.close();
+            }
+        };
+
+        InterstitialAd.load(this, interstitialAdUnitId, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd ad) {
+                super.onAdLoaded(ad);
+                interstitialAd = ad;
+                interstitialAd.setFullScreenContentCallback(callback);
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
             }
         });
+    }
 
-        rewardedVideoAd.loadAd(adRequest, null);
+    private void loadRewardedVideoAd(final AdsCallback adsCallback) {
+        final FullScreenContentCallback callback = new FullScreenContentCallback(){
+            @Override
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                super.onAdFailedToShowFullScreenContent(adError);
+                if(adsCallback != null) adsCallback.fail();
+            }
+
+            @Override
+            public void onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent();
+                if(adsCallback != null) adsCallback.close();
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent();
+                interstitialAd = null;
+                if(adsCallback != null) adsCallback.close();
+            }
+        };
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        RewardedAd.load(this, interstitialVideoId, adRequest, new RewardedAdLoadCallback(){
+            @Override
+            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                super.onAdLoaded(rewardedAd);
+                rewardedVideoAd = rewardedAd;
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                rewardedVideoAd = null;
+                interstitialAd.setFullScreenContentCallback(callback);
+            }
+        });
     }
 
     @Override
@@ -215,7 +274,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
     @Override
     public boolean isInterstitialLoaded() {
-        return interstitialAd.isLoaded();
+        return interstitialAd != null;
     }
 
     @Override
@@ -224,9 +283,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
             @Override
             public void run() {
                 bannerAd.setVisibility(View.VISIBLE);
-                AdRequest.Builder builder = new AdRequest.Builder();
-                AdRequest ad = builder.build();
-                bannerAd.loadAd(ad);
+                bannerAd.loadAd(new AdRequest.Builder().build());
             }
         });
     }
@@ -246,35 +303,9 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (callback != null) {
-                    interstitialAd.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdClosed() {
-                            callback.close();
-                            AdRequest.Builder builder = new AdRequest.Builder();
-                            AdRequest ad = builder.build();
-                            interstitialAd.loadAd(ad);
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(LoadAdError loadAdError) {
-                            super.onAdFailedToLoad(loadAdError);
-                            callback.fail();
-                        }
-
-                        @Override
-                        public void onAdLoaded() {
-                            super.onAdLoaded();
-                        }
-                    });
-                }
-                if (interstitialAd.isLoaded()) {
-                    interstitialAd.show();
-                } else {
-                    AdRequest.Builder builder = new AdRequest.Builder();
-                    AdRequest ad = builder.build();
-                    interstitialAd.loadAd(ad);
-                }
+                if (interstitialAd != null) {
+                    interstitialAd.show(AndroidLauncher.this);
+                } else loadInterstitialAd(callback);
             }
         });
     }
@@ -305,35 +336,17 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (rewardedVideoAd.isLoaded()) {
-                    rewardedVideoAd.show(AndroidLauncher.this, new RewardedAdCallback() {
+                if (rewardedVideoAd != null) {
+                    rewardedVideoAd.show(AndroidLauncher.this, new OnUserEarnedRewardListener() {
                         @Override
                         public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
                             if (callback != null) callback.click();
                             AdRequest adRequest = new AdRequest.Builder().build();
                             rewardedVideoAd.loadAd(adRequest, null);
                         }
-
-                        @Override
-                        public void onRewardedAdClosed() {
-                            AdRequest adRequest = new AdRequest.Builder().build();
-                            rewardedVideoAd.loadAd(adRequest, null);
-                            if (callback != null) callback.close();
-                        }
-
-                        @Override
-                        public void onRewardedAdFailedToShow(AdError adError) {
-                            super.onRewardedAdFailedToShow(adError);
-                            if (callback != null) callback.fail();
-                        }
                     });
                 } else {
-                    rewardedVideoAd.loadAd(new AdRequest.Builder().build(), new RewardedAdLoadCallback() {
-                        @Override
-                        public void onRewardedAdLoaded() {
-
-                        }
-                    });
+                    loadRewardedVideoAd(callback);
                 }
             }
         });
@@ -607,5 +620,12 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, getString(R.string.share_window_header)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        bannerAd.resume();
     }
 }
