@@ -1,8 +1,8 @@
 
 environment.png
-size: 2048,2048
+size: 2048, 2048
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Nearest, Nearest
 repeat: none
 apple
   rotate: false
@@ -18,20 +18,6 @@ black
   orig: 1, 1
   offset: 0, 0
   index: -1
-box1
-  rotate: false
-  xy: 1360, 4
-  size: 465, 259
-  orig: 465, 259
-  offset: 0, 0
-  index: -1
-bread
-  rotate: false
-  xy: 1802, 724
-  size: 235, 257
-  orig: 235, 257
-  offset: 0, 0
-  index: -1
 cactus
   rotate: false
   xy: 1924, 1484
@@ -41,7 +27,7 @@ cactus
   index: -1
 circle_shadow
   rotate: false
-  xy: 1803, 1089
+  xy: 1260, 486
   size: 92, 34
   orig: 92, 34
   offset: 0, 0
@@ -104,60 +90,60 @@ cupboard_items
   index: 15
 cupboard_items
   rotate: false
-  xy: 1260, 1093
-  size: 98, 98
-  orig: 98, 98
-  offset: 0, 0
-  index: 8
-cupboard_items
-  rotate: false
-  xy: 1636, 994
-  size: 165, 129
-  orig: 165, 129
-  offset: 0, 0
-  index: 12
-cupboard_items
-  rotate: false
-  xy: 1636, 682
-  size: 158, 144
-  orig: 158, 144
-  offset: 0, 0
-  index: 9
-cupboard_items
-  rotate: false
-  xy: 1636, 558
-  size: 157, 122
-  orig: 157, 122
-  offset: 0, 0
-  index: 13
-cupboard_items
-  rotate: false
-  xy: 1636, 499
-  size: 52, 57
-  orig: 52, 57
-  offset: 0, 0
-  index: 14
-cupboard_items
-  rotate: false
-  xy: 1864, 185
-  size: 138, 126
-  orig: 138, 126
-  offset: 0, 0
-  index: 10
-cupboard_items
-  rotate: false
-  xy: 1827, 5
+  xy: 1909, 995
   size: 135, 178
   orig: 135, 178
   offset: 0, 0
   index: 3
 cupboard_items
   rotate: false
-  xy: 1964, 62
-  size: 61, 121
-  orig: 61, 121
+  xy: 1260, 747
+  size: 98, 98
+  orig: 98, 98
   offset: 0, 0
-  index: 5
+  index: 8
+cupboard_items
+  rotate: false
+  xy: 1260, 647
+  size: 97, 98
+  orig: 97, 98
+  offset: 0, 0
+  index: 7
+cupboard_items
+  rotate: false
+  xy: 1260, 522
+  size: 93, 123
+  orig: 93, 123
+  offset: 0, 0
+  index: 4
+cupboard_items
+  rotate: false
+  xy: 1260, 351
+  size: 90, 133
+  orig: 90, 133
+  offset: 0, 0
+  index: 19
+cupboard_items
+  rotate: false
+  xy: 1736, 2
+  size: 158, 144
+  orig: 158, 144
+  offset: 0, 0
+  index: 9
+cupboard_items
+  rotate: false
+  xy: 1909, 865
+  size: 88, 128
+  orig: 88, 128
+  offset: 0, 0
+  index: 18
+cupboard_items
+  rotate: false
+  xy: 1107, 288
+  size: 52, 57
+  orig: 52, 57
+  offset: 0, 0
+  index: 14
 curtain_art
   rotate: false
   xy: 508, 334
@@ -174,11 +160,18 @@ curtain_art
   index: 2
 curtain_art
   rotate: false
-  xy: 1260, 265
+  xy: 1360, 19
   size: 374, 826
   orig: 374, 826
   offset: 0, 0
   index: 4
+dune_box
+  rotate: false
+  xy: 1260, 847
+  size: 647, 344
+  orig: 647, 344
+  offset: 0, 0
+  index: -1
 flowerInPot
   rotate: false
   xy: 794, 2
@@ -193,13 +186,34 @@ flowerInPot2
   orig: 167, 244
   offset: 0, 0
   index: -1
-jam
+hand
   rotate: false
-  xy: 1827, 983
-  size: 215, 51
-  orig: 215, 51
+  xy: 1736, 674
+  size: 304, 171
+  orig: 304, 171
   offset: 0, 0
-  index: -1
+  index: 6
+hand
+  rotate: false
+  xy: 1736, 501
+  size: 303, 171
+  orig: 303, 171
+  offset: 0, 0
+  index: 7
+hand
+  rotate: false
+  xy: 1736, 328
+  size: 303, 171
+  orig: 303, 171
+  offset: 0, 0
+  index: 5
+hand
+  rotate: false
+  xy: 1736, 148
+  size: 302, 178
+  orig: 302, 178
+  offset: 0, 0
+  index: 1
 jam3
   rotate: false
   xy: 599, 260
@@ -207,25 +221,11 @@ jam3
   orig: 506, 72
   offset: 0, 0
   index: -1
-jam4
-  rotate: false
-  xy: 1360, 1125
-  size: 544, 66
-  orig: 544, 66
-  offset: 0, 0
-  index: -1
 lime
   rotate: false
-  xy: 1906, 1036
+  xy: 1896, 9
   size: 138, 137
   orig: 138, 137
-  offset: 0, 0
-  index: -1
-milk_box
-  rotate: false
-  xy: 1796, 496
-  size: 227, 226
-  orig: 227, 226
   offset: 0, 0
   index: -1
 open_box
@@ -233,13 +233,6 @@ open_box
   xy: 2, 8
   size: 397, 245
   orig: 397, 245
-  offset: 0, 0
-  index: -1
-orange
-  rotate: false
-  xy: 1636, 828
-  size: 164, 164
-  orig: 164, 164
   offset: 0, 0
   index: -1
 prolongationHand
@@ -270,13 +263,6 @@ table
   orig: 1920, 278
   offset: 0, 0
   index: -1
-tomato
-  rotate: false
-  xy: 1864, 313
-  size: 148, 181
-  orig: 148, 181
-  offset: 0, 0
-  index: -1
 white
   rotate: false
   xy: 2044, 2042
@@ -284,205 +270,233 @@ white
   orig: 1, 1
   offset: 0, 0
   index: -1
-yogurt_box
-  rotate: false
-  xy: 1636, 267
-  size: 226, 227
-  orig: 226, 227
-  offset: 0, 0
-  index: -1
 
 environment2.png
-size: 2048,2048
+size: 2048, 2048
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Nearest, Nearest
 repeat: none
-box2
+baby_cookies_box
   rotate: false
-  xy: 378, 540
-  size: 370, 232
-  orig: 370, 232
+  xy: 2, 64
+  size: 327, 305
+  orig: 327, 305
   offset: 0, 0
   index: -1
-box3
+bread
   rotate: false
-  xy: 2, 120
-  size: 327, 285
-  orig: 327, 285
+  xy: 1737, 1340
+  size: 235, 257
+  orig: 235, 257
   offset: 0, 0
   index: -1
-box4
+candy_box
   rotate: false
-  xy: 1672, 1383
-  size: 259, 218
-  orig: 259, 218
+  xy: 378, 280
+  size: 428, 475
+  orig: 428, 475
   offset: 0, 0
   index: -1
 catch_cookie
   rotate: false
-  xy: 750, 615
+  xy: 1437, 768
   size: 301, 194
   orig: 301, 194
   offset: 0, 0
   index: -1
 closeDoor
   rotate: false
-  xy: 738, 811
+  xy: 1090, 770
   size: 345, 422
   orig: 345, 422
   offset: 0, 0
   index: -1
 cupboard
   rotate: false
-  xy: 1201, 1603
+  xy: 378, 757
   size: 710, 440
   orig: 710, 440
   offset: 0, 0
   index: -1
 cupboard_items
   rotate: false
-  xy: 1913, 1910
-  size: 90, 133
-  orig: 90, 133
+  xy: 1970, 1886
+  size: 61, 121
+  orig: 61, 121
   offset: 0, 0
-  index: 19
+  index: 5
 cupboard_items
   rotate: false
-  xy: 1913, 1780
-  size: 88, 128
-  orig: 88, 128
-  offset: 0, 0
-  index: 18
-cupboard_items
-  rotate: false
-  xy: 1913, 1655
-  size: 93, 123
-  orig: 93, 123
-  offset: 0, 0
-  index: 4
-cupboard_items
-  rotate: false
-  xy: 684, 418
+  xy: 1970, 1764
   size: 60, 120
   orig: 60, 120
   offset: 0, 0
   index: 6
 cupboard_items
   rotate: false
-  xy: 1054, 535
-  size: 97, 98
-  orig: 97, 98
+  xy: 1700, 637
+  size: 165, 129
+  orig: 165, 129
   offset: 0, 0
-  index: 7
+  index: 12
+cupboard_items
+  rotate: false
+  xy: 1701, 513
+  size: 157, 122
+  orig: 157, 122
+  offset: 0, 0
+  index: 13
+cupboard_items
+  rotate: false
+  xy: 1701, 385
+  size: 138, 126
+  orig: 138, 126
+  offset: 0, 0
+  index: 10
 curtain_art
   rotate: false
-  xy: 2, 407
+  xy: 2, 371
   size: 374, 826
   orig: 374, 826
   offset: 0, 0
   index: 3
 hand
   rotate: false
-  xy: 378, 367
-  size: 304, 171
-  orig: 304, 171
-  offset: 0, 0
-  index: 6
-hand
-  rotate: false
-  xy: 331, 187
-  size: 302, 178
-  orig: 302, 178
-  offset: 0, 0
-  index: 1
-hand
-  rotate: false
-  xy: 750, 437
+  xy: 1396, 590
   size: 302, 176
   orig: 302, 176
   offset: 0, 0
   index: 2
 hand
   rotate: false
-  xy: 1085, 968
-  size: 303, 171
-  orig: 303, 171
-  offset: 0, 0
-  index: 7
-hand
-  rotate: false
-  xy: 1085, 795
-  size: 303, 171
-  orig: 303, 171
-  offset: 0, 0
-  index: 5
-hand
-  rotate: false
-  xy: 1390, 967
+  xy: 1397, 416
   size: 302, 172
   orig: 302, 172
   offset: 0, 0
   index: 3
 hand
   rotate: false
-  xy: 1390, 794
+  xy: 1397, 243
   size: 302, 171
   orig: 302, 171
   offset: 0, 0
   index: 4
+ice_cream_box
+  rotate: false
+  xy: 1201, 1262
+  size: 534, 335
+  orig: 534, 335
+  offset: 0, 0
+  index: -1
 ice_puddle
   rotate: false
-  xy: 331, 133
+  xy: 2, 10
   size: 293, 52
   orig: 293, 52
   offset: 0, 0
   index: -1
+jam
+  rotate: false
+  xy: 1737, 1287
+  size: 215, 51
+  orig: 215, 51
+  offset: 0, 0
+  index: -1
 jam2
   rotate: false
-  xy: 2, 2
+  xy: 1298, 187
   size: 425, 54
   orig: 425, 54
   offset: 0, 0
   index: -1
+jam4
+  rotate: false
+  xy: 1201, 1194
+  size: 544, 66
+  orig: 544, 66
+  offset: 0, 0
+  index: -1
 jam5
   rotate: false
-  xy: 2, 58
+  xy: 827, 2
   size: 431, 60
   orig: 431, 60
   offset: 0, 0
   index: -1
 jar_with_jam
   rotate: false
-  xy: 1201, 1141
+  xy: 1437, 964
   size: 460, 228
   orig: 460, 228
   offset: 0, 0
   index: -1
 jar_with_jam2
   rotate: false
-  xy: 1201, 1371
+  xy: 827, 64
   size: 469, 230
   orig: 469, 230
   offset: 0, 0
   index: -1
 jelly
   rotate: false
-  xy: 1053, 635
+  xy: 1298, 27
   size: 260, 158
   orig: 260, 158
   offset: 0, 0
   index: -1
+milk_box
+  rotate: false
+  xy: 1168, 313
+  size: 227, 226
+  orig: 227, 226
+  offset: 0, 0
+  index: -1
 openDoor
   rotate: false
-  xy: 378, 774
+  xy: 808, 296
   size: 358, 459
   orig: 358, 459
   offset: 0, 0
   index: -1
+orange
+  rotate: false
+  xy: 1560, 21
+  size: 164, 164
+  orig: 164, 164
+  offset: 0, 0
+  index: -1
+sweets_box
+  rotate: false
+  xy: 1201, 1599
+  size: 767, 408
+  orig: 767, 408
+  offset: 0, 0
+  index: -1
+tomato
+  rotate: false
+  xy: 1740, 781
+  size: 148, 181
+  orig: 148, 181
+  offset: 0, 0
+  index: -1
 window
   rotate: false
-  xy: 2, 1235
+  xy: 2, 1199
   size: 1197, 808
   orig: 1197, 808
+  offset: 0, 0
+  index: -1
+wormitash_box
+  rotate: false
+  xy: 331, 15
+  size: 494, 263
+  orig: 494, 263
+  offset: 0, 0
+  index: -1
+yogurt_box
+  rotate: false
+  xy: 1168, 541
+  size: 226, 227
+  orig: 226, 227
   offset: 0, 0
   index: -1

@@ -230,7 +230,7 @@ class Cookie(private val manager: AssetManager,
 
     private fun isForward(obj: RandomTableItem) = x < obj.getBoundsRect().x + 10
     private fun isHigherThen(obj: RandomTableItem) = y > getTop(obj) - 30
-    private fun aheadOfObj(obj: RandomTableItem) = x < obj.x + 30
+    private fun aheadOfObj(obj: RandomTableItem) = x < obj.getBoundsRect().x + 30
 
     private fun setOnTop(obj: RandomTableItem) {
         resetState()
