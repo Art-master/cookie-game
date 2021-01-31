@@ -16,7 +16,7 @@ object Config {
 
     //Kitchen items
     const val MIN_CUPBOARD_ITEMS_COUNT_ON_TABLE = 4
-    const val CUPBOARD_ITEMS_COUNT = 20
+    const val CUPBOARD_ITEMS_COUNT = 22
 
     enum class Debug(var state: Boolean, var info: Any = 0) {
         COLLISIONS(false),
