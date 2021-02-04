@@ -154,8 +154,6 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
-                score.animate(AnimationType.SCORE_INCREASE)
-                VibrationManager.vibrate()
                 controlItemsScrollSpeed()
                 when (score.scoreNum) {
                     Config.Achievement.SUNGLASSES.score -> {

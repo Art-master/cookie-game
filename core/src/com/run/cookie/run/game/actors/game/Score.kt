@@ -10,17 +10,29 @@ import com.run.cookie.run.game.api.Animated
 import com.run.cookie.run.game.api.AnimationType
 import com.run.cookie.run.game.api.GameActor
 import com.run.cookie.run.game.data.FontParam
+import com.run.cookie.run.game.managers.VibrationManager
 
-class Score(manager : AssetManager) : GameActor(), Animated {
+class Score(manager: AssetManager) : GameActor(), Animated {
     private var score: BitmapFont = manager.get(FontParam.SCORE.fontName)
     private val matrix = Matrix4()
+
     var scoreNum = 0
+        set(value) {
+            animate(AnimationType.SCORE_INCREASE)
+            VibrationManager.vibrate()
+            field = value
+        }
+
     private val symbolSize = 50
     private val paddingX = 300
 
     init {
         y = Config.HEIGHT_GAME - 50f
         setScale(1f)
+    }
+
+    override fun act(delta: Float) {
+        super.act(delta)
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -34,7 +46,7 @@ class Score(manager : AssetManager) : GameActor(), Animated {
     }
 
     override fun animate(type: AnimationType, runAfter: Runnable) {
-        if(type == AnimationType.SCORE_INCREASE){
+        if (type == AnimationType.SCORE_INCREASE) {
             val animDuration = 0.1f
             addAction(Actions.sequence(
                     Actions.scaleTo(1.01f, 1.01f, animDuration),

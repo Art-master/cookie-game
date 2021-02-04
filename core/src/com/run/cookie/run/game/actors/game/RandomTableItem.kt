@@ -78,6 +78,16 @@ class RandomTableItem(private val manager: AssetManager,
         super.act(delta)
     }
 
+    private fun isGoThrough(actor: Actor) {
+        val actorMiddlePoint = actor.right / 2
+        val itemMiddlePoint = scroller.getX() + scroller.width / 2
+
+        if (!isScored && actorMiddlePoint >= itemMiddlePoint) {
+            isScored = true
+            callbackGoThrough?.call()
+        }
+    }
+
     private fun checkDistance() {
         if (prevActor != null) {
             if (prevActor!!.allowUpdate.not() && screenWidth - scroller.getTailX() >= distanceUntil) {
@@ -326,15 +336,6 @@ class RandomTableItem(private val manager: AssetManager,
         debugCollidesIfEnable(batch, manager)
     }
 
-    private fun isGoThrough(actor: Actor) {
-        val actorMiddlePoint = actor.right / 2
-        val itemMiddlePoint = scroller.getX() + scroller.width / 2
-
-        if (!isScored && actorMiddlePoint >= itemMiddlePoint) {
-            isScored = true
-            callbackGoThrough?.call()
-        }
-    }
 
     override fun stopMove() {
         scroller.isStopMove = true
