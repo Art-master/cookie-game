@@ -26,7 +26,7 @@ object Config {
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
         ADS(true),
-        CERTAIN_TABLE_ITEM(false, 1),
+        CERTAIN_TABLE_ITEM(false, 17),
         MAX_SPEED(false),
         PROFILER(false),
         FPS(false)

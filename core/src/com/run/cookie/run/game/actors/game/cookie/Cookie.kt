@@ -211,7 +211,7 @@ class Cookie(private val manager: AssetManager,
 
             if (isHigherThen(obj)) {
                 setOnTop(obj)
-                obj.jumpedOn()
+                obj.jumpedOnAction()
             } else if (isForward(obj) && getTop(obj) - y < 20) {
                 setOnTop(obj)
             } else if(aheadOfObj(obj)) inFrontOfTheObject(obj)
@@ -229,7 +229,7 @@ class Cookie(private val manager: AssetManager,
     }
 
     private fun isForward(obj: RandomTableItem) = x < obj.getBoundsRect().x + 10
-    private fun isHigherThen(obj: RandomTableItem) = y > getTop(obj) - 30
+    private fun isHigherThen(obj: RandomTableItem) = y > getTop(obj) - 50
     private fun aheadOfObj(obj: RandomTableItem) = x < obj.getBoundsRect().x + 30
 
     private fun setOnTop(obj: RandomTableItem) {

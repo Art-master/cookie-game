@@ -30,9 +30,6 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     private val prolongationArmRegion = texture.findRegion(Assets.EnvironmentAtlas.PROLONGATION_HAND)
     private val handAnim = Animation(0.1f, handRegions, Animation.PlayMode.LOOP_PINGPONG)
 
-    private var handAnimTimer = Timer()
-    private var isTimerNeedRestart = true
-
     private val random = Random()
     private var runTime = 0f
     private val initPosition = Vector2(0f, Config.HEIGHT_GAME / 3f)
@@ -46,30 +43,23 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     private var isGameOverHandBackAnimation = false
     var isWinningAnimation = false
 
+    private var animationDelay = 0L
+    private var stopTimeMs = 0L
+
     init {
         width = handRegion.originalWidth.toFloat()
         height = handRegion.originalHeight.toFloat()
         this.x = -((width + initPosition.x) * 2)
         this.y = initPosition.y
-        updateAnimationTimerIfNeed()
+        updateAnimationTimerIfNeed(true)
     }
 
-    private fun updateAnimationTimerIfNeed() {
-        if (isTimerNeedRestart) {
-            isTimerNeedRestart = false
-            setAnimationHandTimer()
+    private fun updateAnimationTimerIfNeed(isInit: Boolean = false) {
+        if (isInit || System.currentTimeMillis() - stopTimeMs >= animationDelay) {
+            stopTimeMs = System.currentTimeMillis()
+            animationDelay = RandomK.nextLong(1000, 5000)
+            handAnim.frameDuration = RandomK.nextDouble(0.05, 0.2).toFloat()
         }
-    }
-
-    private fun setAnimationHandTimer() {
-        val handAnimationDurationTask = object : TimerTask() {
-            override fun run() {
-                handAnim.frameDuration = RandomK.nextDouble(0.05, 0.2).toFloat()
-                isTimerNeedRestart = true
-            }
-        }
-        val delay = RandomK.nextLong(1000, 5000)
-        handAnimTimer.schedule(handAnimationDurationTask, delay)
     }
 
     override fun act(delta: Float) {
@@ -80,7 +70,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     private fun updateFinishAnimationIfNeed() {
-        if(cookie.state == Cookie.State.STUMBLE){
+        if (cookie.state == Cookie.State.STUMBLE) {
             moveToCatchCookieAnimation?.setPosition(cookie.x - 120, cookie.y - 100)
         } else moveToCatchCookieAnimation?.setPosition(cookie.x - 120, cookie.y + 40)
     }

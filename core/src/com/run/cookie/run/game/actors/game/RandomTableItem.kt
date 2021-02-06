@@ -349,7 +349,7 @@ class RandomTableItem(private val manager: AssetManager,
         scroller.update()
     }
 
-    fun jumpedOn() {
+    fun jumpedOnAction() {
         if (jumpOnSound == null) return
         AudioManager.play(jumpOnSound!!)
     }
