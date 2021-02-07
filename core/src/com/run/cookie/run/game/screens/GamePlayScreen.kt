@@ -154,7 +154,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         actor.callbackGoThrough = object : Callback {
             override fun call() {
                 score.scoreNum++
-                controlItemsScrollSpeed()
+                controlItemsAppearance()
                 when (score.scoreNum) {
                     Config.Achievement.SUNGLASSES.score -> {
                         sunglasses.animate(AnimationType.SHOW_ON_SCENE, Runnable {
@@ -194,9 +194,10 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         }
     }
 
-    private fun controlItemsScrollSpeed() {
+    private fun controlItemsAppearance() {
         if (score.scoreNum % 10 == 0) {
             Config.currentScrollSpeed = Config.currentScrollSpeed + Config.SPEED_INCREASE_STEP
+            items.limitDistance -= Config.ITEMS_DISTANCE_INCREASE_STEP
             foreEachActor {
                 if (it is Scrollable) it.updateSpeed()
             }

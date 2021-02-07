@@ -13,7 +13,32 @@ class TableItems(private val manager: AssetManager,
     private val minDistance = 200
     private val random = Random(minDistance)
     private val randomItemNum = 5
-    private val limitDistance = minDistance + 300
+    var limitDistance = minDistance + 700
+
+    enum class Item(val index: Int = 1) {
+        SWEETS_BOX,
+        ICE_CREAM_BOX(SWEETS_BOX.index + 1),
+        CANDY_BOX(ICE_CREAM_BOX.index + 1),
+        BABY_COOKIES_BOX(CANDY_BOX.index + 1),
+        MILK_BOX(BABY_COOKIES_BOX.index + 1),
+        YOGURT_BOX(MILK_BOX.index + 1),
+        TOMATO(YOGURT_BOX.index + 1),
+        APPLE(TOMATO.index + 1),
+        LIME(APPLE.index + 1),
+        ORANGE(LIME.index + 1),
+        JAM(ORANGE.index + 1),
+        JAM2(JAM.index + 1),
+        JAM3(JAM2.index + 1),
+        JAM4(JAM3.index + 1),
+        JAM5(JAM4.index + 1),
+        JELLY(JAM5.index + 1),
+        JAR_WITH_JAM(JELLY.index + 1),
+        JAR_WITH_JAM_2(JAR_WITH_JAM.index + 1),
+        ICE_PUDDLE(JAR_WITH_JAM_2.index + 1),
+        PUSHPIN(ICE_PUDDLE.index + 1),
+        DUNE_BOX(PUSHPIN.index + 1),
+        WORMITASH_BOX(DUNE_BOX.index + 1),
+    }
 
     private val actionItems = Array<RandomTableItem>(randomItemNum)
     var isStopGenerate = false

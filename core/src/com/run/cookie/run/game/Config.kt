@@ -16,7 +16,6 @@ object Config {
 
     //Kitchen items
     const val MIN_CUPBOARD_ITEMS_COUNT_ON_TABLE = 4
-    const val CUPBOARD_ITEMS_COUNT = 22
 
     enum class Debug(var state: Boolean, var info: Any = 0) {
         COLLISIONS(false),
@@ -43,6 +42,7 @@ object Config {
     }
 
     const val SPEED_INCREASE_STEP = -0.8f
+    const val ITEMS_DISTANCE_INCREASE_STEP = 10 // For Game over == 600
     private const val NORMAL_SPEED = -200f
     private val maxSpeed = (Achievement.FINISH_GAME.score / 10) * SPEED_INCREASE_STEP
     val DEFAULT_SCROLL_SPEED = if (Debug.MAX_SPEED.state) NORMAL_SPEED + maxSpeed else -200f
