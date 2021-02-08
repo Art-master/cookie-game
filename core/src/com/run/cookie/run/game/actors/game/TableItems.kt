@@ -15,7 +15,7 @@ class TableItems(private val manager: AssetManager,
     private val randomItemNum = 5
     var limitDistance = minDistance + 700
 
-    enum class Item(val index: Int = 1) {
+    enum class Item(val index: Int = 1, val part: Int = 1) {
         SWEETS_BOX,
         ICE_CREAM_BOX(SWEETS_BOX.index + 1),
         CANDY_BOX(ICE_CREAM_BOX.index + 1),
@@ -37,8 +37,13 @@ class TableItems(private val manager: AssetManager,
         ICE_PUDDLE(JAR_WITH_JAM_2.index + 1),
         PUSHPIN(ICE_PUDDLE.index + 1),
         DUNE_BOX(PUSHPIN.index + 1),
-        WORMITASH_BOX(DUNE_BOX.index + 1),
+        WORMITASH_BOX(DUNE_BOX.index + 1)
     }
+
+    companion object {
+        val itemsArray = ArrayList<Int>(Item.values().size)
+    }
+
 
     private val actionItems = Array<RandomTableItem>(randomItemNum)
     var isStopGenerate = false
@@ -48,8 +53,16 @@ class TableItems(private val manager: AssetManager,
         }
 
     init {
+        initItemsArray()
         initTableItems()
         startFirst()
+    }
+
+    private fun initItemsArray() {
+        for (item in Item.values()) {
+            if (item.part == 0) continue
+            itemsArray.add(item.index)
+        }
     }
 
     /**

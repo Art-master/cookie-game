@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Config.Debug
+import com.run.cookie.run.game.actors.game.TableItems.Companion.itemsArray
 import com.run.cookie.run.game.actors.game.TableItems.Item.*
 import com.run.cookie.run.game.actors.game.cookie.Cookie
 import com.run.cookie.run.game.api.*
@@ -118,7 +119,8 @@ class RandomTableItem(private val manager: AssetManager,
         val tableItem = if (Debug.CERTAIN_TABLE_ITEM.state) {
             Debug.CERTAIN_TABLE_ITEM.info as Int
         } else {
-            rand.nextInt(values().size)
+            val num = rand.nextInt(itemsArray.size)
+            itemsArray[num]
         }
 
         when (tableItem) {
