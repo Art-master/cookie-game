@@ -52,6 +52,10 @@ class TableItems(private val manager: AssetManager,
             if (value) getActors().forEach { it.isStopGeneration = true }
         }
 
+    fun increaseItemsAppearancePercent(vararg item: Item){
+        item.forEach { itemsArray.add(it.index) }
+    }
+
     init {
         initItemsArray()
         initTableItems()

@@ -10,6 +10,7 @@ import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.DebugUtils
 import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.game.*
+import com.run.cookie.run.game.actors.game.TableItems.Item
 import com.run.cookie.run.game.actors.game.cookie.*
 import com.run.cookie.run.game.actors.game.cookie.Cookie.State
 import com.run.cookie.run.game.api.AnimationType
@@ -201,6 +202,9 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             foreEachActor {
                 if (it is Scrollable) it.updateSpeed()
             }
+        }
+        if(score.scoreNum % 20 == 0){
+            items.increaseItemsAppearancePercent(Item.PUSHPIN, Item.ICE_PUDDLE, Item.JELLY)
         }
     }
 
