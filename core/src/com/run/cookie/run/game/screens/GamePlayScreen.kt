@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
 import com.run.cookie.run.game.Config
+import com.run.cookie.run.game.Config.Debug
 import com.run.cookie.run.game.DebugUtils
 import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.game.*
@@ -56,7 +57,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
     init {
         actors.addAll(background, cupboard, kitchenShadow, city, window, flower, table)
-        if (!Config.Debug.EMPTY_TABLE.state) actors.addAll(items.getActors())
+        if (!Debug.EMPTY_TABLE.state) actors.addAll(items.getActors())
         actors.addAll(cookieShadow, cookie, jumpDust, sunglasses, hat, boots, belt, gun, bullets, fallDust, arm, score, shot)
         wallActors.addAll(window, cupboard)
         cookie.listeners.addAll(jumpDust, fallDust)
@@ -67,7 +68,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         changeScore()
         controlWallActors()
 
-        if (Config.Debug.PERIODIC_JUMP.state) {
+        if (Debug.PERIODIC_JUMP.state) {
             DebugUtils.startPeriodicTimer(1f, 2f) {
                 cookie.startJumpForce()
             }
@@ -199,11 +200,16 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         if (score.scoreNum % 10 == 0) {
             Config.currentScrollSpeed = Config.currentScrollSpeed + Config.SPEED_INCREASE_STEP
             items.limitDistance -= Config.ITEMS_DISTANCE_INCREASE_STEP
+
+            if (Debug.MIN_DISTANCE.state) {
+                items.limitDistance = Config.ITEMS_DISTANCE_INCREASE_STEP * (Config.Achievement.FINISH_GAME.score / 10)
+            }
+
             foreEachActor {
                 if (it is Scrollable) it.updateSpeed()
             }
         }
-        if(score.scoreNum % 20 == 0){
+        if (score.scoreNum % 20 == 0 && Debug.MAX_RANDOM_ITEMS.state.not()) {
             items.increaseItemsAppearancePercent(Item.PUSHPIN, Item.ICE_PUDDLE, Item.JELLY)
         }
     }

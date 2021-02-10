@@ -2,6 +2,7 @@ package com.run.cookie.run.game.actors.game
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.utils.Array
+import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.actors.game.cookie.Cookie
 import com.run.cookie.run.game.api.Callback
 import kotlin.random.Random
@@ -52,7 +53,7 @@ class TableItems(private val manager: AssetManager,
             if (value) getActors().forEach { it.isStopGeneration = true }
         }
 
-    fun increaseItemsAppearancePercent(vararg item: Item){
+    fun increaseItemsAppearancePercent(vararg item: Item) {
         item.forEach { itemsArray.add(it.index) }
     }
 
@@ -66,6 +67,13 @@ class TableItems(private val manager: AssetManager,
         for (item in Item.values()) {
             if (item.part == 0) continue
             itemsArray.add(item.index)
+        }
+
+        if (Config.Debug.MAX_RANDOM_ITEMS.state) {
+            val list = listOf(Item.PUSHPIN.index, Item.ICE_PUDDLE.index, Item.JELLY.index)
+            repeat(Config.Achievement.FINISH_GAME.score / 20) {
+                itemsArray.addAll(list)
+            }
         }
     }
 

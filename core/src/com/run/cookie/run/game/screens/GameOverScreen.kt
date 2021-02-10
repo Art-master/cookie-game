@@ -161,13 +161,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             override fun run() {
                 newScreen = screen
             }
-        }, 5 * 1000)
-
-        try {
-            adsController.showVideoAd(callback)
-        } catch (e: Exception) {
-            callback.close()
-        }
+        }, 2 * 1000)
 
 
         if (advertising.commonClickCount > 5) callback.close()

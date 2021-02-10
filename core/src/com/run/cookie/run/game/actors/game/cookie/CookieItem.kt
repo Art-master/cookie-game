@@ -112,9 +112,9 @@ class CookieItem(manager: AssetManager, val cookie: Cookie, itemName: String) : 
                         Actions.run {
                             isGameOver = true
                             y = cookie.y + (cookie.width / 2)
-                            x = cookie.x + (cookie.height / 2)
+                            x = cookie.x
                         },
-                        Actions.moveTo(x, -200f, 0.3f, Interpolation.exp10)
+                        Actions.moveTo(-1f, -200f, 0.3f, Interpolation.exp10)
                 )
 
             }
