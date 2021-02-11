@@ -63,7 +63,7 @@ class MainMenuScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         addClickListener(musicIcon) {
             AudioManager.switchMusicSetting()
             AudioManager.play(SoundApp.CLICK_SOUND)
-            AudioManager.play(MusicApp.MAIN_MENU_MUSIC)
+            AudioManager.play(MusicApp.MAIN_MENU_MUSIC, true)
             musicIcon.changeBackground()
         }
 

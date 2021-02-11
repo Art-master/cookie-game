@@ -33,11 +33,11 @@ class Score(manager: AssetManager) : GameActor(), Animated {
 
     override fun act(delta: Float) {
         super.act(delta)
+
+        x = Config.WIDTH_GAME - (symbolSize * scoreNum.toString().length) - paddingX
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        x = Config.WIDTH_GAME - (symbolSize * scoreNum.toString().length) - paddingX
-
         matrix.idt()
         matrix.scale(scaleX, scaleY, 1f)
 

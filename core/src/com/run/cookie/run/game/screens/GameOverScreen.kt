@@ -90,7 +90,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         awards.animate(SHOW_ON_SCENE)
         share.animate(SHOW_ON_SCENE)
         mainMenu.animate(SHOW_ON_SCENE)
-        AudioManager.play(MAIN_MENU_MUSIC)
+        AudioManager.play(MAIN_MENU_MUSIC, true)
 
         addClickListener(restartIcon) {
             adsController.hideBannerAd()

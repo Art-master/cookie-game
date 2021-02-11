@@ -235,6 +235,8 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         }
     }
 
+    private var cookieReadyForShot = false
+
     private fun controlWinning() {
         if (items.isAllObjectsScored()) isWinGame = true
         if (items.isAllObjectLeft()) {
@@ -242,19 +244,30 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             arm.isWinningAnimation = true
             stopMoveAllActors()
 
-            if (cookie.x < cookie.startX) return
+            if (cookie.x < cookie.startX || cookieReadyForShot) return
+            cookieReadyForShot = true
+
+            AudioManager.stopAllMusics()
             actors.filterIsInstance<CookieItem>().forEach {
                 (it as Actor).remove()
             }
             shot.animate(AnimationType.SHOW_ON_SCENE, Runnable {
                 shadow.invertColor()
                 shadow.animate(AnimationType.SHOW_ON_SCENE)
+
+                AudioManager.play(AudioManager.SoundApp.GUN_SHOT)
+
                 VibrationManager.vibrate(VibrationManager.VibrationType.BOOM)
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
                     val shadow = Shadow(manager)
                     stage.addActor(shadow)
+                    arm.remove()
                     shadow.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
-                        ScreenManager.setScreen(ScreenManager.Screens.GAME_OVER, Pair(ScreenManager.Param.SCORE, score.scoreNum), Pair(ScreenManager.Param.WAS_WIN_GAME, true))
+                        val params = mapOf(
+                                Pair(ScreenManager.Param.SCORE, score.scoreNum),
+                                Pair(ScreenManager.Param.WAS_WIN_GAME, true))
+
+                        ScreenManager.setScreen(ScreenManager.Screens.GAME_OVER, params)
                     })
                 })
             })
