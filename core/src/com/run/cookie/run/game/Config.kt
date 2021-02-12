@@ -26,9 +26,9 @@ object Config {
         PLAY_SERVICES(false),
         ADS(true),
         CERTAIN_TABLE_ITEM(false, 17),
-        MAX_SPEED(true),
-        MIN_DISTANCE(true),
-        MAX_RANDOM_ITEMS(true),
+        MAX_SPEED(false),
+        MIN_DISTANCE(false),
+        MAX_RANDOM_ITEMS(false),
         PROFILER(false),
         FPS(false)
     }
@@ -43,7 +43,7 @@ object Config {
         FINISH_GAME(623)
     }
 
-    const val SPEED_INCREASE_STEP = -1.2f
+    const val SPEED_INCREASE_STEP = -1.3f
     const val ITEMS_DISTANCE_INCREASE_STEP = 10 // For Game over == 600
     private const val NORMAL_SPEED = -200f
     private val maxSpeed = (Achievement.FINISH_GAME.score / 10) * SPEED_INCREASE_STEP

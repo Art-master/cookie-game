@@ -2,34 +2,35 @@
 <resources>
 
     <string name="app_name">Run, cookie, run</string>
-    <string name="app_id">586806474086</string>
-    <string name="app_ad_mob_id">ca-app-pub-9088635744980430~8000142935</string>
-    <string name="test_device_id">597AFA580542927417DDEFF2B4F2B9E4</string>
-    <string name="leaderboard_exception">Leaderboard loading fail</string>
-    <string name="sign_in_exception_msg">Google services login error</string>
+    <string name="app_id" translatable="false">586806474086</string>
+    <string name="app_ad_mob_id" translatable="false">ca-app-pub-9088635744980430~8000142935</string>
+    <string name="test_device_id" translatable="false">597AFA580542927417DDEFF2B4F2B9E4</string>
+    <string name="leaderboard_exception" translatable="false">Leaderboard loading fail</string>
+    <string name="sign_in_exception_msg" translatable="false">Google services login error</string>
 
     //AD
-    <string name="test_ad_banner_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="test_ad_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="test_ad_interstitial_video_id">ca-app-pub-3940256099942544/8691691433</string>
+    <string name="test_ad_banner_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="test_ad_interstitial_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="test_ad_interstitial_video_id" translatable="false">ca-app-pub-3940256099942544/8691691433</string>
 
-    <string name="ad_banner_id">ca-app-pub-9088635744980430/9702083320</string>
-    <string name="ad_interstitial_id">ca-app-pub-9088635744980430/8464829755</string>
-    <string name="ad_interstitial_video_id">ca-app-pub-3940256099942544/8691691433</string>
+    <string name="ad_banner_id" translatable="false">ca-app-pub-9088635744980430/9702083320</string>
+    <string name="ad_interstitial_id" translatable="false">ca-app-pub-9088635744980430/8464829755</string>
+    <string name="ad_interstitial_video_id" translatable="false">ca-app-pub-3940256099942544/8691691433</string>
 
     //Achievements ids
-    <string name="SUNGLASSES">CgkI5uqQg4oREAIQAA</string>
-    <string name="HAT">CgkI5uqQg4oREAIQAQ</string>
-    <string name="BOOTS">CgkI5uqQg4oREAIQAg</string>
-    <string name="BELT">CgkI5uqQg4oREAIQAw</string>
-    <string name="GUN">CgkI5uqQg4oREAIQBA</string>
-    <string name="BULLETS">CgkI5uqQg4oREAIQBQ</string>
-    <string name="FINISH_GAME">CgkI5uqQg4oREAIQBg</string>
+    <string name="SUNGLASSES" translatable="false">CgkI5uqQg4oREAIQAA</string>
+    <string name="HAT" translatable="false">CgkI5uqQg4oREAIQAQ</string>
+    <string name="BOOTS" translatable="false">CgkI5uqQg4oREAIQAg</string>
+    <string name="BELT" translatable="false">CgkI5uqQg4oREAIQAw</string>
+    <string name="GUN" translatable="false"> CgkI5uqQg4oREAIQBA</string>
+    <string name="BULLETS" translatable="false">CgkI5uqQg4oREAIQBQ</string>
+    <string name="FINISH_GAME" translatable="false">CgkI5uqQg4oREAIQBg</string>
 
-    <string name="leaderboard">CgkI5uqQg4oREAIQCw</string>
+    <string name="leaderboard" translatable="false">CgkI5uqQg4oREAIQCw</string>
 
-    <string name="share_msg">Я набрал %1$d очков в игре "Run Cookie Run "</string>
-    <string name="share_window_header">Поделиться</string>
-    <string name="app_link_common">https://play.google.com/store/apps/details?id=</string>
+    <string name="share_msg">"I scored %1$d points at \"Run, Cookie, Run\" "</string>
+    <string name="share_msg_win">I win in \"Run, Cookie, Run\" game</string>
+    <string name="share_window_header">Share</string>
+    <string name="app_link_common" translatable="false">https://play.google.com/store/apps/details?id=</string>
 
 </resources>
