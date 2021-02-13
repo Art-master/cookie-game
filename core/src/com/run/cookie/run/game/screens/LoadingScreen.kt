@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Timer
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import com.badlogic.gdx.utils.viewport.FillViewport
+import com.badlogic.gdx.utils.viewport.FitViewport
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Prefs
 import com.run.cookie.run.game.actors.loading_progress.Background
@@ -34,7 +36,8 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
 
     private val manager = AssetManager()
     private val camera = OrthographicCamera(Config.WIDTH_GAME, Config.HEIGHT_GAME)
-    private val stage = Stage(ExtendViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
+    private val bgStage = Stage(FillViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
+    private var stage = Stage(FitViewport(Config.WIDTH_GAME, Config.HEIGHT_GAME, camera))
 
     private var progressBar: ProgressBar? = null
 
@@ -80,6 +83,11 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
             } else progressBar?.progress = (manager.progress * 100).toInt()
         }
 
+        bgStage.viewport.apply()
+        bgStage.act(delta)
+        bgStage.draw()
+
+        stage.viewport.apply()
         stage.act(delta)
         stage.draw()
     }
@@ -93,10 +101,8 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         val background = Background(manager)
         progressBar = ProgressBar(manager)
 
-        stage.apply {
-            addActor(background)
-            addActor(progressBar)
-        }
+        bgStage.addActor(background)
+        stage.addActor(progressBar)
     }
 
     private fun loadResources() {
@@ -134,5 +140,6 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     override fun dispose() {
         manager.unload(Assets.ProgressAtlas.NAME)
         stage.dispose()
+        bgStage.dispose()
     }
 }

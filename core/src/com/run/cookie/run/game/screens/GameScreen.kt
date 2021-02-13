@@ -40,9 +40,11 @@ abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     fun applyStages(delta: Float) {
-        stageBackground.viewport.apply()
-        stageBackground.act(delta)
-        stageBackground.draw()
+        if(stageBackground.actors.notEmpty()){
+            stageBackground.viewport.apply()
+            stageBackground.act(delta)
+            stageBackground.draw()
+        }
 
         stage.viewport.apply()
         stage.act(delta)

@@ -37,7 +37,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
     init {
         Gdx.input.inputProcessor = stage
         adsController.showBannerAd()
-        if (controller.isSignedIn() && score > scoresActor.bestScoreNum) {
+        if (controller.isSignedIn()) {
             controller.submitScore(score.toLong())
         }
         ScreenManager.setGlobalParameter(FIRST_APP_RUN, false)
@@ -69,8 +69,8 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         val share = GameOverMenuIcon(manager, 1777f, 780f, Assets.MainMenuAtlas.SHARE, false)
         val mainMenu = GameOverMenuIcon(manager, 1777f, 580f, Assets.MainMenuAtlas.MAIN_MENU, false)
 
-        stageBackground.addActor(background)
         stage.apply {
+            addActor(background)
             addActor(cup)
             addActor(finalAction)
             addActor(restartIcon)

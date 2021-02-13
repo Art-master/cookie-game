@@ -121,7 +121,10 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
 
     private void initAdsIdentifiers() {
         boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
-        List<String> testDeviceIds = Collections.singletonList(getString(R.string.test_device_id));
+        List<String> testDeviceIds = new ArrayList<>();
+        testDeviceIds.add(getString(R.string.test_device_id));
+        testDeviceIds.add(getString(R.string.test_device_id_2));
+
         RequestConfiguration configuration =
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
 
@@ -474,7 +477,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                             startActivityForResult(intent, RC_LEADERBOARD_UI);
                         }
                     });
-        }
+        } else signIn();
     }
 
     @Override
