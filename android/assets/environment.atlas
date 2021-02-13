@@ -2,7 +2,7 @@
 environment.png
 size: 2048, 2048
 format: RGBA8888
-filter: Nearest, Nearest
+filter: MipMap, MipMap
 repeat: none
 apple
   rotate: false
@@ -281,7 +281,7 @@ white
 environment2.png
 size: 2048, 2048
 format: RGBA8888
-filter: Nearest, Nearest
+filter: MipMap, MipMap
 repeat: none
 baby_cookies_box
   rotate: false

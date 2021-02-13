@@ -1,12 +1,12 @@
 
 cookie.png
-size: 2048,2048
+size: 2048, 2048
 format: RGBA8888
-filter: Nearest,Nearest
+filter: MipMap, MipMap
 repeat: none
 belt
   rotate: false
-  xy: 465, 1133
+  xy: 465, 1015
   size: 193, 114
   orig: 193, 114
   offset: 0, 0
@@ -45,91 +45,91 @@ dust_fall
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 9
+  index: 6
 dust_fall
   rotate: false
   xy: 878, 1656
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 3
+  index: 13
 dust_fall
   rotate: false
   xy: 827, 1525
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 4
+  index: 3
 dust_fall
   rotate: false
   xy: 1135, 1712
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 6
+  index: 10
 dust_fall
   rotate: false
   xy: 1342, 1712
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 7
+  index: 8
 dust_fall
   rotate: false
   xy: 1549, 1712
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 8
+  index: 5
 dust_fall
   rotate: false
   xy: 732, 1394
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 1
+  index: 12
 dust_fall
   rotate: false
   xy: 1034, 1525
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 10
+  index: 2
 dust_fall
   rotate: false
   xy: 1241, 1581
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 12
+  index: 7
 dust_fall
   rotate: false
   xy: 1448, 1581
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 13
+  index: 4
 dust_fall
   rotate: false
-  xy: 732, 1263
+  xy: 1394, 1450
+  size: 205, 129
+  orig: 205, 129
+  offset: 0, 0
+  index: 9
+dust_fall
+  rotate: false
+  xy: 1394, 1319
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
   index: 11
 dust_fall
   rotate: false
-  xy: 939, 1239
+  xy: 732, 1263
   size: 205, 129
   orig: 205, 129
   offset: 0, 0
-  index: 5
-dust_fall
-  rotate: false
-  xy: 1298, 1258
-  size: 205, 129
-  orig: 205, 129
-  offset: 0, 0
-  index: 2
+  index: 1
 gun
   rotate: false
   xy: 541, 1249
@@ -139,35 +139,56 @@ gun
   index: -1
 hat
   rotate: false
-  xy: 1298, 1140
+  xy: 465, 1131
   size: 202, 116
   orig: 202, 116
   offset: 0, 0
   index: -1
 jump_down
   rotate: false
-  xy: 1146, 1218
+  xy: 1601, 1274
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 jump_down_boots
   rotate: false
-  xy: 312, 78
+  xy: 312, 846
   size: 151, 190
   orig: 151, 190
   offset: 0, 0
   index: -1
 jump_down_gun
   rotate: false
-  xy: 2, 1038
+  xy: 1135, 1843
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: -1
+jump_down_hat
+  rotate: false
+  xy: 2, 270
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: -1
+jump_up_hat
+  rotate: false
+  xy: 2, 270
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: -1
+run_hat
+  rotate: false
+  xy: 2, 270
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 1
 jump_down_sunglasses
   rotate: false
-  xy: 1756, 1688
+  xy: 465, 860
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
@@ -178,119 +199,84 @@ jump_dust
   size: 174, 68
   orig: 174, 68
   offset: 0, 0
-  index: 1
-jump_dust
-  rotate: false
-  xy: 465, 908
-  size: 174, 68
-  orig: 174, 68
-  offset: 0, 0
-  index: 3
-jump_dust
-  rotate: false
-  xy: 466, 528
-  size: 174, 68
-  orig: 174, 68
-  offset: 0, 0
-  index: 4
-jump_dust
-  rotate: false
-  xy: 641, 908
-  size: 174, 68
-  orig: 174, 68
-  offset: 0, 0
   index: 5
 jump_dust
   rotate: false
-  xy: 621, 838
-  size: 174, 68
-  orig: 174, 68
-  offset: 0, 0
-  index: 6
-jump_dust
-  rotate: false
-  xy: 621, 768
+  xy: 466, 325
   size: 174, 68
   orig: 174, 68
   offset: 0, 0
   index: 2
 jump_dust
   rotate: false
-  xy: 621, 698
+  xy: 725, 1193
   size: 174, 68
   orig: 174, 68
   offset: 0, 0
   index: 7
 jump_dust
   rotate: false
-  xy: 621, 628
+  xy: 669, 1123
+  size: 174, 68
+  orig: 174, 68
+  offset: 0, 0
+  index: 4
+jump_dust
+  rotate: false
+  xy: 660, 1053
+  size: 174, 68
+  orig: 174, 68
+  offset: 0, 0
+  index: 1
+jump_dust
+  rotate: false
+  xy: 660, 983
+  size: 174, 68
+  orig: 174, 68
+  offset: 0, 0
+  index: 6
+jump_dust
+  rotate: false
+  xy: 620, 913
+  size: 174, 68
+  orig: 174, 68
+  offset: 0, 0
+  index: 3
+jump_dust
+  rotate: false
+  xy: 620, 843
   size: 174, 68
   orig: 174, 68
   offset: 0, 0
   index: 8
 jump_up
   rotate: false
-  xy: 465, 66
+  xy: 467, 18
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 jump_up_belt
   rotate: false
-  xy: 386, 1362
+  xy: 1290, 1843
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: -1
 jump_up_boots
   rotate: false
-  xy: 312, 654
+  xy: 312, 462
   size: 152, 190
   orig: 152, 190
   offset: 0, 0
   index: -1
 jump_up_gun
   rotate: false
-  xy: 157, 462
+  xy: 157, 654
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: -1
-jump_up_hat
-  rotate: false
-  xy: 2, 846
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: -1
-jump_down_hat
-  rotate: false
-  xy: 2, 846
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: -1
-run_hat
-  rotate: false
-  xy: 2, 846
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 1
-jump_up_sunglasses
-  rotate: false
-  xy: 466, 753
-  size: 153, 153
-  orig: 153, 153
-  offset: 0, 0
-  index: -1
-run_sunglasses
-  rotate: false
-  xy: 466, 753
-  size: 153, 153
-  orig: 153, 153
-  offset: 0, 0
-  index: 1
 loading_circle
   rotate: false
   xy: 878, 1787
@@ -314,95 +300,74 @@ run
   index: 6
 run
   rotate: false
-  xy: 1091, 1370
-  size: 150, 153
-  orig: 150, 153
-  offset: 0, 0
-  index: 5
-run
-  rotate: false
-  xy: 1546, 1426
-  size: 150, 153
-  orig: 150, 153
-  offset: 0, 0
-  index: 8
-run
-  rotate: false
-  xy: 1546, 1426
+  xy: 939, 1215
   size: 150, 153
   orig: 150, 153
   offset: 0, 0
   index: 1
 run
   rotate: false
-  xy: 467, 218
+  xy: 939, 1215
   size: 150, 153
   orig: 150, 153
-  offset: 0, 0
-  index: 3
-run
-  rotate: false
-  xy: 467, 218
-  size: 150, 153
-  orig: 150, 153
-  offset: 0, 0
-  index: 7
-run
-  rotate: false
-  xy: 620, 978
-  size: 150, 153
-  orig: 150, 153
-  offset: 0, 0
-  index: 2
-run_belt
-  rotate: false
-  xy: 1290, 1843
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 3
-run_belt
-  rotate: false
-  xy: 1290, 1843
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 7
-run_belt
-  rotate: false
-  xy: 1445, 1843
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 2
-run_belt
-  rotate: false
-  xy: 1445, 1843
-  size: 153, 190
-  orig: 153, 190
   offset: 0, 0
   index: 8
+run
+  rotate: false
+  xy: 466, 395
+  size: 150, 153
+  orig: 150, 153
+  offset: 0, 0
+  index: 3
+run
+  rotate: false
+  xy: 466, 395
+  size: 150, 153
+  orig: 150, 153
+  offset: 0, 0
+  index: 7
+run
+  rotate: false
+  xy: 467, 170
+  size: 150, 153
+  orig: 150, 153
+  offset: 0, 0
+  index: 5
+run
+  rotate: false
+  xy: 1601, 1426
+  size: 150, 153
+  orig: 150, 153
+  offset: 0, 0
+  index: 2
 run_belt
   rotate: false
-  xy: 2, 654
+  xy: 2, 1038
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 7
+run_belt
+  rotate: false
+  xy: 2, 1038
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 3
+run_belt
+  rotate: false
+  xy: 157, 1038
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 4
 run_belt
   rotate: false
-  xy: 2, 654
+  xy: 157, 1038
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 6
-run_belt
-  rotate: false
-  xy: 157, 846
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 5
 run_belt
   rotate: false
   xy: 1600, 1843
@@ -417,216 +382,251 @@ jump_down_belt
   orig: 153, 190
   offset: 0, 0
   index: -1
+run_belt
+  rotate: false
+  xy: 157, 78
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 8
+run_belt
+  rotate: false
+  xy: 157, 78
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 2
+run_belt
+  rotate: false
+  xy: 312, 78
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 5
 run_boots
   rotate: false
   xy: 312, 1038
   size: 151, 190
   orig: 151, 190
   offset: 0, 0
-  index: 5
+  index: 3
 run_boots
   rotate: false
-  xy: 312, 846
+  xy: 312, 1038
   size: 151, 190
   orig: 151, 190
   offset: 0, 0
   index: 7
 run_boots
   rotate: false
-  xy: 312, 846
+  xy: 312, 654
   size: 151, 190
   orig: 151, 190
   offset: 0, 0
-  index: 3
+  index: 5
 run_boots
   rotate: false
-  xy: 312, 462
-  size: 152, 190
-  orig: 152, 190
-  offset: 0, 0
-  index: 6
-run_boots
-  rotate: false
-  xy: 312, 462
+  xy: 312, 270
   size: 152, 190
   orig: 152, 190
   offset: 0, 0
   index: 4
 run_boots
   rotate: false
-  xy: 1243, 1389
+  xy: 312, 270
+  size: 152, 190
+  orig: 152, 190
+  offset: 0, 0
+  index: 6
+run_boots
+  rotate: false
+  xy: 1091, 1333
   size: 150, 190
   orig: 150, 190
   offset: 0, 0
   index: 8
 run_boots
   rotate: false
-  xy: 1243, 1389
+  xy: 1091, 1333
   size: 150, 190
   orig: 150, 190
   offset: 0, 0
   index: 2
 run_boots
   rotate: false
-  xy: 1395, 1389
+  xy: 1243, 1389
   size: 149, 190
   orig: 149, 190
   offset: 0, 0
   index: 1
 run_gun
   rotate: false
-  xy: 1135, 1843
+  xy: 2, 846
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
-  index: 7
+  index: 5
 run_gun
   rotate: false
-  xy: 1135, 1843
+  xy: 2, 654
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
-  index: 3
+  index: 2
+run_gun
+  rotate: false
+  xy: 2, 654
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 8
 run_gun
   rotate: false
   xy: 2, 462
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
-  index: 1
+  index: 7
 run_gun
   rotate: false
-  xy: 157, 654
+  xy: 2, 462
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 3
+run_gun
+  rotate: false
+  xy: 157, 462
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 4
+run_gun
+  rotate: false
+  xy: 157, 462
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 6
+run_gun
+  rotate: false
+  xy: 157, 270
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 1
+run_hat
+  rotate: false
+  xy: 386, 1362
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 5
+run_hat
+  rotate: false
+  xy: 1445, 1843
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 2
-run_gun
+run_hat
   rotate: false
-  xy: 157, 654
+  xy: 1445, 1843
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 8
-run_gun
+run_hat
+  rotate: false
+  xy: 157, 846
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 7
+run_hat
+  rotate: false
+  xy: 157, 846
+  size: 153, 190
+  orig: 153, 190
+  offset: 0, 0
+  index: 3
+run_hat
   rotate: false
   xy: 1755, 1843
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
-  index: 5
-run_gun
-  rotate: false
-  xy: 2, 270
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 6
-run_gun
-  rotate: false
-  xy: 2, 270
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
   index: 4
 run_hat
   rotate: false
-  xy: 2, 78
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 2
-run_hat
-  rotate: false
-  xy: 2, 78
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 8
-run_hat
-  rotate: false
-  xy: 157, 270
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 3
-run_hat
-  rotate: false
-  xy: 157, 270
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 7
-run_hat
-  rotate: false
-  xy: 157, 78
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 5
-run_hat
-  rotate: false
-  xy: 312, 270
-  size: 153, 190
-  orig: 153, 190
-  offset: 0, 0
-  index: 4
-run_hat
-  rotate: false
-  xy: 312, 270
+  xy: 1755, 1843
   size: 153, 190
   orig: 153, 190
   offset: 0, 0
   index: 6
 run_sunglasses
   rotate: false
-  xy: 465, 978
+  xy: 1756, 1688
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
-  index: 3
+  index: 5
 run_sunglasses
   rotate: false
-  xy: 465, 978
+  xy: 1756, 1688
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
-  index: 7
+  index: 4
 run_sunglasses
   rotate: false
-  xy: 466, 598
+  xy: 1756, 1688
+  size: 153, 153
+  orig: 153, 153
+  offset: 0, 0
+  index: 6
+run_sunglasses
+  rotate: false
+  xy: 1091, 1178
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 2
 run_sunglasses
   rotate: false
-  xy: 466, 598
+  xy: 1091, 1178
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
   index: 8
 run_sunglasses
   rotate: false
-  xy: 467, 373
+  xy: 465, 705
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
-  index: 4
+  index: 7
 run_sunglasses
   rotate: false
-  xy: 467, 373
+  xy: 465, 705
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
-  index: 6
+  index: 3
 run_sunglasses
   rotate: false
-  xy: 467, 373
+  xy: 466, 550
   size: 153, 153
   orig: 153, 153
   offset: 0, 0
-  index: 5
+  index: 1
+jump_up_sunglasses
+  rotate: false
+  xy: 466, 550
+  size: 153, 153
+  orig: 153, 153
+  offset: 0, 0
+  index: -1
 sunglasses
   rotate: false
   xy: 2, 2
@@ -643,7 +643,7 @@ together
   index: -1
 winner
   rotate: false
-  xy: 157, 1038
+  xy: 2, 78
   size: 153, 190
   orig: 153, 190
   offset: 0, 0

@@ -1,21 +1,14 @@
 
 comics.png
-size: 2048,2048
+size: 2048, 2048
 format: RGBA8888
-filter: Nearest,Nearest
+filter: MipMap, MipMap
 repeat: none
 arrowRight
   rotate: false
   xy: 1098, 1435
   size: 157, 177
   orig: 157, 177
-  offset: 0, 0
-  index: -1
-frame2
-  rotate: false
-  xy: 2, 808
-  size: 1094, 804
-  orig: 1094, 804
   offset: 0, 0
   index: -1
 frame3
@@ -25,11 +18,18 @@ frame3
   orig: 1094, 804
   offset: 0, 0
   index: -1
+frame4
+  rotate: false
+  xy: 2, 808
+  size: 1094, 804
+  orig: 1094, 804
+  offset: 0, 0
+  index: -1
 
 comics2.png
-size: 2048,2048
+size: 2048, 2048
 format: RGBA8888
-filter: Nearest,Nearest
+filter: MipMap, MipMap
 repeat: none
 frame1
   rotate: false
@@ -38,7 +38,7 @@ frame1
   orig: 1093, 804
   offset: 0, 0
   index: -1
-frame4
+frame2
   rotate: false
   xy: 2, 808
   size: 1094, 804
