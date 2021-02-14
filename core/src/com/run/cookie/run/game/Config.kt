@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) Art-_-master - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
+
 package com.run.cookie.run.game
 
 import kotlin.math.abs
@@ -24,7 +30,7 @@ object Config {
         PERIODIC_JUMP(false),
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
-        ADS(true),
+        ADS(false),
         CERTAIN_TABLE_ITEM(false, 17),
         MAX_SPEED(false),
         MIN_DISTANCE(false),

@@ -14,8 +14,8 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.vSyncEnabled = true;
         config.title = "Run, Cookie, run";
-        config.width = 1000;
-        config.height = 300;
+        config.width = 1920;
+        config.height = 1080;
 
         AdsController controller = new Controller();
         new LwjglApplication(new GdxGame(controller), config);
