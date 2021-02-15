@@ -351,7 +351,7 @@ class RandomTableItem(private val manager: AssetManager,
 
     fun jumpedOnAction() {
         if (jumpOnSound == null) return
-        AudioManager.play(jumpOnSound!!)
+        //AudioManager.play(jumpOnSound!!)
     }
 
     override fun getBoundsRect() = bound

@@ -92,6 +92,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                AudioManager.stop(AudioManager.SoundApp.JUMP)
                 if (touchable && isWinGame.not()) {
                     cookie.endJumpForce()
                 }
