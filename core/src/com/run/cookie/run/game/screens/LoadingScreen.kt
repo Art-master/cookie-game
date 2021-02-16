@@ -99,6 +99,8 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     private fun loadResourcesFinished() {
+        AudioManager.onMusicsLoaded(manager)
+        AudioManager.onSoundsLoaded(manager)
         ScreenManager.setGlobalParameter(ASSET_MANAGER, manager)
         ScreenManager.setScreen(MAIN_MENU_SCREEN)
     }

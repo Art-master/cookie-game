@@ -14,7 +14,6 @@ import com.badlogic.gdx.assets.loaders.MusicLoader
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.utils.Array
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Prefs
 
@@ -22,19 +21,30 @@ object AudioManager {
 
     interface Audio
 
-    enum class SoundApp(val descriptor: AssetDescriptor<Sound>, val volume: Float = 1f) : Audio {
-        CLICK_SOUND(AssetDescriptor("${Config.SOUNDS_FOLDER}/click.mp3", Sound::class.java), 0.1f),
-        CRUNCH(AssetDescriptor("${Config.SOUNDS_FOLDER}/crunch.mp3", Sound::class.java), 0.1f),
-        JUMP_ON_BOX(AssetDescriptor("${Config.SOUNDS_FOLDER}/jump_on_box.mp3", Sound::class.java)),
-        JUMP(AssetDescriptor("${Config.SOUNDS_FOLDER}/jump.mp3", Sound::class.java), 0.1f),
-        SCORE(AssetDescriptor("${Config.SOUNDS_FOLDER}/score.wav", Sound::class.java), 0.3f),
-        DOOR_SQUEAK(AssetDescriptor("${Config.SOUNDS_FOLDER}/door_squeak.mp3", Sound::class.java), 0.3f),
-        GUN_SHOT(AssetDescriptor("${Config.SOUNDS_FOLDER}/gun_shot.wav", Sound::class.java), 0.3f)
+    enum class SoundApp(fileName: String, val volume: Float = 1f) : Audio {
+        CLICK_SOUND("click.mp3", 0.1f),
+        CRUNCH("crunch.mp3", 0.1f),
+        JUMP_ON_BOX("jump_on_box.mp3"),
+        JUMP("jump.ogg", 0.1f),
+        SCORE("score.wav", 0.3f),
+        DOOR_SQUEAK("door_squeak.mp3", 0.3f),
+        GUN_SHOT("gun_shot.wav", 0.3f);
+
+        var descriptor: AssetDescriptor<Sound> =
+                AssetDescriptor("${Config.SOUNDS_FOLDER}/${fileName}", Sound::class.java)
+
+        var resource: Sound? = null
+
     }
 
-    enum class MusicApp(val descriptor: AssetDescriptor<Music>, val volume: Float = 1f) : Audio {
-        GAME_MUSIC(AssetDescriptor("${Config.SOUNDS_FOLDER}/gameMusic.mp3", Music::class.java), 0.3f),
-        MAIN_MENU_MUSIC(AssetDescriptor("${Config.SOUNDS_FOLDER}/mainMenuMusic.mp3", Music::class.java), 0.3f),
+    enum class MusicApp(fileName: String, val volume: Float = 1f) : Audio {
+        GAME_MUSIC("gameMusic.mp3", 0.3f),
+        MAIN_MENU_MUSIC("mainMenuMusic.mp3", 0.3f);
+
+        var descriptor: AssetDescriptor<Music> =
+                AssetDescriptor("${Config.SOUNDS_FOLDER}/${fileName}", Music::class.java)
+
+        var resource: Music? = null
     }
 
     private val prefs = Gdx.app.getPreferences(Prefs.NAME)
@@ -64,14 +74,13 @@ object AudioManager {
     }
 
     fun play(audio: Audio, isLooping: Boolean = false) {
-        val manager = ScreenManager.globalParameters[ScreenManager.Param.ASSET_MANAGER] as AssetManager
         if (audio is SoundApp) {
             if (isSoundEnable.not()) return
-            manager.get(audio.descriptor)?.play(audio.volume)
+            audio.resource?.play(audio.volume)
 
         } else if (audio is MusicApp) {
             if (isMusicEnable.not()) return
-            manager.get(audio.descriptor)?.apply {
+            audio.resource?.apply {
                 play()
                 this.isLooping = isLooping
                 volume = audio.volume
@@ -80,11 +89,10 @@ object AudioManager {
     }
 
     fun stop(audio: Audio) {
-        val manager = ScreenManager.globalParameters[ScreenManager.Param.ASSET_MANAGER] as AssetManager
         if (audio is SoundApp) {
-            manager.get(audio.descriptor)?.stop()
+            audio.resource?.stop()
         } else if (audio is MusicApp) {
-            manager.get(audio.descriptor)?.stop()
+            audio.resource?.stop()
         }
     }
 
@@ -94,9 +102,8 @@ object AudioManager {
     }
 
     fun stopAllMusics() {
-        val manager = ScreenManager.globalParameters[ScreenManager.Param.ASSET_MANAGER] as AssetManager
-        for (music in manager.getAll(Music::class.java, Array())) {
-            music?.apply {
+        for (audio in MusicApp.values()) {
+            audio.resource?.apply {
                 stop()
                 isLooping = false
             }
@@ -104,9 +111,8 @@ object AudioManager {
     }
 
     fun stopAllSounds() {
-        val manager = ScreenManager.globalParameters[ScreenManager.Param.ASSET_MANAGER] as AssetManager
-        for (sound in manager.getAll(Sound::class.java, Array())) {
-            sound?.stop()
+        for (sound in SoundApp.values()) {
+            sound.resource?.stop()
         }
     }
 
@@ -127,6 +133,18 @@ object AudioManager {
 
         for (music in MusicApp.values()) {
             manager.load(music.descriptor)
+        }
+    }
+
+    fun onMusicsLoaded(manager: AssetManager) {
+        for (music in MusicApp.values()) {
+            music.resource = manager.get(music.descriptor)
+        }
+    }
+
+    fun onSoundsLoaded(manager: AssetManager) {
+        for (sound in SoundApp.values()) {
+            sound.resource = manager.get(sound.descriptor)
         }
     }
 }
