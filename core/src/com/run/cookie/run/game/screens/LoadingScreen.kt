@@ -20,9 +20,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Timer
-import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.FillViewport
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.run.cookie.run.game.Config
@@ -114,7 +112,10 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     }
 
     private fun loadResources() {
-        manager.load(Descriptors.progressBar) // store unfiltered regions
+        AudioManager.loadMusic(manager)
+        AudioManager.loadSounds(manager)
+
+        manager.load(Descriptors.progressBar)
         manager.load(Descriptors.background)
         manager.load(Descriptors.gameOverBackground)
         manager.load(Descriptors.comics)
@@ -122,8 +123,6 @@ class LoadingScreen(params: Map<ScreenManager.Param, Any>) : Screen {
         manager.load(Descriptors.cookie)
         manager.load(Descriptors.environment)
         loadFonts()
-        AudioManager.loadMusic(manager)
-        AudioManager.loadSounds(manager)
     }
 
     private fun loadFonts() {

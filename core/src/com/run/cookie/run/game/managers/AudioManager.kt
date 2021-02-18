@@ -16,8 +16,11 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Prefs
+import java.util.*
 
 object AudioManager {
+
+    private val timer = Timer()
 
     interface Audio
 
@@ -76,7 +79,7 @@ object AudioManager {
     fun play(audio: Audio, isLooping: Boolean = false) {
         if (audio is SoundApp) {
             if (isSoundEnable.not()) return
-            audio.resource?.play(audio.volume)
+            playSound(audio)
 
         } else if (audio is MusicApp) {
             if (isMusicEnable.not()) return
@@ -86,6 +89,17 @@ object AudioManager {
                 volume = audio.volume
             }
         }
+    }
+
+    /**
+     * HACK: If don't use a different thread, graphics on the screen will be twitch a little
+     */
+    private fun playSound(audio: SoundApp){
+        timer.schedule(object : TimerTask(){
+            override fun run() {
+                audio.resource?.play(audio.volume)
+            }
+        }, 0L)
     }
 
     fun stop(audio: Audio) {

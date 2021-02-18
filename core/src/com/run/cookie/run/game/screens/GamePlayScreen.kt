@@ -27,6 +27,7 @@ import com.run.cookie.run.game.api.WallActor
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.managers.AudioManager
 import com.run.cookie.run.game.managers.AudioManager.MusicApp
+import com.run.cookie.run.game.managers.AudioManager.SoundApp
 import com.run.cookie.run.game.managers.ScreenManager
 import com.run.cookie.run.game.managers.VibrationManager
 import com.run.cookie.run.game.services.ServicesController
@@ -85,14 +86,14 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             override fun touchDown(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 if (cookie.state == State.RUN && touchable && isWinGame.not()) {
                     cookie.startJumpForce()
-                    AudioManager.play(AudioManager.SoundApp.JUMP)
+                    AudioManager.play(SoundApp.JUMP)
                     VibrationManager.cancel()
                 }
                 return super.touchDown(event, x, y, pointer, button)
             }
 
             override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
-                AudioManager.stop(AudioManager.SoundApp.JUMP)
+                AudioManager.stop(SoundApp.JUMP)
                 if (touchable && isWinGame.not()) {
                     cookie.endJumpForce()
                 }
@@ -262,7 +263,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
                 shadow.invertColor()
                 shadow.animate(AnimationType.SHOW_ON_SCENE)
 
-                AudioManager.play(AudioManager.SoundApp.GUN_SHOT)
+                AudioManager.play(SoundApp.GUN_SHOT)
 
                 VibrationManager.vibrate(VibrationManager.VibrationType.BOOM)
                 arm.animate(AnimationType.HIDE_FROM_SCENE, Runnable {
