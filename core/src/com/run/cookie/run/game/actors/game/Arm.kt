@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.badlogic.gdx.utils.Pool
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.actors.game.cookie.Cookie
 import com.run.cookie.run.game.api.Animated
@@ -41,7 +42,6 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     private val initPosition = Vector2(0f, Config.HEIGHT_GAME / 3f)
     private var limitX: Float = 0.0f
     private var limitY: Float = 0.0f
-    private var moveToAction = MoveToAction()
     private var moveToCatchCookieAnimation: MoveToAction? = null
     private var currentFrame: TextureRegion = handRegion
 
@@ -51,6 +51,18 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
 
     private var animationDelay = 0L
     private var stopTimeMs = 0L
+
+    private var moveToActionsPool: Pool<MoveToAction> = object : Pool<MoveToAction>() {
+        override fun newObject(): MoveToAction? {
+            return MoveToAction()
+        }
+    }
+
+    private var sequenceActionsPool: Pool<SequenceAction> = object : Pool<SequenceAction>() {
+        override fun newObject(): SequenceAction? {
+            return SequenceAction()
+        }
+    }
 
     init {
         width = handRegion.originalWidth.toFloat()
@@ -82,13 +94,17 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
     }
 
     private fun setMoveAction() {
-        moveToAction = MoveToAction()
+        val action = moveToActionsPool.obtain()
         limitX = -getLimit()
         limitY = getLimit()
-        moveToAction.setPosition(initPosition.x + limitX, initPosition.y + limitY)
-        moveToAction.duration = 2f
-        moveToAction.interpolation = Interpolation.smooth
-        addAction(Actions.sequence(moveToAction, Actions.run { setMoveAction() }))
+        action.setPosition(initPosition.x + limitX, initPosition.y + limitY)
+        action.duration = 2f
+        action.interpolation = Interpolation.smooth
+
+        val sequence = sequenceActionsPool.obtain()
+        sequence.addAction(action)
+        sequence.addAction(Actions.run { setMoveAction() })
+        addAction(sequence)
     }
 
     private fun getLimit(max: Int = 50): Float {

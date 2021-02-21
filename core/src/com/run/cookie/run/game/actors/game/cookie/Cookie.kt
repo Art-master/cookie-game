@@ -86,7 +86,7 @@ class Cookie(private val manager: AssetManager,
         if (state != State.INIT && state != State.WIN) {
             updateGravity()
             updateActorState()
-            position.add(velocity.cpy().scl(delta))
+            position.add(velocity.x * delta, velocity.y * delta)
             updateCoordinates()
             move.act(delta)
             controlCookieVelocity()
@@ -99,11 +99,11 @@ class Cookie(private val manager: AssetManager,
             }
             controlCookieVelocity()
         }
-        if(y < startY) y = startY // prevent falling
+        if (y < startY) y = startY // prevent falling
     }
 
     private fun updateGravity() {
-        if (state == State.RUN || state == State.JUMP || state == State.FALL) {
+        if (state == State.RUN || state == State.FALL) {
             velocity.add(0f, gravity * runTime)
         }
     }
@@ -220,7 +220,7 @@ class Cookie(private val manager: AssetManager,
                 obj.jumpedOnAction()
             } else if (isForward(obj) && getTop(obj) - y < 20) {
                 setOnTop(obj)
-            } else if(aheadOfObj(obj)) inFrontOfTheObject(obj)
+            } else if (aheadOfObj(obj)) inFrontOfTheObject(obj)
         }
         if (isAfterObject(obj) && state == State.RUN) {
             state = State.FALL
@@ -242,7 +242,10 @@ class Cookie(private val manager: AssetManager,
         resetState()
         when (obj.structure) {
             Structure.STICKY -> slowMove()
-            Structure.JELLY -> initJump(120, 100f, Config.GRAVITY)
+            Structure.JELLY -> {
+                move.update(speed = ItemScrollSpeed.VERY_FAST_MOVE)
+                initJump(120, 170f, Config.GRAVITY)
+            }
             else -> {
             }
         }
@@ -274,8 +277,9 @@ class Cookie(private val manager: AssetManager,
     private fun inFrontOfTheObject(obj: RandomTableItem) {
         when (obj.structure) {
             Structure.JELLY -> {
-                move.update(speed = ItemScrollSpeed.VERY_FAST_MOVE_BACK)
+                velocity.y = velocityJump
                 initJump(60, 50f, -200f)
+                move.update(speed = ItemScrollSpeed.VERY_FAST_MOVE_BACK)
             }
             else -> setAgainstTheObject(obj)
         }

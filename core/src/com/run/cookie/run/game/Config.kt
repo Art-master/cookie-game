@@ -6,6 +6,7 @@
 
 package com.run.cookie.run.game
 
+import com.run.cookie.run.game.actors.game.TableItems
 import kotlin.math.abs
 
 object Config {
@@ -31,7 +32,7 @@ object Config {
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
         ADS(false),
-        CERTAIN_TABLE_ITEM(false, 17),
+        CERTAIN_TABLE_ITEM(false, TableItems.Item.JELLY.index),
         MAX_SPEED(false),
         MIN_DISTANCE(false),
         MAX_RANDOM_ITEMS(false),
@@ -60,7 +61,7 @@ object Config {
         NONE({ 0f }),
         LEVEL_1({ currentScrollSpeed }),
         LEVEL_2({ LEVEL_1.calc() * 3f }),
-        SLOW_MOVE({ LEVEL_1.calc() / 1.1f }),
+        SLOW_MOVE({ LEVEL_1.calc() / 1.3f }),
         FAST_MOVE({ abs(LEVEL_1.calc()) / 6.6f }),
         VERY_FAST_MOVE({ FAST_MOVE.calc() * 10f }),
         VERY_FAST_MOVE_BACK({ VERY_FAST_MOVE.calc() * -3f })
