@@ -95,6 +95,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
 
     private fun setMoveAction() {
         val action = moveToActionsPool.obtain()
+        action.pool = moveToActionsPool
         limitX = -getLimit()
         limitY = getLimit()
         action.setPosition(initPosition.x + limitX, initPosition.y + limitY)
@@ -104,6 +105,7 @@ class Arm(manager: AssetManager, private val cookie: Cookie) : GameActor(), Phys
         val sequence = sequenceActionsPool.obtain()
         sequence.addAction(action)
         sequence.addAction(Actions.run { setMoveAction() })
+        sequence.pool = sequenceActionsPool
         addAction(sequence)
     }
 

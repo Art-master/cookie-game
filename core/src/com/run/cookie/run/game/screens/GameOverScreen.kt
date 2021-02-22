@@ -160,8 +160,9 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
     }
 
     private fun showAddIfNeedAndSetScreenAfter(callback: AdsCallback, screen: ScreenManager.Screens) {
+        if (adsController.isNetworkAvailable().not()) return
         val lastAd = advertising.last
-        val minCountOneByOne = 2
+        val minCountOneByOne = 0
 
         Timer().schedule(object : TimerTask() {
             override fun run() {
@@ -172,14 +173,13 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
 
         if (advertising.commonClickCount > 5) callback.close()
 
-        if (lastAd.type == AdType.NONE && lastAd.lastCountOneByOne == minCountOneByOne) {
-            lastAd.lastCountOneByOne = 0
+        if (minCountOneByOne == 0 || (lastAd.type == AdType.NONE && lastAd.countOneByOne == minCountOneByOne)) {
             advertising.last = Adv(AdType.INTERSTITIAL)
             adsController.showInterstitialAd(callback)
         } else {
             if (lastAd.type != AdType.NONE) {
-                advertising.last = Adv()
-            } else lastAd.lastCountOneByOne++
+                advertising.last = Adv(countOneByOne = 1)
+            } else lastAd.countOneByOne++
             advertising.last.timeMs = System.currentTimeMillis()
             callback.close()
         }

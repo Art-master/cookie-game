@@ -57,6 +57,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.run.cookie.run.game.api.Callback;
 import com.run.cookie.run.game.services.AdsCallback;
 import com.run.cookie.run.game.services.AdsController;
 import com.run.cookie.run.game.services.CallBack;
@@ -66,7 +67,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.google.android.gms.common.api.CommonStatusCodes.SIGN_IN_REQUIRED;
@@ -75,9 +75,9 @@ import static com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_S
 
 public class AndroidLauncher extends AndroidApplication implements AdsController, ServicesController {
 
-    private String bannerAdUnitId = "";
-    private String interstitialAdUnitId = "";
-    private String interstitialVideoId = "";
+    private String bannerAdUnitId = "banner";
+    private String interstitialAdUnitId = "interstitial";
+    private String interstitialVideoId = "interstitialVideo";
 
     private final int RC_SIGN_IN = 1;
     // -- Leaderboard variables
@@ -165,71 +165,62 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     private void loadInterstitialAd(final AdsCallback adsCallback) {
-        final FullScreenContentCallback callback = new FullScreenContentCallback(){
-            @Override
-            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                super.onAdFailedToShowFullScreenContent(adError);
-                if(adsCallback != null) adsCallback.fail();
-            }
+        loadInterstitialAd(adsCallback, null);
+    }
 
-            @Override
-            public void onAdShowedFullScreenContent() {
-                super.onAdShowedFullScreenContent();
-                if(adsCallback != null) adsCallback.close();
-            }
-
-            @Override
-            public void onAdDismissedFullScreenContent() {
-                super.onAdDismissedFullScreenContent();
-                interstitialAd = null;
-                if(adsCallback != null) adsCallback.close();
-            }
-        };
-
+    private void loadInterstitialAd(final AdsCallback adsCallback, final Callback callback) {
         InterstitialAd.load(this, interstitialAdUnitId, new AdRequest.Builder().build(), new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd ad) {
                 super.onAdLoaded(ad);
                 interstitialAd = ad;
-                interstitialAd.setFullScreenContentCallback(callback);
+                if(callback != null) callback.call();
             }
 
             @Override
             public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                 super.onAdFailedToLoad(loadAdError);
+                if (adsCallback != null) adsCallback.fail();
             }
         });
     }
 
-    private void loadRewardedVideoAd(final AdsCallback adsCallback) {
-        final FullScreenContentCallback callback = new FullScreenContentCallback(){
+    private FullScreenContentCallback getFullScreenContentCallback(final AdsCallback adsCallback) {
+        return new FullScreenContentCallback() {
             @Override
             public void onAdFailedToShowFullScreenContent(AdError adError) {
                 super.onAdFailedToShowFullScreenContent(adError);
-                if(adsCallback != null) adsCallback.fail();
+                if (adsCallback != null) adsCallback.fail();
             }
 
             @Override
             public void onAdShowedFullScreenContent() {
                 super.onAdShowedFullScreenContent();
-                if(adsCallback != null) adsCallback.close();
+                if (adsCallback != null) adsCallback.close();
             }
 
             @Override
             public void onAdDismissedFullScreenContent() {
                 super.onAdDismissedFullScreenContent();
-                interstitialAd = null;
-                if(adsCallback != null) adsCallback.close();
+                loadInterstitialAd(adsCallback);
+                if (adsCallback != null) adsCallback.close();
             }
         };
+    }
 
+    private void loadRewardedVideoAd(final AdsCallback adsCallback) {
+        loadRewardedVideoAd(adsCallback, null);
+    }
+
+    private void loadRewardedVideoAd(final AdsCallback adsCallback, final Callback callback) {
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(this, interstitialVideoId, adRequest, new RewardedAdLoadCallback(){
+        RewardedAd.load(this, interstitialVideoId, adRequest, new RewardedAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                 super.onAdLoaded(rewardedAd);
                 rewardedVideoAd = rewardedAd;
-                if(interstitialAd != null) interstitialAd.setFullScreenContentCallback(callback);
+                rewardedVideoAd.setFullScreenContentCallback(getFullScreenContentCallback(adsCallback));
+                if(callback != null) callback.call();
             }
 
             @Override
@@ -302,13 +293,24 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     }
 
     @Override
-    public void showInterstitialAd(@Nullable final AdsCallback callback) {
+    public void showInterstitialAd(@Nullable final AdsCallback adsCallback) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (interstitialAd != null) {
+                    interstitialAd.setFullScreenContentCallback(getFullScreenContentCallback(adsCallback));
                     interstitialAd.show(AndroidLauncher.this);
-                } else loadInterstitialAd(callback);
+                    if (adsCallback != null) adsCallback.close();
+                } else {
+                    Callback successCallback = new Callback() {
+                        @Override
+                        public void call() {
+                            interstitialAd.show(AndroidLauncher.this);
+                            if (adsCallback != null) adsCallback.close();
+                        }
+                    };
+                    loadInterstitialAd(adsCallback, successCallback);
+                }
             }
         });
     }
@@ -340,16 +342,21 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
             @Override
             public void run() {
                 if (rewardedVideoAd != null) {
+                    rewardedVideoAd.setFullScreenContentCallback(getFullScreenContentCallback(callback));
                     rewardedVideoAd.show(AndroidLauncher.this, new OnUserEarnedRewardListener() {
                         @Override
                         public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
                             if (callback != null) callback.click();
-                            AdRequest adRequest = new AdRequest.Builder().build();
-                            rewardedVideoAd.loadAd(adRequest, null);
+                            loadRewardedVideoAd(callback);
                         }
                     });
                 } else {
-                    loadRewardedVideoAd(callback);
+                    loadRewardedVideoAd(callback, new Callback() {
+                        @Override
+                        public void call() {
+                            showVideoAd(callback);
+                        }
+                    });
                 }
             }
         });
@@ -621,7 +628,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         String appLink = getString(R.string.app_link_common) + getApplicationContext().getPackageName();
 
         String msg = getString(R.string.share_msg, score) + appLink;
-        if(score == Config.Achievement.FINISH_GAME.getScore()){
+        if (score == Config.Achievement.FINISH_GAME.getScore()) {
             msg = getString(R.string.share_msg_win) + appLink;
         }
 
