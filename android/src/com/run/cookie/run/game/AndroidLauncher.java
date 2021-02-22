@@ -75,9 +75,10 @@ import static com.google.android.gms.games.leaderboard.LeaderboardVariant.TIME_S
 
 public class AndroidLauncher extends AndroidApplication implements AdsController, ServicesController {
 
-    private String bannerAdUnitId = "banner";
-    private String interstitialAdUnitId = "interstitial";
-    private String interstitialVideoId = "interstitialVideo";
+    //will be initialized later
+    private String bannerAdUnitId = "";
+    private String interstitialAdUnitId = "";
+    private String interstitialVideoId = "";
 
     private final int RC_SIGN_IN = 1;
     // -- Leaderboard variables

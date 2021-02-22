@@ -164,7 +164,7 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         val lastAd = advertising.last
         val minCountOneByOne = 0
 
-        Timer().schedule(object : TimerTask() {
+        Timer().schedule(object : TimerTask() { //HACK: for unknown cases
             override fun run() {
                 newScreen = screen
             }

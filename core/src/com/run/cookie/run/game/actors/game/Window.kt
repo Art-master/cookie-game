@@ -32,6 +32,8 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable, Wa
     override var nextActor: Actor? = null
     override var distance: Int = 0
 
+    private var curtainLeftOffset: Int = 80
+
     var scroll = HorizontalScroll(
             Config.WIDTH_GAME, startY,
             region.originalWidth,
@@ -58,7 +60,7 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable, Wa
     }
 
     override fun resetState() {
-        scroll.reset()
+        scroll.reset(Config.WIDTH_GAME + curtainLeftOffset)
         curtainColor = getRandomColor().lerp(Color.GRAY, 0.5f)
         listeners.forEach { it.call() }
         chooseCurtain()
@@ -81,7 +83,7 @@ class Window(manager: AssetManager, startY: Float) : GameActor(), Scrollable, Wa
     }
 
     private fun drawLeftCurtain(batch: Batch) {
-        val x = scroll.getX() - 80
+        val x = scroll.getX() - curtainLeftOffset
         val y = scroll.getY() - 60
         val width = curtainRegion.originalWidth.toFloat()
         val height = curtainRegion.originalHeight.toFloat()
