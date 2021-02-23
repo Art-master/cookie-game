@@ -13,9 +13,9 @@ import com.run.cookie.run.game.actors.game.cookie.Cookie
 import com.run.cookie.run.game.api.Callback
 import kotlin.random.Random
 
-class TableItems(private val manager: AssetManager,
-                 private val table: Table,
-                 private val cookie: Cookie) {
+class TableItemsManager(private val manager: AssetManager,
+                        private val table: Table,
+                        private val cookie: Cookie) {
 
     private val minDistance = 200
     private val random = Random(minDistance)
@@ -52,7 +52,7 @@ class TableItems(private val manager: AssetManager,
     }
 
 
-    private val actionItems = Array<RandomTableItem>(randomItemNum)
+    private val actionItems = Array<TableItem>(randomItemNum)
     var isStopGenerate = false
         set(value) {
             field = value
@@ -88,7 +88,7 @@ class TableItems(private val manager: AssetManager,
      */
     private fun initTableItems() {
         for (i in 0 until randomItemNum) {
-            val actor = RandomTableItem(manager, table, cookie)
+            val actor = TableItem(manager, table, cookie)
             actor.distanceUntil = random.nextInt(minDistance, limitDistance)
             if (i > 0) actor.prevActor = actionItems.get(i - 1)
             actor.callback = object : Callback {

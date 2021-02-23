@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.Array
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Config.ItemScrollSpeed
 import com.run.cookie.run.game.DebugUtils
-import com.run.cookie.run.game.actors.game.RandomTableItem
-import com.run.cookie.run.game.actors.game.RandomTableItem.Structure
+import com.run.cookie.run.game.actors.game.TableItem
+import com.run.cookie.run.game.actors.game.TableItem.Structure
 import com.run.cookie.run.game.api.*
 import com.run.cookie.run.game.data.Assets
 import com.run.cookie.run.game.data.Descriptors
@@ -204,7 +204,7 @@ class Cookie(private val manager: AssetManager,
         move.update()
     }
 
-    fun checkCollides(obj: RandomTableItem) {
+    fun checkCollides(obj: TableItem) {
         if (state == State.WIN || state == State.STOP) return
         if (collides(obj)) {
             if (obj.structure == Structure.SHARP) {
@@ -234,11 +234,11 @@ class Cookie(private val manager: AssetManager,
         }
     }
 
-    private fun isForward(obj: RandomTableItem) = x < obj.getBoundsRect().x + 10
-    private fun isHigherThen(obj: RandomTableItem) = y > getTop(obj) - 50
-    private fun aheadOfObj(obj: RandomTableItem) = x < obj.getBoundsRect().x + 30
+    private fun isForward(obj: TableItem) = x < obj.getBoundsRect().x + 10
+    private fun isHigherThen(obj: TableItem) = y > getTop(obj) - 50
+    private fun aheadOfObj(obj: TableItem) = x < obj.getBoundsRect().x + 30
 
-    private fun setOnTop(obj: RandomTableItem) {
+    private fun setOnTop(obj: TableItem) {
         resetState()
         when (obj.structure) {
             Structure.STICKY -> slowMove()
@@ -274,7 +274,7 @@ class Cookie(private val manager: AssetManager,
         VibrationManager.vibrate(STICKY_ITEM)
     }
 
-    private fun inFrontOfTheObject(obj: RandomTableItem) {
+    private fun inFrontOfTheObject(obj: TableItem) {
         when (obj.structure) {
             Structure.JELLY -> {
                 velocity.y = velocityJump
@@ -290,7 +290,7 @@ class Cookie(private val manager: AssetManager,
      * It cookie animation, then cookie go up again
      * @param obj - table object
      */
-    private fun stumble(obj: RandomTableItem) {
+    private fun stumble(obj: TableItem) {
         if (state == State.STUMBLE) return
         state = State.STUMBLE
 
@@ -326,7 +326,7 @@ class Cookie(private val manager: AssetManager,
      * It cookie animation, then cookie go up again
      * @param obj - table object
      */
-    private fun slip(obj: RandomTableItem) {
+    private fun slip(obj: TableItem) {
         if (state == State.SLIP) return
         state = State.SLIP
 
@@ -358,7 +358,7 @@ class Cookie(private val manager: AssetManager,
         addAction(sequence)
     }
 
-    private fun setAgainstTheObject(obj: RandomTableItem) {
+    private fun setAgainstTheObject(obj: TableItem) {
         move.setX(obj.getBoundsRect().x - getBoundsRect().width - 35)
     }
 

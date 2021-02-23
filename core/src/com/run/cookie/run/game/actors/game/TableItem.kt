@@ -15,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Config.Debug
-import com.run.cookie.run.game.actors.game.TableItems.Companion.itemsArray
-import com.run.cookie.run.game.actors.game.TableItems.Item.*
+import com.run.cookie.run.game.actors.game.TableItemsManager.Companion.itemsArray
+import com.run.cookie.run.game.actors.game.TableItemsManager.Item.*
 import com.run.cookie.run.game.actors.game.cookie.Cookie
 import com.run.cookie.run.game.api.*
 import com.run.cookie.run.game.data.Assets
@@ -25,9 +25,9 @@ import com.run.cookie.run.game.managers.AudioManager
 import com.run.cookie.run.game.managers.AudioManager.SoundApp
 import java.util.*
 
-class RandomTableItem(private val manager: AssetManager,
-                      private val table: Table,
-                      private val cookie: Cookie) : GameActor(), Scrollable, Physical, Animated {
+class TableItem(private val manager: AssetManager,
+                private val table: Table,
+                private val cookie: Cookie) : GameActor(), Scrollable, Physical, Animated {
 
     private val rand = Random()
     private val texture = manager.get(Descriptors.environment)
@@ -43,7 +43,7 @@ class RandomTableItem(private val manager: AssetManager,
     private var jumpOnSound: AudioManager.Audio? = null
     var allowUpdate = false
     var distanceUntil = 100
-    var prevActor: RandomTableItem? = null
+    var prevActor: TableItem? = null
     var callback: Callback? = null
 
     var callbackGoThrough: Callback? = null
@@ -68,6 +68,7 @@ class RandomTableItem(private val manager: AssetManager,
     fun isItemLeft() = scroller.isScrolledLeft
 
     override fun act(delta: Float) {
+        super.act(delta)
         checkDistance()
         if (allowUpdate) {
             if (scroller.isScrolledLeft && isStopGeneration.not()) {
@@ -77,13 +78,18 @@ class RandomTableItem(private val manager: AssetManager,
                 resetScroller()
                 callback!!.call()
             }
-            cookie.checkCollides(this)
             updateCoordinates()
             scroller.act(delta)
             updateBound()
-            isGoThrough(cookie)
+            if(nedCheckCollides()){
+                cookie.checkCollides(this)
+                isGoThrough(cookie)
+            }
         }
-        super.act(delta)
+    }
+
+    private fun nedCheckCollides(): Boolean {
+        return cookie.tailX > bound.x - 50 || cookie.x < bound.x + bound.width + 50
     }
 
     private fun isGoThrough(actor: Actor) {

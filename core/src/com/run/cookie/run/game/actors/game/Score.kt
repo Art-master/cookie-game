@@ -24,9 +24,10 @@ class Score(manager: AssetManager) : GameActor(), Animated {
 
     var scoreNum = 0
         set(value) {
-            animate(AnimationType.SCORE_INCREASE)
-            VibrationManager.vibrate()
-            if (value <= Config.Achievement.FINISH_GAME.score) field = value
+            if (value <= Config.Achievement.FINISH_GAME.score) {
+                animate(AnimationType.SCORE_INCREASE)
+                field = value
+            }
         }
 
     private val symbolSize = 50

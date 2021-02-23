@@ -17,7 +17,7 @@ import com.run.cookie.run.game.Config.Debug
 import com.run.cookie.run.game.DebugUtils
 import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.actors.game.*
-import com.run.cookie.run.game.actors.game.TableItems.Item
+import com.run.cookie.run.game.actors.game.TableItemsManager.Item
 import com.run.cookie.run.game.actors.game.cookie.*
 import com.run.cookie.run.game.actors.game.cookie.Cookie.State
 import com.run.cookie.run.game.api.AnimationType
@@ -54,7 +54,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
     private val cupboard = Cupboard(manager, 510f)
     private val score = Score(manager)
     private val arm = Arm(manager, cookie)
-    private val items = TableItems(manager, table, cookie)
+    private val items = TableItemsManager(manager, table, cookie)
     val actors: Array<Actor> = Array()
     private val wallActors: Array<WallActor> = Array()
 
@@ -159,7 +159,7 @@ class GamePlayScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         }
     }
 
-    private fun controlScore(actor: RandomTableItem) {
+    private fun controlScore(actor: TableItem) {
         val controller = ScreenManager.globalParameters[ScreenManager.Param.SERVICES_CONTROLLER] as ServicesController
         actor.callbackGoThrough = object : Callback {
             override fun call() {

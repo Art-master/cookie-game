@@ -6,7 +6,7 @@
 
 package com.run.cookie.run.game
 
-import com.run.cookie.run.game.actors.game.TableItems
+import com.run.cookie.run.game.actors.game.TableItemsManager.*
 import kotlin.math.abs
 
 object Config {
@@ -32,7 +32,7 @@ object Config {
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
         ADS(false),
-        CERTAIN_TABLE_ITEM(false, TableItems.Item.JELLY.index),
+        CERTAIN_TABLE_ITEM(false, Item.JELLY.index),
         MAX_SPEED(false),
         MIN_DISTANCE(false),
         MAX_RANDOM_ITEMS(false),
