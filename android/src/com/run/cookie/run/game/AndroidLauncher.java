@@ -155,6 +155,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         bannerAd.setVisibility(View.VISIBLE);
         bannerAd.setBackgroundColor(Color.argb(1, 1, 1, 1)); // transparent
         bannerAd.setAdSize(AdSize.BANNER);
+        bannerAd.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         bannerAd.setAdUnitId(bannerAdUnitId);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
