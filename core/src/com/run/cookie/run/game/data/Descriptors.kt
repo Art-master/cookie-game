@@ -17,7 +17,7 @@ object Descriptors {
 
     private val textureParams = TextureLoader.TextureParameter().apply {
         genMipMaps = true
-        loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
+        loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, _ ->
             run {
                 assetManager.get<Texture>(fileName).setFilter(Texture.TextureFilter.MipMap, Texture.TextureFilter.Nearest)
             }

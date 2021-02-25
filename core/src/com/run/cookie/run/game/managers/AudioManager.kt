@@ -17,6 +17,7 @@ import com.badlogic.gdx.audio.Sound
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.Prefs
 import java.util.*
+import kotlinx.coroutines.*
 
 object AudioManager {
 
@@ -95,11 +96,9 @@ object AudioManager {
      * HACK: If don't use a different thread, graphics on the screen will be twitch a little
      */
     private fun playSound(audio: SoundApp){
-        timer.schedule(object : TimerTask(){
-            override fun run() {
-                audio.resource?.play(audio.volume)
-            }
-        }, 0L)
+        GlobalScope.launch {
+            audio.resource?.play(audio.volume)
+        }
     }
 
     fun stop(audio: Audio) {
