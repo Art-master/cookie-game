@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.run.cookie.run.game.Config
 import com.run.cookie.run.game.actors.Shadow
 import com.run.cookie.run.game.managers.ScreenManager
+import com.run.cookie.run.game.managers.VibrationManager
 import com.run.cookie.run.game.services.AdsController
 
 abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
@@ -75,6 +76,7 @@ abstract class GameScreen(params: Map<ScreenManager.Param, Any>) : Screen {
     override fun dispose() {
         stageBackground.dispose()
         stage.dispose()
+        VibrationManager.cancel()
         //stageShadow.dispose() // Early disposing lead to blink
     }
 }
