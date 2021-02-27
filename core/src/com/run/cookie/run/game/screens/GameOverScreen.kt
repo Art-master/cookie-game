@@ -170,11 +170,16 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
             }
         }, 2 * 1000)
 
+        val timeDiff = System.currentTimeMillis() - advertising.last.timeMs
 
-        if (advertising.commonClickCount > 5) callback.close()
+        if (advertising.commonClickCount > 5 || timeDiff < 2 * 60 * 1000) {
+            callback.close()
+            return
+        }
 
         if (minCountOneByOne == 0 || (lastAd.type == AdType.NONE && lastAd.countOneByOne == minCountOneByOne)) {
             advertising.last = Adv(AdType.INTERSTITIAL)
+            advertising.last.timeMs = System.currentTimeMillis()
             adsController.showInterstitialAd(callback)
         } else {
             if (lastAd.type != AdType.NONE) {

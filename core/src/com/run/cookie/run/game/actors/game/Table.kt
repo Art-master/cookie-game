@@ -20,6 +20,9 @@ class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
     private val texture = manager.get(Descriptors.environment)
     private val region = texture.findRegion(Assets.EnvironmentAtlas.TABLE)
 
+    //for excluding rare graphical bug for other screen sizes
+    private val textureOffset = 10
+
     val worktopY = yWorktop
 
     private var scrollerBack = HorizontalScroll(0f, 0f,
@@ -46,13 +49,13 @@ class Table(manager : AssetManager, yWorktop: Float) : GameActor(), Scrollable {
         batch.draw(region,
                 scrollerBack.getX(),
                 scrollerBack.getY(),
-                scrollerBack.width.toFloat(),
+                scrollerBack.width.toFloat() + textureOffset,
                 scrollerBack.height.toFloat())
 
         batch.draw(region,
                 scrollerFront.getX(),
                 scrollerFront.getY(),
-                scrollerFront.width.toFloat(),
+                scrollerFront.width.toFloat() + textureOffset,
                 scrollerFront.height.toFloat())
     }
 

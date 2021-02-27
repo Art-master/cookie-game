@@ -19,6 +19,8 @@ class Advertising {
     }
     var history = ArrayList<Adv>()
 
-    data class Adv(var type: AdType = AdType.NONE, var timeMs: Long = 0, var countOneByOne: Int = 0)
+    data class Adv(var type: AdType = AdType.NONE,
+                   var timeMs: Long = System.currentTimeMillis(),
+                   var countOneByOne: Int = 0)
 }
 
