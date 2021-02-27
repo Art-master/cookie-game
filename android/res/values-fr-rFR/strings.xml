@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_msg">J\'ai marqué %1$d points dans le jeu \"Run, Cookie, Run\" </string>
+    <string name="share_msg_win">J\'ai gagné dans le jeu \"Run, Cookie, Run\" </string>
+    <string name="share_window_header">Partager</string>
+</resources>

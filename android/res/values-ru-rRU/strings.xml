@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Run, cookie, run</string>
-    <string name="share_msg" translatable="false">Я набрал %1$d очков в игре \"Run, Cookie, Run\ "</string>
-    <string name="share_msg_win">"Я победил в игре \"Run, Cookie, Run\" "</string>
+    <string name="share_msg">Я набрал %1$d очков в игре \"Run, Cookie, Run\" </string>
+    <string name="share_msg_win">Я победил в игре \"Run, Cookie, Run\" </string>
     <string name="share_window_header">Поделиться</string>
 </resources>

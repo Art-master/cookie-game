@@ -629,9 +629,9 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         sendIntent.setAction(Intent.ACTION_SEND);
         String appLink = getString(R.string.app_link_common) + getApplicationContext().getPackageName();
 
-        String msg = getString(R.string.share_msg, score) + appLink;
+        String msg = getString(R.string.share_msg, score) + " " + appLink;
         if (score == Config.Achievement.FINISH_GAME.getScore()) {
-            msg = getString(R.string.share_msg_win) + appLink;
+            msg = getString(R.string.share_msg_win) + " " + appLink;
         }
 
         sendIntent.putExtra(Intent.EXTRA_TEXT, msg);
