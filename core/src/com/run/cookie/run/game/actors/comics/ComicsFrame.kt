@@ -42,6 +42,7 @@ abstract class ComicsFrame(manager: AssetManager) : GameActor(), Animated {
         batch!!.setColor(color.r, color.g, color.b, color.a)
         batch.draw(shadow, 0f, 0f, Config.WIDTH_GAME, Config.HEIGHT_GAME)
         batch.setColor(color.r, color.g, color.b, 1f)
+
         batch.color = Color.WHITE
         batch.draw(region, x,  y, 0f, 0f, width, height, scaleX, scaleY, rotation)
     }

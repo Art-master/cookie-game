@@ -25,11 +25,6 @@ class Background(manager: AssetManager) : GameActor() {
         y = 0f
     }
 
-    override fun act(delta: Float) {
-        super.act(delta)
-        x = (Config.WIDTH_GAME - width) / 2f
-    }
-
     override fun draw(batch: Batch?, parentAlpha: Float) {
         batch!!.color = Color.WHITE
         batch.draw(white, x,  y, width, height)

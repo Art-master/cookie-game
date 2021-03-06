@@ -24,7 +24,6 @@ object Descriptors {
         }
     }
 
-
     val background = AssetDescriptor(Assets.BackgroundTexture.NAME, Texture::class.java, textureParams)
     val gameOverBackground = AssetDescriptor(Assets.GameOverBackground.NAME, Texture::class.java, textureParams)
     val comics = AssetDescriptor(Assets.ComicsAtlas.NAME, TextureAtlas::class.java)
