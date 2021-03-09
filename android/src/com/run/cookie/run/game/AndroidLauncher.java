@@ -124,7 +124,6 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         boolean isDebuggable = (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
         List<String> testDeviceIds = new ArrayList<>();
         testDeviceIds.add(getString(R.string.test_device_id));
-        testDeviceIds.add(getString(R.string.test_device_id_2));
 
         RequestConfiguration configuration =
                 new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
@@ -136,13 +135,13 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         });
         MobileAds.setRequestConfiguration(configuration);
 
-        bannerAdUnitId = getString(Config.Debug.ADS.getState() || isDebuggable
+        bannerAdUnitId = getString(Config.Debug.ADS.getState()
                 ? R.string.test_ad_banner_id :
                 R.string.ad_banner_id);
-        interstitialAdUnitId = getString(Config.Debug.ADS.getState() || isDebuggable
+        interstitialAdUnitId = getString(Config.Debug.ADS.getState()
                 ? R.string.test_ad_interstitial_id :
                 R.string.ad_interstitial_id);
-        interstitialVideoId = getString(Config.Debug.ADS.getState() || isDebuggable
+        interstitialVideoId = getString(Config.Debug.ADS.getState()
                 ? R.string.test_ad_interstitial_video_id :
                 R.string.ad_interstitial_video_id);
     }
