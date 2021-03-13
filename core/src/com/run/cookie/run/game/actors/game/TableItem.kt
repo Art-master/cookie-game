@@ -81,20 +81,20 @@ class TableItem(private val manager: AssetManager,
             updateCoordinates()
             scroller.act(delta)
             updateBound()
-            if(nedCheckCollides()){
-                cookie.checkCollides(this)
+            if (nedCheckCollides()) {
                 isGoThrough(cookie)
+                cookie.checkCollides(this)
             }
         }
     }
 
     private fun nedCheckCollides(): Boolean {
-        return cookie.tailX > bound.x - 50 || cookie.x < bound.x + bound.width + 50
+        return cookie.tailX > bound.x - 100 && cookie.x < bound.x + bound.width + 100
     }
 
     private fun isGoThrough(actor: Actor) {
         val actorMiddlePoint = actor.right / 2
-        val itemMiddlePoint = scroller.getX() + scroller.width / 2
+        val itemMiddlePoint = (x + width) / 2
 
         if (!isScored && actorMiddlePoint >= itemMiddlePoint) {
             isScored = true

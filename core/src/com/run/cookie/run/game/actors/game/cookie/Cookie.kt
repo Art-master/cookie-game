@@ -111,16 +111,17 @@ class Cookie(private val manager: AssetManager,
     private fun updateActorState() {
         when (state) {
             State.FALL -> {
-                if (isJumpPeakPassed().not()) jumpPeakValue = y
+                if (isJumpPeakPassed()) startJumpY = 0f
+                else jumpPeakValue = y
+
                 if (isGround()) {
                     listeners.forEach { it.jumpEnd(y <= startY) }
                     resetState()
                 }
             }
             State.JUMP -> {
-                if (isMaxJump().not()) {
-                    velocity.add(0f, velocityJump)
-                } else state = State.FALL
+                if (isMaxJump()) state = State.FALL
+                else velocity.add(0f, velocityJump)
             }
             State.RUN -> velocity.y = 0f
             else -> return
@@ -215,30 +216,35 @@ class Cookie(private val manager: AssetManager,
                 return
             }
 
-            if (isHigherThen(obj)) {
+            if (isStepOnObject(obj) && startJumpY == 0f && jumpPeakValue - y > 5) {
                 setOnTop(obj)
-                obj.jumpedOnAction()
-            } else if (isForward(obj) && getTop(obj) - y < 20) {
+            } else if (!isFalling() && aheadOfObj(obj) && getTop(obj) <= startY + 20) {
                 setOnTop(obj)
-            } else if (aheadOfObj(obj)) inFrontOfTheObject(obj)
+            } else if (isForward(obj) && !isHigherThen(obj)) {
+                inFrontOfTheObject(obj)
+            } else if (isFalling() && y < obj.getBoundsTop()) setOnTop(obj)
         }
+
         if (isAfterObject(obj) && state == State.RUN) {
             state = State.FALL
             fastMove()
         }
 
-        if (isAboveObject(obj)) {
+        if (inBoundaries(obj)) {
             ground = getTop(obj)
         } else if (isAfterObject(obj)) {
             ground = startY
         }
     }
 
-    private fun isForward(obj: TableItem) = x < obj.getBoundsRect().x + 10
-    private fun isHigherThen(obj: TableItem) = y > getTop(obj) - 50
-    private fun aheadOfObj(obj: TableItem) = x < obj.getBoundsRect().x + 30
+    private fun isFalling() = state == State.FALL && jumpPeakValue > y
+    private fun isForward(obj: TableItem) = getBoundsTail() < obj.getBoundsRect().x + 20
+    private fun isHigherThen(obj: TableItem) = getBoundsRect().y > getTop(obj) - 20
+    private fun aheadOfObj(obj: TableItem) = getBoundsTail() < obj.getBoundsRect().x + 30
 
     private fun setOnTop(obj: TableItem) {
+        obj.jumpedOnAction()
+        ground = getTop(obj)
         resetState()
         when (obj.structure) {
             Structure.STICKY -> slowMove()

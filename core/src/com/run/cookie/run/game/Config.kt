@@ -32,7 +32,7 @@ object Config {
         EMPTY_TABLE(false),
         PLAY_SERVICES(false),
         ADS(false),
-        CERTAIN_TABLE_ITEM(false, Item.JELLY.index),
+        CERTAIN_TABLE_ITEM(false, Item.BABY_COOKIES_BOX.index),
         MAX_SPEED(false),
         MIN_DISTANCE(false),
         MAX_RANDOM_ITEMS(false),
