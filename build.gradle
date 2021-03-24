@@ -22,7 +22,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.8'
+    version = '1.9'
     ext {
         appName = "run_cookie_run"
         gdxVersion = '1.9.13'
@@ -73,6 +73,7 @@ project(":android") {
         implementation 'com.google.android.gms:play-services-games:21.0.0'
         implementation "com.google.android.gms:play-services-auth:19.0.0"
         implementation 'com.android.support:multidex:1.0.3'
+        implementation 'com.google.android.ump:user-messaging-platform:1.0.0'
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"

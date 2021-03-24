@@ -166,12 +166,6 @@ class GameOverScreen(params: Map<ScreenManager.Param, Any>) : GameScreen(params)
         val lastAd = advertising.last
         val minCountOneByOne = 0
 
-        Timer().schedule(object : TimerTask() { //HACK: for unknown cases
-            override fun run() {
-                newScreen = screen
-            }
-        }, 2 * 1000)
-
         val timeDiff = System.currentTimeMillis() - advertising.last.timeMs
 
         if (advertising.commonClickCount > 5 || timeDiff < 2 * 60 * 1000) {

@@ -57,6 +57,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.ump.ConsentDebugSettings;
+import com.google.android.ump.ConsentForm;
+import com.google.android.ump.ConsentInformation;
+import com.google.android.ump.ConsentRequestParameters;
+import com.google.android.ump.FormError;
+import com.google.android.ump.UserMessagingPlatform;
 import com.run.cookie.run.game.api.Callback;
 import com.run.cookie.run.game.services.AdsCallback;
 import com.run.cookie.run.game.services.AdsController;
@@ -81,8 +87,8 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     private String interstitialVideoId = "";
 
     private final int RC_SIGN_IN = 1;
-    // -- Leaderboard variables
-    private static final int RC_LEADERBOARD_UI = 9004;
+    // -- Leader board variables
+    private static final int RC_LEADER_BOARD_UI = 9004;
     private static final String LOG_TAG = "ANDROID_APP";
 
     private AdView bannerAd;
@@ -90,6 +96,9 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
     private RewardedAd rewardedVideoAd;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInAccount signedInAccount;
+
+    private ConsentInformation consentInformation;
+    private ConsentForm consentForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +115,8 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
         RelativeLayout layout = new RelativeLayout(this);
         layout.addView(gameView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+
+        configureUserMessagingPlatform();
 
         initAdsIdentifiers();
         setupAds(layout);
@@ -146,6 +157,76 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 R.string.ad_interstitial_video_id);
     }
 
+    private void configureUserMessagingPlatform() {
+        ConsentDebugSettings debugSettings = new ConsentDebugSettings.Builder(this)
+                .setDebugGeography(ConsentDebugSettings
+                        .DebugGeography
+                        .DEBUG_GEOGRAPHY_EEA)
+                .addTestDeviceHashedId(getString(R.string.test_device_id))
+                .build();
+
+
+        // Set tag for underage of consent. false means users are not underage.
+        ConsentRequestParameters params = new ConsentRequestParameters
+                .Builder()
+                .setTagForUnderAgeOfConsent(false)
+                .setConsentDebugSettings(debugSettings)
+                .build();
+
+        consentInformation = UserMessagingPlatform.getConsentInformation(this);
+        consentInformation.requestConsentInfoUpdate(
+                this,
+                params,
+                new ConsentInformation.OnConsentInfoUpdateSuccessListener() {
+                    @Override
+                    public void onConsentInfoUpdateSuccess() {
+                        // The consent information state was updated.
+                        // You are now ready to check if a form is available.
+                        if (consentInformation.isConsentFormAvailable()) {
+                            loadForm();
+                        }
+                    }
+                },
+                new ConsentInformation.OnConsentInfoUpdateFailureListener() {
+                    @Override
+                    public void onConsentInfoUpdateFailure(FormError formError) {
+                        // Handle the error.
+                        Log.d(LOG_TAG, "onConsentInfoUpdateFailure: " + formError.getMessage());
+                    }
+                });
+    }
+
+    public void loadForm() {
+        UserMessagingPlatform.loadConsentForm(
+                this,
+                new UserMessagingPlatform.OnConsentFormLoadSuccessListener() {
+                    @Override
+                    public void onConsentFormLoadSuccess(ConsentForm consentForm) {
+                        AndroidLauncher.this.consentForm = consentForm;
+                        if (consentInformation.getConsentStatus() == ConsentInformation.ConsentStatus.REQUIRED) {
+                            consentForm.show(
+                                    AndroidLauncher.this,
+                                    new ConsentForm.OnConsentFormDismissedListener() {
+                                        @Override
+                                        public void onConsentFormDismissed(@Nullable FormError formError) {
+                                            // Handle dismissal by reloading form.
+                                            loadForm();
+                                        }
+                                    });
+
+                        }
+                    }
+                },
+                new UserMessagingPlatform.OnConsentFormLoadFailureListener() {
+                    @Override
+                    public void onConsentFormLoadFailure(FormError formError) {
+                        // Handle the error
+                        Log.d(LOG_TAG, "onConsentFormLoadFailure: " + formError.getMessage());
+                    }
+                }
+        );
+    }
+
     public void setupAds(RelativeLayout layout) {
         loadInterstitialAd(null);
         loadRewardedVideoAd(null);
@@ -175,7 +256,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
             public void onAdLoaded(@NonNull InterstitialAd ad) {
                 super.onAdLoaded(ad);
                 interstitialAd = ad;
-                if(callback != null) callback.call();
+                if (callback != null) callback.call();
             }
 
             @Override
@@ -221,7 +302,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 super.onAdLoaded(rewardedAd);
                 rewardedVideoAd = rewardedAd;
                 rewardedVideoAd.setFullScreenContentCallback(getFullScreenContentCallback(adsCallback));
-                if(callback != null) callback.call();
+                if (callback != null) callback.call();
             }
 
             @Override
@@ -301,13 +382,12 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                 if (interstitialAd != null) {
                     interstitialAd.setFullScreenContentCallback(getFullScreenContentCallback(adsCallback));
                     interstitialAd.show(AndroidLauncher.this);
-                    if (adsCallback != null) adsCallback.close();
                 } else {
                     Callback successCallback = new Callback() {
                         @Override
                         public void call() {
+                            interstitialAd.setFullScreenContentCallback(getFullScreenContentCallback(adsCallback));
                             interstitialAd.show(AndroidLauncher.this);
-                            if (adsCallback != null) adsCallback.close();
                         }
                     };
                     loadInterstitialAd(adsCallback, successCallback);
@@ -482,7 +562,7 @@ public class AndroidLauncher extends AndroidApplication implements AdsController
                     .addOnSuccessListener(new OnSuccessListener<Intent>() {
                         @Override
                         public void onSuccess(Intent intent) {
-                            startActivityForResult(intent, RC_LEADERBOARD_UI);
+                            startActivityForResult(intent, RC_LEADER_BOARD_UI);
                         }
                     });
         } else signIn();
