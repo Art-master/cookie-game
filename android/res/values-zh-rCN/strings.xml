@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="share_msg">我在游戏中获得%1$d积分\"Run, Cookie, Run\" </string>
-    <string name="share_msg_win">我赢得了比赛\"Run, Cookie, Run\" </string>
+    <string name="share_msg">"我在游戏中获得%1$d积分\"Cookie. The night story\" "</string>
+    <string name="share_msg_win">"我赢得了比赛\"Cookie. The night story\" "</string>
     <string name="share_window_header">分享</string>
 </resources>

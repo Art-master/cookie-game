@@ -53,7 +53,7 @@ class MainTitle(manager : AssetManager) : GameActor(), Animated {
                 moveTo(x, Config.HEIGHT_GAME, animDuration, Interpolation.exp10)
             }
             AnimationType.SHOW_ON_SCENE -> {
-                val y = (Config.HEIGHT_GAME - height - 50)
+                val y = (Config.HEIGHT_GAME - height + 20)
                 moveTo(x, y, animDuration, Interpolation.exp10)
             }
             else -> return

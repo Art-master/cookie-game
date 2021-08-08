@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="share_msg">ममैंने खेल में %1$d अंक बनाए \"Run, Cookie, Run\" </string>
-    <string name="share_msg_win">मैं खेल जीता \"Run, Cookie, Run\" </string>
+    <string name="share_msg">"ममैंने खेल में %1$d अंक बनाए \"Cookie. The night story\" "</string>
+    <string name="share_msg_win">"मैं खेल जीता \"Cookie. The night story\" "</string>
     <string name="share_window_header">शेयर</string>
 </resources>
